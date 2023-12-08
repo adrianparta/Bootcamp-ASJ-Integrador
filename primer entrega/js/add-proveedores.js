@@ -20,9 +20,8 @@ const rol = document.getElementById("inputRol");
 
 const button = document.getElementById("agregar");
 
-let aux = [];
-
-button.addEventListener("click",()=>{
+let aux = {};
+function llenarAux(){
     aux = {
         codigo: codigo.value,
         razonSocial: razonSocial.value,
@@ -44,100 +43,19 @@ button.addEventListener("click",()=>{
         emailContacto: emailContacto.value,
         rol: rol.value
     }
+}
 
-    console.log(aux);
-    console.log("1");
+button.addEventListener("click",()=>{
+    llenarAux();
     if(localStorage.getItem("proveedores") === null){
-        localStorage.setItem("proveedores", JSON.stringify(aux));
-    console.log("2");
-
+        localStorage.setItem("proveedores", JSON.stringify(Array(aux)));
     }
     else{
-        aux = JSON.parse(localStorage.getItem("proveedores"));
-        aux = (
-            {
-            codigo: codigo.value,
-            razonSocial: razonSocial.value,
-            rubro: rubro.value,
-            sitio: sitio.value,
-            email: email.value,
-            telefono: telefono.value,
-            calle: calle.value,
-            numeroCalle: numeroCalle.value,
-            codigoPostal: codigoPostal.value,
-            pais: pais.value,
-            provincia: provincia.value,
-            localidad: localidad.value,
-            CUIT: CUIT.value,
-            IVA: IVA.value,
-            nombre: nombre.value,
-            apellido: apellido.value,
-            telefonoContacto: telefonoContacto.value,
-            emailContacto: emailContacto.value,
-            rol: rol.value
-            }
-        );
-        localStorage.setItem("proveedores", JSON.stringify(aux));
+        let aux2 = JSON.parse(localStorage.getItem("proveedores"));
+        console.log(aux2);
+
+        aux2.push(aux);
+        localStorage.setItem("proveedores", JSON.stringify(aux2));
 
 }
 });
-function cargarLocalStorage(){
-    aux = {
-        codigo: codigo.value,
-        razonSocial: razonSocial.value,
-        rubro: rubro.value,
-        sitio: sitio.value,
-        email: email.value,
-        telefono: telefono.value,
-        calle: calle.value,
-        numeroCalle: numeroCalle.value,
-        codigoPostal: codigoPostal.value,
-        pais: pais.value,
-        provincia: provincia.value,
-        localidad: localidad.value,
-        CUIT: CUIT.value,
-        IVA: IVA.value,
-        nombre: nombre.value,
-        apellido: apellido.value,
-        telefonoContacto: telefonoContacto.value,
-        emailContacto: emailContacto.value,
-        rol: rol.value
-    }
-
-    console.log(aux);
-    console.log("1");
-    if(localStorage.getItem("proveedores") === null){
-        localStorage.setItem("proveedores", JSON.stringify(aux));
-    console.log("2");
-
-    }
-    else{
-        aux = JSON.parse(localStorage.getItem("proveedores"));
-        aux.push(
-            {
-            codigo: codigo.value,
-            razonSocial: razonSocial.value,
-            rubro: rubro.value,
-            sitio: sitio.value,
-            email: email.value,
-            telefono: telefono.value,
-            calle: calle.value,
-            numeroCalle: numeroCalle.value,
-            codigoPostal: codigoPostal.value,
-            pais: pais.value,
-            provincia: provincia.value,
-            localidad: localidad.value,
-            CUIT: CUIT.value,
-            IVA: IVA.value,
-            nombre: nombre.value,
-            apellido: apellido.value,
-            telefonoContacto: telefonoContacto.value,
-            emailContacto: emailContacto.value,
-            rol: rol.value
-            }
-        );
-        localStorage.setItem("proveedores", JSON.stringify(aux));
-    console.log("3");
-
-    }
-}
