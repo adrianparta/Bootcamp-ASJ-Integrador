@@ -12,6 +12,7 @@
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Número de orden</th>
                                 <th>Fecha de emisión</th>
                                 <th>Fecha de entrega esperada</th>
@@ -21,6 +22,14 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
+                            <tr *ngFor="let data of datos">
+                                <td>{{data.id}}</td>
+                                <td>{{data.numeroOrden}}</td>
+                                <td>{{data.fechaEmision}}</td>
+                                <td>{{data.fechaEntrega}}</td>
+                                <td>{{data.proveedor}}</td>
+                                <td>{{data.total}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

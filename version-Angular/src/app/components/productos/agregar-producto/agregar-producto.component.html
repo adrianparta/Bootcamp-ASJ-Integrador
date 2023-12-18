@@ -2,11 +2,16 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="my-4">Agregar producto/servicio</h1>  
-            <form class="col-12">
+                <div class="row mb-3">
+                    <label for="inputId" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="id">
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor</label>
                     <div class="col-sm-10">
-                        <select class="form-select " name="selectProveedor" id="selectProveedor">
+                        <select class="form-select " name="selectProveedor" id="selectProveedor" [(ngModel)]="proveedor">
                             <option value="Argentina">Argentina</option>
                             <option value="Argentina">Argentina</option>
                             <option value="Argentina">Argentina</option>
@@ -16,13 +21,13 @@
                 <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código/SKU</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputCodigo">
+                      <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="codigo">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría</label>
                     <div class="col-sm-10">
-                        <select class="form-select " name="selectCategoria" id="selectCategoria">
+                        <select class="form-select " name="selectCategoria" id="selectCategoria" [(ngModel)]="categoria">
                             <option value="Argentina">Argentina</option>
                             <option value="Argentina">Argentina</option>
                             <option value="Argentina">Argentina</option>
@@ -32,23 +37,22 @@
                 <div class="row mb-3">
                   <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputNombreProducto">
+                    <input type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="nombre">
                   </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputDescripcion">
+                      <input type="text" class="form-control" id="inputDescripcion" [(ngModel)]="descripcion">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputPrecio" class="col-sm-2 col-form-label">Precio</label>
                     <div class="col-sm-10">
-                      <input type="number" class="form-control" id="inputPrecio">
+                      <input type="number" class="form-control" id="inputPrecio" [(ngModel)]="precio">
                     </div>
                 </div>
-            </form>
-            <button class="btn btn-primary" id="agregar">Agregar</button>
+            <button class="btn btn-primary" id="agregar" (click)="agregar()">Agregar</button>
         </div>
     </main>
     

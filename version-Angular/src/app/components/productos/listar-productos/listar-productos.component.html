@@ -12,6 +12,7 @@
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Proveedor</th>
                                 <th>Código</th>
                                 <th>Categoría</th>
@@ -21,7 +22,15 @@
                             </tr>
                         </thead>
                         <tbody id="contenido-tabla">
-                            
+                            <tr *ngFor="let data of datos">
+                                <td>{{data.id}}</td>
+                                <td>{{data.proveedor}}</td>
+                                <td>{{data.codigo}}</td>
+                                <td>{{data.categoria}}</td>
+                                <td>{{data.nombre}}</td>
+                                <td>{{data.descripcion}}</td>
+                                <td>{{data.precio}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

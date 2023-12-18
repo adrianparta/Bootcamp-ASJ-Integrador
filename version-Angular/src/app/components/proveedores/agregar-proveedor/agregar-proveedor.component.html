@@ -1,36 +1,41 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h1 class="my-4">Agregar proveedor</h1>  
-            <form class="col-12">
+            <h1 class="my-4">Agregar proveedor</h1> 
                 <div class="row mb-3">
-                  <label for="inputCodigo" class="col-sm-2 col-form-label">Código</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCodigo">
-                  </div>
+                    <label for="inputID" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="inputCodigo" [(ngModel)]="id">
+                    </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputRazonSocial">
-                  </div>
+                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="codigo">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="razonSocial">
+                    </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputRubro" class="col-sm-2 col-form-label">Rubro</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputRubro">
+                        <input type="text" class="form-control" id="inputRubro" [(ngModel)]="rubro">
                     </div>
                 </div>
                 <div class="row mb-3 gy-3 ">
                     <label class="col-md-2 col-form-label">Sitio web, email, teléfono</label>
                     <div class="col-md-4">
-                          <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web">
+                          <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="web">
                     </div>
                     <div class="col-md-3">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="email">
+                          <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="email">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono">
+                        <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="telefono">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -38,32 +43,32 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle">
+                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="calle">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°">
+                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="numero">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP">
+                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="codigoPostal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select class="form-select " name="inputPais" id="inputPais">
+                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="pais">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputProvincia" id="inputProvincia">
+                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="provincia">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>                                       
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputLocalidad" id="inputLocalidad">
+                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="localidad">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
@@ -75,10 +80,10 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales</label>
                     <div class="col-md-5">
-                          <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT">
+                          <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="cuit">
                     </div>
                     <div class="col-md-5">
-                          <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA">
+                          <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="iva">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -86,27 +91,26 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre">
+                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="nombre">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido">
+                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="apellido">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono">
+                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="telefonoPersonal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email">
+                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="emailPersonal">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputRol" placeholder="Rol">
+                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="rol">
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-            <button class="btn btn-primary" id="agregar">Agregar</button>
+            <button class="btn btn-primary" id="agregar" (click)="agregar()">Agregar</button>
         </div>
     </main>
     
