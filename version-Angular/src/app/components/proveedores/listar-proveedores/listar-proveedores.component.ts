@@ -16,4 +16,8 @@ export class ListarProveedoresComponent implements OnInit {
   ngOnInit() {
     this.datos = this.serv.getProveedores();
   }
+
+  deleteSupplier(id: number){
+    this.serv.deleteSupplier(id);
+  }
 }

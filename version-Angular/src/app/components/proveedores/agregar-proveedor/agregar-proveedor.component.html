@@ -1,41 +1,41 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h1 class="my-4">Agregar proveedor</h1> 
+            <h1 class="my-4">{{title}}</h1> 
                 <div class="row mb-3">
                     <label for="inputID" class="col-sm-2 col-form-label">ID</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="inputCodigo" [(ngModel)]="id">
+                        <input type="number" class="form-control" disabled id="inputCodigo" [(ngModel)]="proveedor.id">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="codigo">
+                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="razonSocial">
+                        <input type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputRubro" class="col-sm-2 col-form-label">Rubro</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputRubro" [(ngModel)]="rubro">
+                        <input type="text" class="form-control" id="inputRubro" [(ngModel)]="proveedor.rubro">
                     </div>
                 </div>
                 <div class="row mb-3 gy-3 ">
                     <label class="col-md-2 col-form-label">Sitio web, email, teléfono</label>
                     <div class="col-md-4">
-                          <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="web">
+                          <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web">
                     </div>
                     <div class="col-md-3">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="email">
+                          <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="telefono">
+                        <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -43,32 +43,32 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="calle">
+                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.calle">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="numero">
+                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="proveedor.numero">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="codigoPostal">
+                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.codigoPostal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="pais">
+                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="proveedor.pais">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="provincia">
+                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.provincia">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>                                       
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="localidad">
+                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.localidad">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
@@ -80,10 +80,10 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales</label>
                     <div class="col-md-5">
-                          <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="cuit">
+                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.cuit">
                     </div>
                     <div class="col-md-5">
-                          <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="iva">
+                        <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="proveedor.iva">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -91,26 +91,26 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="nombre">
+                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.nombre">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="apellido">
+                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.apellido">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="telefonoPersonal">
+                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.telefonoPersonal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="emailPersonal">
+                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.emailPersonal">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="rol">
+                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.rol">
                             </div>
                         </div>
                     </div>
                 </div>
-            <button class="btn btn-primary" id="agregar" (click)="agregar()">Agregar</button>
+            <button class="btn btn-primary" id="agregar" (click)="agregar()" routerLink="/listar-proveedores">{{agregarOEditar}}</button>
         </div>
     </main>
     

@@ -1,69 +1,60 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agregar-proveedor',
   templateUrl: './agregar-proveedor.component.html',
   styleUrl: './agregar-proveedor.component.css'
 })
-export class AgregarProveedorComponent{
+export class AgregarProveedorComponent implements OnInit{
 
-  constructor(public serv: ServiceProveedorService) { }
+  constructor(public serv: ServiceProveedorService, private route: ActivatedRoute) { }
 
-  proveedor!: any;
 
-  id: string = '';
-  codigo!: string;
-  razonSocial!: string;
-  rubro!: string;
-  web!: string;
-  email!: string;
-  telefono!: string;
-  calle!: string;
-  numero!: string;
-  codigoPostal!: string;
-  pais!: string;
-  provincia!: string;
-  localidad!: string;
-  cuit!: string;
-  iva!: string;
-  nombre!: string;
-  apellido!: string;
-  telefonoPersonal!: string;
-  emailPersonal!: string;
-  rol!: string;
+  title = 'Agregar Proveedor';
+  agregarOEditar = 'Agregar';
+  id:string = this.route.snapshot.params['id'];
+  
+  proveedor = {
+    id: this.serv.getLastId() + 1,
+    codigo: '',
+    razonSocial: '',
+    rubro: '',
+    web: '',
+    email: '',
+    telefono: '',
+    calle: '',
+    numero: '',
+    codigoPostal: '',
+    pais: '',
+    provincia: '',
+    localidad: '',
+    cuit: '',
+    iva: '',
+    nombre: '',
+    apellido: '',
+    telefonoPersonal: '',
+    emailPersonal: '',
+    rol: ''
+  }
 
-  cargarProveedor(){
-    this.proveedor = {
-      id: this.id,
-      codigo: this.codigo,
-      razonSocial: this.razonSocial,
-      rubro: this.rubro,
-      web: this.web,
-      email: this.email,
-      telefono: this.telefono,
-      direccion: {
-        calle: this.calle,
-        numero: this.numero,
-        codigoPostal: this.codigoPostal,
-        pais: this.pais,
-        provincia: this.provincia,
-        localidad: this.localidad
-      },
-      personaContacto: {
-        cuit: this.cuit,
-        iva: this.iva,
-        nombre: this.nombre,
-        apellido: this.apellido,
-        telefonoPersonal: this.telefonoPersonal,
-        emailPersonal: this.emailPersonal,
-        rol: this.rol
-      }
+  ngOnInit(): void {
+    if(this.id != '-1'){
+      this.title = 'Editar Proveedor';
+      this.agregarOEditar = 'Editar';
+      this.proveedor.id = +this.id;
+      this.proveedor = this.serv.getSingleProveedor(this.id);
     }
-    return this.proveedor;
   }
 
   agregar(){
-    this.serv.agregarProveedor(this.cargarProveedor());
+    if(this.id == '-1'){
+    this.serv.agregarProveedor(this.proveedor);
+    }
+    else{
+      this.serv.updateSupplier(this.proveedor);
+    }
   }
+
 }

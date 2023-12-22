@@ -3,7 +3,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Proveedores</h1>
             <div class="row d-flex justify-content-end mx-1">
-            <a class=" col-1 btn btn-success my-4" href="add-proveedores.html">Agregar</a>
+            <a class=" col-1 btn btn-success my-4" routerLink="/agregar-editar-proveedor/-1">Agregar</a>
             </div>
             
             <div class="card mb-4">
@@ -30,7 +30,10 @@
                                 <td>{{data.apellido}}</td>
                                 <td>{{data.rubro}}</td>
                                 <td>{{data.email}}</td>
-                                <td><button class="btn btn-danger">Borrar</button></td>
+                                <td>
+                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/agregar-editar-proveedor',data.id]">Editar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteSupplier(data.id)">Borrar</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table> 

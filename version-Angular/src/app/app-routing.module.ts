@@ -9,7 +9,7 @@ import { AgregarOrdenComponent } from './components/ordenes/agregar-orden/agrega
 import { ListarOrdenesComponent } from './components/ordenes/listar-ordenes/listar-ordenes.component';
 
 const routes: Routes = [
-  {path:'agregar-proveedor', component: AgregarProveedorComponent},
+  {path:'agregar-editar-proveedor/:id', component: AgregarProveedorComponent},
   {path:'listar-proveedores', component: ListarProveedoresComponent},
   {path:'agregar-producto', component: AgregarProductoComponent},
   {path:'listar-productos', component: ListarProductosComponent},
