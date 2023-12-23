@@ -1,31 +1,36 @@
 import { Injectable } from '@angular/core';
 import { proveedores } from '../data/proveedores';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProveedorService{
 
-  agregarProveedor(proveedor: any){
-    proveedores.push(proveedor);
+  url = 'http://localhost:3000/proveedores/';
+
+  constructor(private http: HttpClient) { }
+
+  agregarProveedor(proveedor: any): Observable<any>{
+    return this.http.post(this.url, proveedor);
   }
 
-  public getProveedores(){
-    return proveedores;
+  public getProveedores(): Observable<any>{
+    return this.http.get(this.url);
   }
 
-  public getSingleProveedor(id: string): any{
-    return proveedores.find((proveedor) => proveedor.id === +id);
+  public getSingleProveedor(id: string): Observable<any>{
+    return this.http.get(this.url + id);
   }
 
-  public deleteSupplier(id: number){
-    let idToDelete = proveedores.findIndex((proveedor) => proveedor.id === id);
-    proveedores.splice(idToDelete, 1);
+  public deleteSupplier(id: number): Observable<any>{
+    return this.http.delete(this.url + id);
   }
 
-  public updateSupplier(supplier: any){
-    let index = proveedores.findIndex((sup) => sup.id === supplier.id);
-    proveedores[index] = supplier;
+  public updateSupplier(supplier: any): Observable<any>{
+    return this.http.put(this.url + supplier.id, supplier);
   }
 
   public getLastId(){

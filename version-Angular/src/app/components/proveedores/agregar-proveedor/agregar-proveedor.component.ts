@@ -44,16 +44,22 @@ export class AgregarProveedorComponent implements OnInit{
       this.title = 'Editar Proveedor';
       this.agregarOEditar = 'Editar';
       this.proveedor.id = +this.id;
-      this.proveedor = this.serv.getSingleProveedor(this.id);
+      this.serv.getSingleProveedor(this.id).subscribe((data: any) => {
+        this.proveedor = data;
+      });
     }
   }
 
   agregar(){
-    if(this.id == '-1'){
-    this.serv.agregarProveedor(this.proveedor);
+      if(this.id == '-1'){
+      this.serv.agregarProveedor(this.proveedor).subscribe((data: any[]) => {
+        console.log(data);
+      });
     }
     else{
-      this.serv.updateSupplier(this.proveedor);
+      this.serv.updateSupplier(this.proveedor).subscribe((data: any[]) => {
+        console.log(data);
+      });
     }
   }
 

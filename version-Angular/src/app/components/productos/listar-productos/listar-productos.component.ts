@@ -14,6 +14,8 @@ export class ListarProductosComponent {
   }  
 
   ngOnInit() {
-    this.datos = this.serv.getProductos();
+    this.serv.getProductos().subscribe((data: any[]) => {
+      this.datos = data;
+    });
   }
 }

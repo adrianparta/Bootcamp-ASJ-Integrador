@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
 import { productos } from '../data/productos';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProductoService {
 
-  agregarProducto(producto: any){
-    productos.push(producto);
+  constructor(private http: HttpClient) { }
+  url = 'http://localhost:3000/productos';
+
+  agregarProducto(producto: any): Observable<any>{
+    return this.http.post(this.url + '/', producto);
   }
 
-  public getProductos(){
-    return productos;
+  public getProductos(): Observable<any>{
+    return this.http.get(this.url);
+  }
+
+  public updateProduct(product : any): Observable<any>{
+    return this.http.put(this.url + '/' + product.id, product);
   }
 }

@@ -13,11 +13,20 @@ export class ListarProveedoresComponent implements OnInit {
   constructor(public serv: ServiceProveedorService){
   }  
 
+  getProveedores(){
+    this.serv.getProveedores().subscribe((data: any[]) => {
+      this.datos = data;
+    });
+  }
+  
   ngOnInit() {
-    this.datos = this.serv.getProveedores();
+    this.getProveedores();
   }
 
   deleteSupplier(id: number){
-    this.serv.deleteSupplier(id);
+    this.serv.deleteSupplier(id).subscribe((data: any[]) => {
+      console.log(data);
+      this.getProveedores();
+    });
   }
 }

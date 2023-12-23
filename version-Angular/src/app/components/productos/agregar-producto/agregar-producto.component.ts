@@ -36,6 +36,10 @@ export class AgregarProductoComponent {
   }
 
   agregar(){
-    this.serv.agregarProducto(this.cargarProducto());
+    this.serv.agregarProducto(this.cargarProducto()).subscribe((data: any[]) => {
+      console.log(data);
+    });
   }
+
+  
 }
