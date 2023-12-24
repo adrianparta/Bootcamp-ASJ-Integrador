@@ -32,8 +32,4 @@ export class ServiceProveedorService{
   public updateSupplier(supplier: any): Observable<any>{
     return this.http.put(this.url + supplier.id, supplier);
   }
-
-  public getLastId(){
-    return proveedores[proveedores.length - 1].id;
-  }
 }

@@ -3,12 +3,6 @@
         <div class="container-fluid px-4">
             <h1 class="my-4">{{title}}</h1> 
                 <div class="row mb-3">
-                    <label for="inputID" class="col-sm-2 col-form-label">ID</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control" disabled id="inputCodigo" [(ngModel)]="proveedor.id">
-                    </div>
-                </div>
-                <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo">
@@ -29,10 +23,10 @@
                 <div class="row mb-3 gy-3 ">
                     <label class="col-md-2 col-form-label">Sitio web, email, teléfono</label>
                     <div class="col-md-4">
-                          <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web">
+                        <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web">
                     </div>
                     <div class="col-md-3">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email">
                     </div>
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono">
@@ -43,32 +37,32 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.calle">
+                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.direccion.calle">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="proveedor.numero">
+                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="proveedor.direccion.numero">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.codigoPostal">
+                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="proveedor.pais">
+                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="proveedor.direccion.pais">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.provincia">
+                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                 </select>                                       
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.localidad">
+                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad">
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
                                     <option value="Argentina">Argentina</option>
@@ -80,10 +74,10 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales</label>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.cuit">
+                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.personaContacto.cuit">
                     </div>
                     <div class="col-md-5">
-                        <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="proveedor.iva">
+                        <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="proveedor.personaContacto.iva">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -91,21 +85,21 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.nombre">
+                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.apellido">
+                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.telefonoPersonal">
+                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.emailPersonal">
+                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.rol">
+                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol">
                             </div>
                         </div>
                     </div>

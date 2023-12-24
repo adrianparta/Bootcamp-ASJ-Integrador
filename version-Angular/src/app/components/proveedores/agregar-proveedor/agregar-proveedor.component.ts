@@ -17,33 +17,35 @@ export class AgregarProveedorComponent implements OnInit{
   id:string = this.route.snapshot.params['id'];
   
   proveedor = {
-    id: this.serv.getLastId() + 1,
     codigo: '',
     razonSocial: '',
     rubro: '',
     web: '',
     email: '',
     telefono: '',
-    calle: '',
-    numero: '',
-    codigoPostal: '',
-    pais: '',
-    provincia: '',
-    localidad: '',
-    cuit: '',
-    iva: '',
-    nombre: '',
-    apellido: '',
-    telefonoPersonal: '',
-    emailPersonal: '',
-    rol: ''
+    direccion: {
+      calle: '',
+      numero: '',
+      codigoPostal: '',
+      pais: '',
+      provincia: '',
+      localidad: '',
+    },
+    personaContacto: {
+      cuit: '',
+      iva: '',
+      nombre: '',
+      apellido: '',
+      telefonoPersonal: '',
+      emailPersonal: '',
+      rol: ''
+    }
   }
 
   ngOnInit(): void {
     if(this.id != '-1'){
       this.title = 'Editar Proveedor';
       this.agregarOEditar = 'Editar';
-      this.proveedor.id = +this.id;
       this.serv.getSingleProveedor(this.id).subscribe((data: any) => {
         this.proveedor = data;
       });
