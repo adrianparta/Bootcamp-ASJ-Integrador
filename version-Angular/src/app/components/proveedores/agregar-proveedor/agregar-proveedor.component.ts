@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 import { ActivatedRoute } from '@angular/router';
+import { Supplier } from '../../../models/supplier';
 
 @Component({
   selector: 'app-agregar-proveedor',
@@ -10,13 +11,23 @@ import { ActivatedRoute } from '@angular/router';
 export class AgregarProveedorComponent implements OnInit{
 
   constructor(public serv: ServiceProveedorService, private route: ActivatedRoute) { }
-
-
+  
   title = 'Agregar Proveedor';
   agregarOEditar = 'Agregar';
-  id:string = this.route.snapshot.params['id'];
-  
-  proveedor = {
+  id:number = parseInt(this.route.snapshot.params['id']);
+  countries: any;
+  states: any;
+  cities: any;
+
+  IVA: string[] = [
+    'Consumidor Final',
+    'Excento',
+    'Monotribustista',
+    'No alcanzado',
+    'Otro'
+  ]
+
+  proveedor: Supplier = {
     codigo: '',
     razonSocial: '',
     rubro: '',
@@ -31,9 +42,11 @@ export class AgregarProveedorComponent implements OnInit{
       provincia: '',
       localidad: '',
     },
-    personaContacto: {
+    datosFiscales: {
       cuit: '',
       iva: '',
+    },
+    personaContacto: {
       nombre: '',
       apellido: '',
       telefonoPersonal: '',
@@ -43,26 +56,46 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.id != '-1'){
+    this.serv.getCountries().subscribe((data)=>{
+      this.countries = data;
+    });    
+    this.serv.getStates().subscribe((data)=>{
+      this.states = data.filter((state:any) => state.country_name == this.proveedor.direccion.pais);    
+    });
+    this.serv.getCities().subscribe((data)=>{
+        this.cities = data.filter((city:any) => city.state_name == this.proveedor.direccion.provincia);
+    });
+
+    if(this.id != -1){
       this.title = 'Editar Proveedor';
       this.agregarOEditar = 'Editar';
-      this.serv.getSingleProveedor(this.id).subscribe((data: any) => {
+      this.serv.getSingleSupplier(this.id).subscribe((data: any) => {
         this.proveedor = data;
       });
     }
+    
   }
 
   agregar(){
-      if(this.id == '-1'){
-      this.serv.agregarProveedor(this.proveedor).subscribe((data: any[]) => {
-        console.log(data);
-      });
+      if(this.id == -1){
+      this.serv.addSupplier(this.proveedor).subscribe();
     }
     else{
-      this.serv.updateSupplier(this.proveedor).subscribe((data: any[]) => {
-        console.log(data);
-      });
+      this.serv.updateSupplier(this.proveedor).subscribe();
     }
   }
 
+  onSelectCountry(country: any){
+    let countryId = country.target.value
+    this.serv.getStates().subscribe((data)=>{
+      this.states = data.filter((state:any) => state.country_name == countryId);      
+    });
+  }
+  
+  onSelectState(state: any){
+    let stateId = state.target.value;    
+    this.serv.getCities().subscribe((data)=>{
+      this.cities = data.filter((city:any) => city.state_name == stateId);      
+    });
+  }
 }

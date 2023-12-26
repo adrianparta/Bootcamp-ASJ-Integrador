@@ -3,56 +3,46 @@
         <div class="container-fluid px-4">
             <h1 class="my-4">Agregar producto/servicio</h1>  
                 <div class="row mb-3">
-                    <label for="inputId" class="col-sm-2 col-form-label">ID</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="id">
-                    </div>
-                </div>
-                <div class="row mb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor</label>
                     <div class="col-sm-10">
-                        <select class="form-select " name="selectProveedor" id="selectProveedor" [(ngModel)]="proveedor">
-                            <option value="Argentina">Argentina</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Argentina">Argentina</option>
+                        <select class="form-select " name="selectProveedor" id="selectProveedor" [(ngModel)]="product.supplierName">
+                            <option *ngFor="let item of suppliersList" value={{item.razonSocial}}>{{item.razonSocial}}</option>
                         </select>                              
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código/SKU</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="codigo">
+                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="product.code">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría</label>
                     <div class="col-sm-10">
-                        <select class="form-select " name="selectCategoria" id="selectCategoria" [(ngModel)]="categoria">
-                            <option value="Argentina">Argentina</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Argentina">Argentina</option>
+                        <select class="form-select " name="selectCategoria" id="selectCategoria" [(ngModel)]="product.category">
+                            <option *ngFor="let item of categoriesList" value={{item}}>{{item}}</option>
                         </select>                              
                     </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="nombre">
-                  </div>
+                    <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="product.name">
+                </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputDescripcion" [(ngModel)]="descripcion">
+                        <input type="text-" class="form-control" id="inputDescripcion" [(ngModel)]="product.description">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputPrecio" class="col-sm-2 col-form-label">Precio</label>
                     <div class="col-sm-10">
-                      <input type="number" class="form-control" id="inputPrecio" [(ngModel)]="precio">
+                        <input type="number" class="form-control" id="inputPrecio" [(ngModel)]="product.price">
                     </div>
                 </div>
-            <button class="btn btn-primary" id="agregar" (click)="agregar()">Agregar</button>
+            <button class="btn btn-primary" id="agregar" routerLink="/listar-productos" (click)="agregar()">Agregar</button>
         </div>
     </main>
     

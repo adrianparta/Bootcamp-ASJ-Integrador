@@ -3,7 +3,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Proveedores</h1>
             <div class="row d-flex justify-content-end mx-1">
-            <a class=" col-1 btn btn-success my-4" routerLink="/agregar-editar-proveedor/-1">Agregar</a>
+            <a class=" col-1 btn btn-success my-4" routerLink="/add-edit-supplier/-1">Agregar</a>
             </div>
             
             <div class="card mb-4">
@@ -14,11 +14,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
+                                <th>Razon Social</th>
                                 <th>Rubro</th>
                                 <th>Email</th>
-                                <th>Borrar</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         
@@ -26,12 +25,11 @@
                             <tr *ngFor="let data of datos">
                                 <td>{{data.id}}</td>
                                 <td>{{data.codigo}}</td>
-                                <td>{{data.personaContacto.nombre}}</td>
-                                <td>{{data.personaContacto.apellido}}</td>
+                                <td>{{data.razonSocial}}</td>
                                 <td>{{data.rubro}}</td>
                                 <td>{{data.email}}</td>
                                 <td>
-                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/agregar-editar-proveedor',data.id]">Editar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/agregar-editar-proveedor',data.id]">Editar</button>
                                     <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteSupplier(data.id)">Borrar</button>
                                 </td>
                             </tr>

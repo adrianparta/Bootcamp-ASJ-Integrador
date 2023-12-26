@@ -1,43 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceProductoService } from '../../../services/service-producto.service';
+import { Product } from '../../../models/products';
+import { ServiceProveedorService } from '../../../services/service-proveedor.service';
+import { Supplier } from '../../../models/supplier';
 
 @Component({
   selector: 'app-agregar-producto',
   templateUrl: './agregar-producto.component.html',
   styleUrl: './agregar-producto.component.css'
 })
-export class AgregarProductoComponent {
+export class AgregarProductoComponent implements OnInit{
 
-  constructor(public serv: ServiceProductoService) { }
+  constructor(public serv: ServiceProductoService, public list: ServiceProveedorService){}
 
-  producto!: any;
+  product: Product = {
+    supplierName: '',
+    code: '',
+    category: '',
+    name: '',
+    description: '',
+    price: 0
+  }
 
-  id!: string;
-  proveedor!: string;
-  codigo!: string;
-  categoria!: string;
-  nombre!: string;
-  descripcion!: string;
-  precio!: string;
+  suppliersList!: Supplier[];
+  categoriesList!: string[];
 
-
-
-  cargarProducto(){
-    this.producto = {
-      id: this.id,
-      proveedor: this.proveedor,
-      codigo: this.codigo,
-      categoria: this.categoria,
-      nombre: this.nombre,
-      descripcion: this.descripcion,
-      precio: this.precio
-    }    
-    return this.producto;  
+  ngOnInit(): void {
+    this.list.getSuppliers().subscribe((data: Supplier[])=>{
+      this.suppliersList = data;
+    })
+    this.serv.getCategories().subscribe((data: string[])=>{
+      this.categoriesList = data;
+    })
   }
 
   agregar(){
-    this.serv.agregarProducto(this.cargarProducto()).subscribe((data: any[]) => {
-      console.log(data);
+    this.serv.addProduct(this.product).subscribe(() => {
     });
   }
 

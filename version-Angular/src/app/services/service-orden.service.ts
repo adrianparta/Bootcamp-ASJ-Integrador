@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ordenes } from '../data/ordenes';
+import { ordenes } from '../../assets/data/ordenes';
 
 @Injectable({
   providedIn: 'root'

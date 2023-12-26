@@ -48,24 +48,21 @@
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select class="form-select " name="inputPais" id="inputPais" [(ngModel)]="proveedor.direccion.pais">
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
+                                <select class="form-select" name="inputPais" id="inputPais" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)">
+                                    <option value="">Seleccione un país:</option>
+                                    <option *ngFor="let item of countries" value={{item.name}}>{{item.name}}</option>
                                 </select>
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia">
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
+                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)">
+                                    <option value="">Seleccione una provincia:</option>
+                                    <option *ngFor="let item of states" value={{item.name}}>{{item.name}}</option>
                                 </select>                                       
                             </div>
                             <div class="col-4">
                                 <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad">
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Argentina">Argentina</option>
+                                    <option value="">Seleccione una ciudad:</option>
+                                    <option *ngFor="let item of cities" value="{{item.name}}">{{item.name}}</option>
                                 </select>                                        
                             </div>
                         </div>
@@ -74,10 +71,13 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales</label>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.personaContacto.cuit">
+                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit">
                     </div>
                     <div class="col-md-5">
-                        <input type="email" class="form-control" id="inputIVA" placeholder="Condición IVA" [(ngModel)]="proveedor.personaContacto.iva">
+                        <select class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva">
+                            <option value="">Seleccione una condición</option>
+                            <option *ngFor="let item of IVA" value="{{item}}">{{item}}</option>
+                        </select> 
                     </div>
                 </div>
                 <div class="row mb-3">

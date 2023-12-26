@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
+import { Supplier } from '../../../models/supplier';
 
 @Component({
   selector: 'app-listar-proveedores',
@@ -8,25 +9,24 @@ import { ServiceProveedorService } from '../../../services/service-proveedor.ser
 })
 export class ListarProveedoresComponent implements OnInit {
 
-  datos!: any[];
+  datos!: Supplier[];
 
   constructor(public serv: ServiceProveedorService){
   }  
 
-  getProveedores(){
-    this.serv.getProveedores().subscribe((data: any[]) => {
+  getSuppliers(){
+    this.serv.getSuppliers().subscribe((data: Supplier[]) => {
       this.datos = data;
     });
   }
   
   ngOnInit() {
-    this.getProveedores();
+    this.getSuppliers();
   }
 
-  deleteSupplier(id: number){
-    this.serv.deleteSupplier(id).subscribe((data: any[]) => {
-      console.log(data);
-      this.getProveedores();
+  deleteSupplier(id: number | undefined){
+    this.serv.deleteSupplier(id).subscribe(() => {
+      this.getSuppliers();
     });
   }
 }

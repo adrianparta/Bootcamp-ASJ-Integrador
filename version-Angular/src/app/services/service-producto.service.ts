@@ -1,25 +1,35 @@
 import { Injectable } from '@angular/core';
-import { productos } from '../data/productos';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Product } from '../models/products';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProductoService {
 
-  constructor(private http: HttpClient) { }
-  url = 'http://localhost:3000/productos';
+  private urlCategories = 'assets/data/categories.json';
 
-  agregarProducto(producto: any): Observable<any>{
-    return this.http.post(this.url + '/', producto);
+  constructor(private http: HttpClient) {}
+  url = 'http://localhost:3000/productos/';
+
+  addProduct(producto: Product): Observable<Product>{
+    return this.http.post<Product>(this.url, producto);
   }
 
-  public getProductos(): Observable<any>{
-    return this.http.get(this.url);
+  public getProducts(): Observable<Product[]>{
+    return this.http.get<Product[]>(this.url);
   }
 
-  public updateProduct(product : any): Observable<any>{
-    return this.http.put(this.url + '/' + product.id, product);
+  public updateProduct(product: Product): Observable<Product>{
+    return this.http.put<Product>(this.url + product.id, product);
+  }
+
+  public deleteProduct(id: number | undefined): Observable<Product>{
+    return this.http.delete<Product>(this.url + id);
+  }
+
+  public getCategories(): Observable<string[]>{
+    return this.http.get<string[]>(this.urlCategories);
   }
 }

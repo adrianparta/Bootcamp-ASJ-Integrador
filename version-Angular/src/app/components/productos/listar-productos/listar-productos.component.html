@@ -3,7 +3,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Productos/Servicios</h1>
             <div class="row d-flex justify-content-end mx-1">
-                <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-producto">Agregar</a>
+                <a class=" col-1 btn btn-success my-4 " routerLink="/add-edit-product/-1">Agregar</a>
             </div>
             
             <div class="card mb-4">
@@ -17,19 +17,22 @@
                                 <th>Código</th>
                                 <th>Categoría</th>
                                 <th>Nombre del producto</th>
-                                <th>Descripción</th>
                                 <th>Precio</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="contenido-tabla">
                             <tr *ngFor="let data of datos">
                                 <td>{{data.id}}</td>
-                                <td>{{data.proveedor}}</td>
-                                <td>{{data.codigo}}</td>
-                                <td>{{data.categoria}}</td>
-                                <td>{{data.nombre}}</td>
-                                <td>{{data.descripcion}}</td>
-                                <td>{{data.precio}}</td>
+                                <td>{{data.supplierName}}</td>
+                                <td>{{data.code}}</td>
+                                <td>{{data.category}}</td>
+                                <td>{{data.name}}</td>
+                                <td>{{data.price}}</td>
+                                <td>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-product',data.id]">Editar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteProduct(data.id)">Borrar</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

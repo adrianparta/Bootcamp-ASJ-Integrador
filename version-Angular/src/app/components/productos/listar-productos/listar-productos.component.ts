@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ServiceProductoService } from '../../../services/service-producto.service';
+import { Product } from '../../../models/products';
 
 @Component({
   selector: 'app-listar-productos',
@@ -8,14 +9,23 @@ import { ServiceProductoService } from '../../../services/service-producto.servi
 })
 export class ListarProductosComponent {
 
-  datos!: any[];
+  datos!: Product[];
 
   constructor(public serv: ServiceProductoService){
-  }  
+  }
 
   ngOnInit() {
-    this.serv.getProductos().subscribe((data: any[]) => {
+    this.getProducts();
+  }
+
+  getProducts(){
+    this.serv.getProducts().subscribe((data: Product[]) => {
       this.datos = data;
     });
+  }
+
+  deleteProduct(id: number | undefined){
+    this.serv.deleteProduct(id).subscribe();
+    this.getProducts();
   }
 }
