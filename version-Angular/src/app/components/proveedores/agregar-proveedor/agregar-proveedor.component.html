@@ -175,9 +175,21 @@
                                 <input required type="text" class="form-control" id="inputRol" minlength="4" maxlength="50" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['rol']?.hasError('required') && mostrarErrores) || formulario.controls['rol']?.hasError('minlength')">
                                     Este campo debe tener entre 4-50 caracteres.
-                                </div>    
-                            </div>
+                                </div>   
+                            </div>  
                         </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputURL" class="col-sm-2 col-form-label">URL logo</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" [(ngModel)]="proveedor.logo" id="inputURL" name="url">
+                        <div class="form-text text-danger " *ngIf="(formulario.controls['codigo']?.hasError('required') && mostrarErrores) || formulario.controls['codigo']?.hasError('minlength')">
+                            Este campo debe tener entre 4-6 caracteres.
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <img (error)="imageNotFound($event)" src="{{proveedor.logo}}" alt="logo {{proveedor.razonSocial}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
                 <button class="btn btn-primary me-4" type="submit" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>

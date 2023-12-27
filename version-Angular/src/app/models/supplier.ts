@@ -24,5 +24,6 @@ export interface Supplier{
         telefonoPersonal: string,
         emailPersonal: string,
         rol: string,
-    }   
+    }
+    logo?: string
 }
