@@ -54,9 +54,9 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <input required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
+                        <input required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
                         <div class="form-text text-danger " *ngIf="formulario.controls['telefono']?.hasError('required') && mostrarErrores">
-                            Este campo es obligatorio.
+                            Este campo debe tener entre 6-20 caracteres
                         </div>       
                     </div>
                 </div>
@@ -77,41 +77,62 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <input required type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal" name="codigoPostal">
+                                <input required minlength="3" maxlength="10" type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal" name="codigoPostal">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['codigoPostal']?.hasError('required') && mostrarErrores) || formulario.controls['codigoPostal']?.hasError('minlength')">
+                                    Este campo debe tener entre 3-10 caracteres.
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
                                 <select required class="form-select" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)" name="pais">
-                                    <option value="">Seleccione un país:</option>
+                                    <option disabled value="">Seleccione un país:</option>
                                     <option *ngFor="let item of countries" value={{item.name}}>{{item.name}}</option>
                                 </select>
+                                <div class="form-text text-danger" *ngIf="formulario.controls['pais']?.hasError('required') && mostrarErrores">
+                                    Este campo es obligatorio.
+                                </div>
                             </div>
                             <div class="col-4">
                                 <select required class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)" name="provincia">
-                                    <option value="">Seleccione una provincia:</option>
+                                    <option disabled value="">Seleccione una provincia:</option>
                                     <option *ngFor="let item of states" value={{item.name}}>{{item.name}}</option>
-                                </select>                                       
+                                </select>     
+                                <div class="form-text text-danger" *ngIf="formulario.controls['provincia']?.hasError('required') && mostrarErrores">
+                                    Este campo es obligatorio.
+                                </div>                                  
                             </div>
                             <div class="col-4">
                                 <select required class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad" name="ciudad">
-                                    <option value="">Seleccione una ciudad:</option>
+                                    <option disabled value="">Seleccione una ciudad:</option>
                                     <option *ngFor="let item of cities" value="{{item.name}}">{{item.name}}</option>
                                 </select>                                        
+                                <div class="form-text text-danger" *ngIf="formulario.controls['ciudad']?.hasError('required') && mostrarErrores">
+                                    Este campo es obligatorio.
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales*</label>
-                    <div class="col-md-5">
-                        <input required [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit">
+                    <div class="col-md-5">    
+                        <input required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit" #cuit="ngModel">
+                        <div class="form-text text-danger " *ngIf="!validarCUIT() && cuit.value.length > 0">
+                            CUIT incorrecto.
+                        </div>
+                        <div class="form-text text-danger" *ngIf="formulario.controls['cuit']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                     <div class="col-md-5">
                         <select required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva" name="iva">
-                            <option value="">Seleccione una condición:</option>
+                            <option disabled value="">Seleccione una condición:</option>
                             <option *ngFor="let item of IVA" value="{{item}}">{{item}}</option>
                         </select> 
+                        <div class="form-text text-danger" *ngIf="formulario.controls['iva']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -119,21 +140,39 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input required type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre" name="nombre">
+                                <input required type="text" class="form-control" id="inputNombre" minlength="2" maxlength="50" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre" name="nombre">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['nombre']?.hasError('required') && mostrarErrores) || formulario.controls['nombre']?.hasError('minlength')">
+                                    Este campo debe tener entre 2-50 caracteres.
+                                </div>    
                             </div>
                             <div class="col-4">
                                 <input required type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido" name="apellido">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['apellido']?.hasError('required') && mostrarErrores) || formulario.controls['apellido']?.hasError('minlength')">
+                                    Este campo debe tener entre 2-50 caracteres.
+                                </div>     
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal" name="telefonoPersonal">
+                                <input required oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal" name="telefonoPersonal">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['telefonoPersonal']?.hasError('required') && mostrarErrores) || formulario.controls['telefonoPersonal']?.hasError('minlength')">
+                                    Este campo debe tener entre 6-20 caracteres.
+                                </div>         
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input required type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal">
+                                <input required type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal" #emailPersonal="ngModel">
+                                <div class="form-text text-danger " *ngIf="!validarEmailPersonal() && emailPersonal.value.length > 0">
+                                    email incorrecto.
+                                </div>  
+                                <div class="form-text text-danger " *ngIf="formulario.controls['emailPersonal']?.hasError('required') && mostrarErrores">
+                                    Este campo es obligatorio.
+                                </div>
                             </div>
                             <div class="col-4">
-                                <input required type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
+                                <input required type="text" class="form-control" id="inputRol" minlength="4" maxlength="50" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['rol']?.hasError('required') && mostrarErrores) || formulario.controls['rol']?.hasError('minlength')">
+                                    Este campo debe tener entre 4-50 caracteres.
+                                </div>    
                             </div>
                         </div>
                     </div>
