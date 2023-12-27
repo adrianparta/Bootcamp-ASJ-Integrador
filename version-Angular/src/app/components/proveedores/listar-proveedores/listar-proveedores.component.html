@@ -29,7 +29,7 @@
                                 <td>{{data.rubro}}</td>
                                 <td>{{data.email}}</td>
                                 <td>
-                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/agregar-editar-proveedor',data.id]">Editar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-supplier',data.id]">Editar</button>
                                     <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteSupplier(data.id)">Borrar</button>
                                 </td>
                             </tr>

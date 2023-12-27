@@ -71,7 +71,7 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales</label>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit">
+                        <input [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit">
                     </div>
                     <div class="col-md-5">
                         <select class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva">

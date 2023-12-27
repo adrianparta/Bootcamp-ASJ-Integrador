@@ -18,6 +18,7 @@ export class AgregarProveedorComponent implements OnInit{
   countries: any;
   states: any;
   cities: any;
+  disabledInput = false;
 
   IVA: string[] = [
     'Consumidor Final',
@@ -67,6 +68,7 @@ export class AgregarProveedorComponent implements OnInit{
     });
 
     if(this.id != -1){
+      this.disabledInput = true;
       this.title = 'Editar Proveedor';
       this.agregarOEditar = 'Editar';
       this.serv.getSingleSupplier(this.id).subscribe((data: any) => {
