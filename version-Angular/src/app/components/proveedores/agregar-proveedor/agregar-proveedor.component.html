@@ -1,66 +1,100 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h1 class="my-4">{{title}}</h1> 
+            <h1 class="my-4">{{title}}</h1>
+            <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row mb-3">
-                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código</label>
+                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo">
+                        <input type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" required>
+                        <div class="form-text text-danger " *ngIf="(formulario.controls['codigo']?.hasError('required') && mostrarErrores) || formulario.controls['codigo']?.hasError('minlength')">
+                            Este campo debe tener entre 4-6 caracteres.
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social</label>
+                    <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial">
+                        <input required type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial" name="razonSocial" minlength="4" maxlength="50">
+                        <div class="form-text text-danger " *ngIf="formulario.controls['razonSocial']?.hasError('minlength') || (mostrarErrores && formulario.controls['razonSocial']?.hasError('required'))">
+                            Este campo debe tener entre 4-50 caracteres.
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputRubro" class="col-sm-2 col-form-label">Rubro</label>
+                    <label for="inputRubro" class="col-sm-2 col-form-label">Rubro*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputRubro" [(ngModel)]="proveedor.rubro">
+                        <select required name="rubro" class="form-select" [(ngModel)]="proveedor.rubro" #rubro="ngModel">
+                            <option disabled value="">Seleccione un rubro:</option>
+                            <option *ngFor="let item of industries" value="{{item}}">{{item}}</option>
+                        </select>
+                        <div class="form-text text-danger" *ngIf="formulario.controls['rubro']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 gy-3 ">
-                    <label class="col-md-2 col-form-label">Sitio web, email, teléfono</label>
+                    <label class="col-md-2 col-form-label">Sitio web*, email*, teléfono*</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web">
+                        <input required type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web" name="web" #web="ngModel">
+                        <div class="form-text text-danger " *ngIf="!validarURL() && web.value.length > 0">
+                            URL incorrecta.
+                        </div>
+                        <div class="form-text text-danger " *ngIf="formulario.controls['web']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                     <div class="col-md-3">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email">
+                        <input required type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
+                        <div class="form-text text-danger " *ngIf="!validarEmail() && email.value.length > 0">
+                            email incorrecto.
+                        </div>  
+                        <div class="form-text text-danger " *ngIf="formulario.controls['email']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono">
+                        <input required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
+                        <div class="form-text text-danger " *ngIf="formulario.controls['telefono']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>       
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-md-2 col-form-label">Dirección</label>
+                    <label class="col-md-2 col-form-label">Dirección*</label>
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.direccion.calle">
+                                <input required minlength="4" maxlength="50" type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.direccion.calle" name="calle">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['calle']?.hasError('required') && mostrarErrores) || formulario.controls['calle']?.hasError('minlength')">
+                                    Este campo debe tener entre 4-50 caracteres.
+                                </div>   
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNumeroCalle" placeholder="n°" [(ngModel)]="proveedor.direccion.numero">
+                                <input required type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="8" class="form-control" placeholder="n°" [(ngModel)]="proveedor.direccion.numero" name="numero">
+                                <div class="form-text text-danger " *ngIf="(formulario.controls['numero']?.hasError('required') && mostrarErrores)">
+                                    Este campo es obligatorio.
+                                </div>
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal">
+                                <input required type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal" name="codigoPostal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select class="form-select" name="inputPais" id="inputPais" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)">
+                                <select required class="form-select" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)" name="pais">
                                     <option value="">Seleccione un país:</option>
                                     <option *ngFor="let item of countries" value={{item.name}}>{{item.name}}</option>
                                 </select>
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)">
+                                <select required class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)" name="provincia">
                                     <option value="">Seleccione una provincia:</option>
                                     <option *ngFor="let item of states" value={{item.name}}>{{item.name}}</option>
                                 </select>                                       
                             </div>
                             <div class="col-4">
-                                <select class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad">
+                                <select required class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad" name="ciudad">
                                     <option value="">Seleccione una ciudad:</option>
                                     <option *ngFor="let item of cities" value="{{item.name}}">{{item.name}}</option>
                                 </select>                                        
@@ -69,43 +103,45 @@
                     </div>
                 </div>
                 <div class="row mb-3 ">
-                    <label class="col-md-2 col-form-label">Datos fiscales</label>
+                    <label class="col-md-2 col-form-label">Datos fiscales*</label>
                     <div class="col-md-5">
-                        <input [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit">
+                        <input required [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit">
                     </div>
                     <div class="col-md-5">
-                        <select class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva">
-                            <option value="">Seleccione una condición</option>
+                        <select required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva" name="iva">
+                            <option value="">Seleccione una condición:</option>
                             <option *ngFor="let item of IVA" value="{{item}}">{{item}}</option>
                         </select> 
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-md-2 col-form-label">Datos de contacto</label>
+                    <label class="col-md-2 col-form-label">Datos de contacto*</label>
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre">
+                                <input required type="text" class="form-control" id="inputNombre" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre" name="nombre">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido">
+                                <input required type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido" name="apellido">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal">
+                                <input type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal" name="telefonoPersonal">
                             </div>
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal">
+                                <input required type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal">
                             </div>
                             <div class="col-4">
-                                <input type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol">
+                                <input required type="text" class="form-control" id="inputRol" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
                             </div>
                         </div>
                     </div>
                 </div>
-            <button class="btn btn-primary" id="agregar" (click)="agregar()" routerLink="/listar-proveedores">{{agregarOEditar}}</button>
-        </div>
+                <button class="btn btn-primary" type="submit" [ngClass]="{'opacity-50': !formularioValido}">{{agregarOEditar}}</button>
+                <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>
+            </form>    
+            </div>
     </main>
     
 </div>

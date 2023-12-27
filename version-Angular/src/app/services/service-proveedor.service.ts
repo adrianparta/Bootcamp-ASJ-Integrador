@@ -10,8 +10,10 @@ export class ServiceProveedorService{
 
   url = 'http://localhost:3000/proveedores/';
   private url_countries: string = 'assets/data/countries.json';
-  private url_states: string = 'assets/data/states.json'
-  private url_cities: string = 'assets/data/cities.json'
+  private url_states: string = 'assets/data/states.json';
+  private url_cities: string = 'assets/data/cities.json';
+  private urlindustries = 'assets/data/industries.json';
+
 
   getCountries(): Observable<any>{
     return this.http.get(this.url_countries);
@@ -43,5 +45,9 @@ export class ServiceProveedorService{
 
   public updateSupplier(supplier: Supplier): Observable<Supplier>{
     return this.http.put<Supplier>(this.url + supplier.id, supplier);
+  }
+
+  public getIndustries(): Observable<string[]>{
+    return this.http.get<string[]>(this.urlindustries);
   }
 }
