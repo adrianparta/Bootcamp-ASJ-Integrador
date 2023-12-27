@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Supplier } from '../../../models/supplier';
 
 @Component({
@@ -10,7 +10,7 @@ import { Supplier } from '../../../models/supplier';
 })
 export class AgregarProveedorComponent implements OnInit{
 
-  constructor(public serv: ServiceProveedorService, private route: ActivatedRoute) { }
+  constructor(public serv: ServiceProveedorService, private route: ActivatedRoute, private router: Router) { }
   
   formularioValido = false;
   mostrarErrores!: boolean;
@@ -19,12 +19,16 @@ export class AgregarProveedorComponent implements OnInit{
   CUITPattern: RegExp = /^(20|23|24|27|30|33|34|40|50|60|70)-?\d{8}-?\d$/;
   title = 'Agregar Proveedor';
   agregarOEditar = 'Agregar';
+  cuitRepetido!: boolean;
+  codigoRepetido!: boolean;
+  razonSocialRepetida!: boolean;
   id:number = parseInt(this.route.snapshot.params['id']);
   countries: any;
   states: any;
   cities: any;
   disabledInput = false;
   industries: string[] = []
+  supplierList!: Supplier[];
 
   IVA: string[] = [
     'Consumidor Final',
@@ -86,6 +90,10 @@ export class AgregarProveedorComponent implements OnInit{
         this.proveedor = data;
       });
     }
+
+    this.serv.getSuppliers().subscribe((data)=>{
+      this.supplierList = data;
+    });
     
   }
 
@@ -97,12 +105,10 @@ export class AgregarProveedorComponent implements OnInit{
       else{
         this.serv.updateSupplier(this.proveedor).subscribe();
       }
-      navigate.location.href = '/proveedores';
+      this.router.navigate(['/listar-proveedores']);
     }
     else{
       this.mostrarErrores = true;
-      console.log(formulario);
-      
     }
   }
 
@@ -130,14 +136,8 @@ export class AgregarProveedorComponent implements OnInit{
     return valid;
   }
 
-  validarEmail(){
-    const valid = this.emailPattern.test(this.proveedor.email);
-    valid ? this.formularioValido = true : this.formularioValido = false;
-    return valid;
-  }
-  
-  validarEmailPersonal(){
-    const valid = this.emailPattern.test(this.proveedor.personaContacto.emailPersonal);
+  validarEmail(value: string){
+    const valid = this.emailPattern.test(value);
     valid ? this.formularioValido = true : this.formularioValido = false;
     return valid;
   }
@@ -147,4 +147,28 @@ export class AgregarProveedorComponent implements OnInit{
     valid ? this.formularioValido = true : this.formularioValido = false;
     return valid;
   }
+
+  comprobarRepetido(value: string, key: string): void{    
+    let valid!: boolean;
+    
+    switch(key){
+      case 'cuit':
+        valid = this.supplierList.some((supplier: Supplier) => supplier.datosFiscales.cuit == value);
+        valid ? this.formularioValido = false : this.formularioValido = true;
+        this.cuitRepetido = valid;
+        break;
+      case 'codigo':
+        valid = this.supplierList.some((supplier: Supplier) => supplier.codigo == value);
+        valid ? this.formularioValido = false : this.formularioValido = true;
+        this.codigoRepetido = valid;
+        break;
+      case 'razonSocial':
+        valid = this.supplierList.some((supplier: Supplier) => supplier.razonSocial == value);
+        valid ? this.formularioValido = false : this.formularioValido = true;
+        this.razonSocialRepetida = valid;
+        break;
+    }
+  }
+  
+  
 }

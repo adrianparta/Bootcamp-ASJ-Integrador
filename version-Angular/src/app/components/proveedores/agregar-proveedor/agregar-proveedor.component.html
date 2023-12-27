@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-3">
                         <input required type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
-                        <div class="form-text text-danger " *ngIf="!validarEmail() && email.value.length > 0">
+                        <div class="form-text text-danger " *ngIf="!validarEmail(email.value) && email.value.length > 0">
                             email incorrecto.
                         </div>  
                         <div class="form-text text-danger " *ngIf="formulario.controls['email']?.hasError('required') && mostrarErrores">
@@ -117,7 +117,10 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales*</label>
                     <div class="col-md-5">    
-                        <input required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit" #cuit="ngModel">
+                        <input (blur)="comprobarRepetido(cuit.value, 'cuit')" required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit" #cuit="ngModel">
+                        <div class="form-text text-danger " *ngIf="cuitRepetido && cuit.value.length > 0">
+                            Este CUIT pertenece a otro proveedor.
+                        </div>
                         <div class="form-text text-danger " *ngIf="!validarCUIT() && cuit.value.length > 0">
                             CUIT incorrecto.
                         </div>
@@ -160,14 +163,14 @@
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input required type="text" class="form-control" id="inputEmailContacto" placeholder="Email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal" #emailPersonal="ngModel">
-                                <div class="form-text text-danger " *ngIf="!validarEmailPersonal() && emailPersonal.value.length > 0">
-                                    email incorrecto.
-                                </div>  
-                                <div class="form-text text-danger " *ngIf="formulario.controls['emailPersonal']?.hasError('required') && mostrarErrores">
-                                    Este campo es obligatorio.
+                                <input required type="email" class="form-control" placeholder="email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal" #emailPersonal="ngModel">
+                                    <div class="form-text text-danger " *ngIf="!validarEmail(emailPersonal.value) && emailPersonal.value.length > 0">
+                                        email incorrecto.
+                                    </div>  
+                                    <div class="form-text text-danger " *ngIf="formulario.controls['emailPersonal']?.hasError('required') && mostrarErrores">
+                                        Este campo es obligatorio.
+                                    </div>
                                 </div>
-                            </div>
                             <div class="col-4">
                                 <input required type="text" class="form-control" id="inputRol" minlength="4" maxlength="50" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['rol']?.hasError('required') && mostrarErrores) || formulario.controls['rol']?.hasError('minlength')">
@@ -177,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit" [ngClass]="{'opacity-50': !formularioValido}">{{agregarOEditar}}</button>
+                <button class="btn btn-primary me-4" type="submit" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
                 <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>
             </form>    
             </div>
