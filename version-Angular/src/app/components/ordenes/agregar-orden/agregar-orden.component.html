@@ -105,8 +105,9 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="details != 1">
-                    <div class="col-1">
-                        <button [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.expectedDeliveryDate<orden.issueDate}" type="submit" class="btn btn-primary" id="agregar">Agregar</button>
+                    <div class="col-1 d-flex flex-row ">
+                        <button [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.expectedDeliveryDate<orden.issueDate}" type="submit" class="btn btn-primary me-3" id="agregar">Agregar</button>
+                        <button type="button" class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>            
                     </div>
                     <div *ngIf="showAlert" class="col-4">
                         <div class="alert alert-success d-flex justify-content-evenly align-items-center " role="alert">
@@ -119,7 +120,9 @@
                         </div>
                     </div>
                 </div>
-                
+                <div *ngIf="details == 1">
+                    <button class="btn btn-warning " routerLink="/listar-ordenes">Volver atrás</button>
+                </div>
             </form>
         </div>
     </main>

@@ -216,7 +216,7 @@
                 <div class="col-2" *ngIf="details!=1">
                     <div class=" d-flex flex-row">
                         <button class="btn btn-primary me-4" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
-                        <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>        
+                        <button type="button" class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>        
                     </div>
                 </div>
                 <div *ngIf="showAlert" class="col-4">

@@ -92,8 +92,9 @@
                 </div>
                 <div *ngIf="details != 1">
                     <div class="row">
-                        <div class="col-1">
-                            <button [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary" id="agregar">{{agregarOEditar}}</button>
+                        <div class="col-1 d-flex flex-row">
+                            <button [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary me-3" id="agregar">{{agregarOEditar}}</button>
+                            <button type="button" class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>            
                         </div>
                         <div *ngIf="showAlert" class="col-4">
                             <div class="alert alert-success d-flex justify-content-evenly align-items-center " role="alert">
