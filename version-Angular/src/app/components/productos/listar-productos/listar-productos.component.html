@@ -7,8 +7,10 @@
             </div>
             
             <div class="card mb-4">
-                
-                <div class="card-body">
+                <div class="card-body" *ngIf="datos.length==0">
+                    <h2 class="h1">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
+                </div>
+                <div *ngIf="datos.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>

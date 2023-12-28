@@ -5,7 +5,7 @@ import { ServiceProveedorService } from '../../../services/service-proveedor.ser
 import { ServiceProductoService } from '../../../services/service-producto.service';
 import { Supplier } from '../../../models/supplier';
 import { Product } from '../../../models/products';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agregar-orden',
@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AgregarOrdenComponent implements OnInit{
 
-  constructor(public serv: ServiceOrdenService,private route: ActivatedRoute, public servSupplier: ServiceProveedorService, public servProduct: ServiceProductoService) { }
+  constructor(public serv: ServiceOrdenService, private router: Router,private route: ActivatedRoute, public servSupplier: ServiceProveedorService, public servProduct: ServiceProductoService) { }
 
   fechaActual = new Date().toISOString().split('T')[0];
   agregarODetalles:string = 'Agregar'
@@ -22,8 +22,10 @@ export class AgregarOrdenComponent implements OnInit{
   productList!: Product[];
   productIdSelected!: number;
   mostrarErrores!: boolean;
+  showAlert: boolean = false;
   amountSelected: number = 1;
   blockSelectSupplier: boolean = false;
+  toasts: boolean = false;
   details:number = parseInt(this.route.snapshot.params['details']);
   id:number = parseInt(this.route.snapshot.params['id']);
   orden: Order = {
@@ -33,13 +35,13 @@ export class AgregarOrdenComponent implements OnInit{
     supplier: '',
     products: [],
     total: 0,
-    status: 'Pendiente'
+    status: ''
   }
 
   ngOnInit(): void {
     this.orden.issueDate = new Date();
     this.mostrarErrores = false;
-    if(this.details==1){
+    if(this.details!=0){
       this.agregarODetalles = 'Detalles de la';
       this.servSupplier.getSuppliers().subscribe((data: Supplier[])=>{
         this.supplierList = data;
@@ -58,14 +60,14 @@ export class AgregarOrdenComponent implements OnInit{
   }
 
   agregar(formulario:any){
+    console.log("hola");
     
     if(formulario.valid && this.orden.expectedDeliveryDate>=this.orden.issueDate || this.orden.total!=0){
+      this.orden.status = 'Finalizado';
       this.serv.addOrder(this.orden).subscribe();
-    }
-    else{
-      this.mostrarErrores = true;
-      console.log(this.mostrarErrores);
-      
+      this.showAlert = true;
+    }else{
+      this.mostrarErrores = true;      
     }
   }
 

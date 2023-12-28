@@ -15,8 +15,19 @@ export class ListarOrdenesComponent {
   }  
 
   ngOnInit() {
-    this.serv.getOrders().subscribe((data: any[])=>{
+    this.getOrders();
+  }
+
+  getOrders(){
+    this.serv.getOrders().subscribe((data: any[]) => {
       this.datos = data;
+    });
+  }
+
+  cancelOrder(order: Order){    
+    order.status = 'Cancelado';
+    this.serv.updateOrder(order).subscribe(()=>{
+      this.getOrders();
     });
   }
 }

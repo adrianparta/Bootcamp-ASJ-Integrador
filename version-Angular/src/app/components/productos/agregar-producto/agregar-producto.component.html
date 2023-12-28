@@ -77,7 +77,24 @@
                     </div>
                 </div>
                 <div *ngIf="details != 1">
-                    <button [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary" id="agregar">{{agregarOEditar}}</button>
+                    <div class="row">
+                        <div class="col-1">
+                            <button [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary" id="agregar">{{agregarOEditar}}</button>
+                        </div>
+                        <div *ngIf="showAlert" class="col-4">
+                            <div class="alert alert-success d-flex justify-content-evenly align-items-center " role="alert">
+                                <div *ngIf="id==-1">
+                                    Producto creado con éxito.
+                                </div>
+                                <div *ngIf="id!=-1">
+                                    Producto modificado con éxito.
+                                </div>
+                                <div>
+                                    <button class="btn btn-success " routerLink="/listar-productos"><img width="10" height="10" src="https://img.icons8.com/ios/50/delete-sign.png" alt="delete-sign"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div *ngIf="details == 1">
                     <button class="btn btn-warning " routerLink="/listar-productos">Volver atrás</button>

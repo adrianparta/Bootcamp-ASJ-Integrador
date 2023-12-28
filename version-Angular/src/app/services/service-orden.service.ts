@@ -24,4 +24,7 @@ export class ServiceOrdenService {
     return this.http.get<Order>(this.url + id);
   }
 
+  public updateOrder(order: Order): Observable<Order>{
+    return this.http.put<Order>(this.url + order.id, order);
+  }
 }

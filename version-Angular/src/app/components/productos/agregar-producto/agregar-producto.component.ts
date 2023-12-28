@@ -21,6 +21,7 @@ export class AgregarProductoComponent implements OnInit{
   agregarOEditar = 'Agregar';
   mostrarErrores!: boolean;
   codigoRepetido = false;
+  showAlert: boolean = false;
 
   product: Product = {
     supplierName: '',
@@ -71,7 +72,7 @@ export class AgregarProductoComponent implements OnInit{
       }else{
         this.serv.updateProduct(this.product).subscribe();
       }
-      this.router.navigate(['/listar-productos']);
+      this.showAlert = true;
     }
     else{
       this.mostrarErrores = true;
