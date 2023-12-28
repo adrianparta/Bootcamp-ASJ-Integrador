@@ -23,13 +23,13 @@
                 </div>
             </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
-                <div *ngIf="id!=-1" class="row mb-3">
+                <div *ngIf="id!=-1" class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputNumeroOrden" class="col-sm-2 col-form-label">Número de orden*</label>
                     <div class="col-sm-10">
                         <input [disabled]="details!=0" type="text" class="form-control" id="inputNumeroOrden" [(ngModel)]="id" name="numeroOrden">    
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEmision" class="col-sm-2 col-form-label">Fecha de emisión*</label>
                     <div class="col-sm-10">
                         <input required min="{{fechaActual}}" [disabled]="details!=0" type="date" class="form-control" id="inputFechaEmision" [(ngModel)]="orden.issueDate" name="fechaEmision">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Fecha de entrega esperada</label>
                     <div class="col-sm-10">
                         <input required [disabled]="details!=0" min="{{orden.issueDate}}" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.expectedDeliveryDate" name="fechaEntrega">
@@ -47,7 +47,7 @@
                         </div>    
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Detalles de entrega</label>
                         <div class="col-sm-10">
                             <textarea minlength="10" maxlength="250" required [disabled]="details!=0" class="form-control " name="info" id="" cols="30" rows="3" [(ngModel)]="orden.info"></textarea>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor</label>
                     <div class="col-sm-10">
                         <select required [disabled]="details!=0 || blockSelectSupplier" class="form-select " name="selectProveedor" id="selectProveedor" (change)="onSelectSupplier($event)" [(ngModel)]="orden.supplier" #proveedores="ngModel">
@@ -69,7 +69,7 @@
                         </div>                             
                     </div>
                 </div>
-                <div *ngIf="details!=1" class="row mb-3">
+                <div *ngIf="details!=1" class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProductos" class="col-sm-2 col-form-label">Productos</label>
                     <div class="col-sm-8">
                         <select [disabled]="details!=0" class="form-select " name="selectProductos" id="selectProductos" [(ngModel)]="productIdSelected">
@@ -87,21 +87,21 @@
                         <button type="button" [disabled]="details!=0" class="btn btn-primary" (click)="addProduct()">Agregar</button>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label class="col-sm-2 col-form-label">Subtotal</label>
                     <div class="col-sm-3 d-flex flex-column ">
                         <div *ngFor="let item of orden.products"  class="d-flex flex-row justify-content-between ">
                             <p>{{item.product.name}}({{item.quantity}})</p>
-                            <p>{{item.product.price * item.quantity}}</p>
+                            <p class="h5">${{item.product.price * item.quantity}}</p>
                             
                             <button *ngIf="details!=1" class="btn btn-sm btn-danger " (click)="deleteProduct(item.product.id)">Borrar</button>
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3  border-bottom  border-2 pb-3">
                     <label class="col-sm-2 col-form-label">Total</label>
                     <div class="col-sm-10">
-                        <p>{{orden.total}}</p>
+                        <p class="h4">${{orden.total}}</p>
                     </div>
                 </div>
                 <div class="row" *ngIf="details != 1">

@@ -18,7 +18,7 @@
             </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
 
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código/SKU*</label>
                     <div class="col-sm-10">
                         <input (keyup)="comprobarRepetido(codigo)" [disabled]="details == 1" required type="text" class="form-control" id="inputCodigo" minlength="3" maxlength="6" [(ngModel)]="product.code" name="codigo" #codigo="ngModel">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>    
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría*</label>
                     <div class="col-sm-10">
                         <select [disabled]="details == 1" required class="form-select " name="categoria" id="selectCategoria" [(ngModel)]="product.category">
@@ -42,7 +42,7 @@
                         </div>             
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto*</label>
                     <div class="col-sm-10">
                         <input minlength="4" maxlength="50" [disabled]="details == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="product.name" name="nombre">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción*</label>
                     <div class="col-sm-10">
                         <textarea required class="form-control" [disabled]="details == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="product.description" minlength="10" maxlength="250"></textarea>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputPrecio" class="col-sm-2 col-form-label">Precio*</label>
                     <div class="col-sm-10">
                         <input [disabled]="details == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="product.price" name="precio">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor*</label>
                     <div class="col-sm-10">
                         <select [disabled]="details == 1" required class="form-select " name="proveedor" id="selectProveedor" [(ngModel)]="product.supplierName">
@@ -81,7 +81,7 @@
                         </div>                     
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="url" class="col-sm-2 col-form-label">imagen</label>
                     <div class="col-sm-7">
                         <input [disabled]="details == 1" type="text" class="form-control" id="url" [(ngModel)]="product.img" name="url">
