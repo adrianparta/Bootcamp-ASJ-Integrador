@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
-import { ordenes } from '../../assets/data/ordenes';
+import { HttpClient } from '@angular/common/http';
+import { Order } from '../models/orders';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceOrdenService {
 
-  agregarOrden(orden: any){
-    ordenes.push(orden);
+  constructor(private http: HttpClient) {}
+
+  url = 'http://localhost:3000/ordenes/';
+
+  public addOrder(order: Order): Observable<Order>{
+    return this.http.post<Order>(this.url, order);
   }
 
-  public getOrdenes(){
-    return ordenes;
+  public getOrders(): Observable<Order[]>{
+    return this.http.get<Order[]>(this.url);
   }
+
+  public getSingleOrder(id: number): Observable<Order>{
+    return this.http.get<Order>(this.url + id);
+  }
+
 }

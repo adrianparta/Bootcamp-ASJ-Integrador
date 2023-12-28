@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ServiceOrdenService } from '../../../services/service-orden.service';
+import { Order } from '../../../models/orders';
 
 @Component({
   selector: 'app-listar-ordenes',
@@ -8,12 +9,14 @@ import { ServiceOrdenService } from '../../../services/service-orden.service';
 })
 export class ListarOrdenesComponent {
 
-  datos!: any[];
+  datos!: Order[];
 
   constructor(public serv: ServiceOrdenService){
   }  
 
   ngOnInit() {
-    this.datos = this.serv.getOrdenes();
+    this.serv.getOrders().subscribe((data: any[])=>{
+      this.datos = data;
+    });
   }
 }

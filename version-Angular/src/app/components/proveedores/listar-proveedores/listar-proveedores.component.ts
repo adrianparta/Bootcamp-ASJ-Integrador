@@ -24,8 +24,8 @@ export class ListarProveedoresComponent implements OnInit {
     this.getSuppliers();
   }
 
-  deleteSupplier(id: number | undefined){
-    this.serv.deleteSupplier(id).subscribe(() => {
+  deleteSupplier(id: number | undefined, supplierName: string){
+    this.serv.deleteSupplier(id, supplierName).subscribe(() => {
       this.getSuppliers();
     });
   }

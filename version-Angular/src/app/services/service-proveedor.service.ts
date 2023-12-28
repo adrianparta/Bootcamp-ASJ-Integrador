@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Supplier } from '../models/supplier';
+import { ServiceProductoService } from './service-producto.service';
+import { Product } from '../models/products';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,7 @@ export class ServiceProveedorService{
     return this.http.get(this.url_cities);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private servProduct: ServiceProductoService) {}
 
   public addSupplier(supplier: Supplier): Observable<Supplier>{
     return this.http.post<Supplier>(this.url, supplier);
@@ -39,7 +41,14 @@ export class ServiceProveedorService{
     return this.http.get<Supplier>(this.url + id);
   }
 
-  public deleteSupplier(id: number | undefined): Observable<Supplier>{
+  public deleteSupplier(id: number | undefined, supplierName: string): Observable<Supplier>{
+    this.servProduct.getProducts().subscribe((data: Product[])=>{
+      data.forEach((product: Product) => {
+        if(product.supplierName == supplierName){
+          this.servProduct.deleteProduct(product.id).subscribe();
+        }
+      });
+    });
     return this.http.delete<Supplier>(this.url + id);
   }
 

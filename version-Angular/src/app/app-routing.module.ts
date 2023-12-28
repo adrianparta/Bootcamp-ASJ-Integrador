@@ -13,7 +13,7 @@ const routes: Routes = [
   {path:'listar-proveedores', component: ListarProveedoresComponent},
   {path:'add-edit-product/:id/:details', component: AgregarProductoComponent},
   {path:'listar-productos', component: ListarProductosComponent},
-  {path:'agregar-orden', component: AgregarOrdenComponent},
+  {path:'agregar-orden/:id/:details', component: AgregarOrdenComponent},
   {path:'listar-ordenes', component: ListarOrdenesComponent},
   {path:'', pathMatch:'full', redirectTo:''}  
 ];
