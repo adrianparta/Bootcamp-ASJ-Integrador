@@ -3,6 +3,7 @@ import { ServiceProductoService } from '../../../services/service-producto.servi
 import { Product } from '../../../models/products';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 import { Supplier } from '../../../models/supplier';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agregar-producto',
@@ -11,7 +12,15 @@ import { Supplier } from '../../../models/supplier';
 })
 export class AgregarProductoComponent implements OnInit{
 
-  constructor(public serv: ServiceProductoService, public list: ServiceProveedorService){}
+  constructor(public serv: ServiceProductoService, private router: Router, public list: ServiceProveedorService, private route: ActivatedRoute){}
+
+  id: number = parseInt(this.route.snapshot.params['id']);
+  details: number = parseInt(this.route.snapshot.params['details']);
+  title = 'Agregar';
+  productList!: Product[];
+  agregarOEditar = 'Agregar';
+  mostrarErrores!: boolean;
+  codigoRepetido = false;
 
   product: Product = {
     supplierName: '',
@@ -19,7 +28,8 @@ export class AgregarProductoComponent implements OnInit{
     category: '',
     name: '',
     description: '',
-    price: 0
+    price: 1,
+    img: '',
   }
 
   suppliersList!: Supplier[];
@@ -32,12 +42,49 @@ export class AgregarProductoComponent implements OnInit{
     this.serv.getCategories().subscribe((data: string[])=>{
       this.categoriesList = data;
     })
-  }
 
-  agregar(){
-    this.serv.addProduct(this.product).subscribe(() => {
+    if(this.id!=-1){
+      this.title = 'Editar';
+      this.agregarOEditar = 'Editar';
+      this.serv.getSingleProduct(this.id).subscribe((data: Product)=>{
+        this.product = data;
+      })
+    }
+
+    this.serv.getProducts().subscribe((data: Product[])=>{
+      this.productList = data;
+      if(this.id!=-1){
+        this.productList = this.productList?.filter((product: Product)=>product.id!=this.id);
+      }
     });
+
+    if(this.details==1){
+      this.title = 'Detalles del';
+    }
   }
 
-  
+  agregar(formulario: any){
+    
+    if(formulario.valid && !this.codigoRepetido){
+      if(this.id==-1){
+        this.serv.addProduct(this.product).subscribe();
+      }else{
+        this.serv.updateProduct(this.product).subscribe();
+      }
+      this.router.navigate(['/listar-productos']);
+    }
+    else{
+      this.mostrarErrores = true;
+    }
+  }
+
+  comprobarRepetido(inputCode: any){
+    let invalid!: boolean;
+    invalid = this.productList.some((product: Product)=> product.code==inputCode.value);
+    invalid ? this.codigoRepetido = true : this.codigoRepetido = false;    
+  }
+
+  imageNotFound(event: Event): void {
+    (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+  }
 }

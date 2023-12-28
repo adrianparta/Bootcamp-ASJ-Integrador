@@ -32,4 +32,8 @@ export class ServiceProductoService {
   public getCategories(): Observable<string[]>{
     return this.http.get<string[]>(this.urlCategories);
   }
+
+  public getSingleProduct(id: number): Observable<Product>{
+    return this.http.get<Product>(this.url + id);
+  }
 }

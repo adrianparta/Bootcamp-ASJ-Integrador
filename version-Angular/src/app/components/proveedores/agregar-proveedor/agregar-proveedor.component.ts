@@ -23,7 +23,7 @@ export class AgregarProveedorComponent implements OnInit{
   codigoRepetido!: boolean;
   razonSocialRepetida!: boolean;
   id:number = parseInt(this.route.snapshot.params['id']);
-  edit:number = parseInt(this.route.snapshot.params['edit']);
+  details:number = parseInt(this.route.snapshot.params['details']);
   countries: any;
   states: any;
   cities: any;
@@ -100,7 +100,7 @@ export class AgregarProveedorComponent implements OnInit{
       }
     });
     
-    if(this.edit == 1){
+    if(this.details == 1){
       this.title = 'Detalles del Proveedor';
     }
   }
@@ -134,9 +134,6 @@ export class AgregarProveedorComponent implements OnInit{
     });
   }
 
-  clickSubmit(){
-    console.log("hola");
-  }
 
   validarURL(){
     const valid = this.urlPattern.test(this.proveedor.web);

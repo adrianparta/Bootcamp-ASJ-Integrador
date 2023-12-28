@@ -7,7 +7,7 @@
                 <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código*</label>
                     <div class="col-sm-10">
-                        <input [disabled]="edit==1" (keyup)="comprobarRepetido(codigo.value, 'codigo')" type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" #codigo="ngModel" required>
+                        <input [disabled]="details==1" (keyup)="comprobarRepetido(codigo.value, 'codigo')" type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" #codigo="ngModel" required>
                         <div class="form-text text-danger " *ngIf="codigoRepetido && codigo.value.length > 0">
                             Este codigo pertenece a otro proveedor.
                         </div>
@@ -19,7 +19,7 @@
                 <div class="row mb-3">
                     <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social*</label>
                     <div class="col-sm-10">
-                        <input [disabled]="edit==1" (keyup)="comprobarRepetido(razonSocial.value, 'razonSocial')" required type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial" name="razonSocial" minlength="4" maxlength="50" #razonSocial="ngModel">
+                        <input [disabled]="details==1" (keyup)="comprobarRepetido(razonSocial.value, 'razonSocial')" required type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial" name="razonSocial" minlength="4" maxlength="50" #razonSocial="ngModel">
                         <div class="form-text text-danger " *ngIf="razonSocialRepetida && razonSocial.value.length > 0">
                             Este nombre pertenece a otro proveedor.
                         </div>
@@ -31,7 +31,7 @@
                 <div class="row mb-3">
                     <label for="inputRubro" class="col-sm-2 col-form-label">Rubro*</label>
                     <div class="col-sm-10">
-                        <select [disabled]="edit==1" required name="rubro" class="form-select" [(ngModel)]="proveedor.rubro" #rubro="ngModel">
+                        <select [disabled]="details==1" required name="rubro" class="form-select" [(ngModel)]="proveedor.rubro" #rubro="ngModel">
                             <option disabled value="">Seleccione un rubro:</option>
                             <option *ngFor="let item of industries" value="{{item}}">{{item}}</option>
                         </select>
@@ -43,7 +43,7 @@
                 <div class="row mb-3 gy-3 ">
                     <label class="col-md-2 col-form-label">Sitio web*, email*, teléfono*</label>
                     <div class="col-md-4">
-                        <input [disabled]="edit==1" required type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web" name="web" #web="ngModel">
+                        <input [disabled]="details==1" required type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web" name="web" #web="ngModel">
                         <div class="form-text text-danger " *ngIf="!validarURL() && web.value?.length > 0">
                             URL incorrecta.
                         </div>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <input [disabled]="edit==1" required type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
+                        <input [disabled]="details==1" required type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
                         <div class="form-text text-danger " *ngIf="!validarEmail(email.value) && email.value?.length > 0">
                             email incorrecto.
                         </div>  
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <input [disabled]="edit==1" required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
+                        <input [disabled]="details==1" required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
                         <div class="form-text text-danger " *ngIf="formulario.controls['telefono']?.hasError('required') && mostrarErrores">
                             Este campo debe tener entre 6-20 caracteres
                         </div>       
@@ -72,19 +72,19 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input [disabled]="edit==1" required minlength="4" maxlength="50" type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.direccion.calle" name="calle">
+                                <input [disabled]="details==1" required minlength="4" maxlength="50" type="text" class="form-control" id="inputCalle" placeholder="Calle" [(ngModel)]="proveedor.direccion.calle" name="calle">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['calle']?.hasError('required') && mostrarErrores) || formulario.controls['calle']?.hasError('minlength')">
                                     Este campo debe tener entre 4-50 caracteres.
                                 </div>   
                             </div>
                             <div class="col-4">
-                                <input [disabled]="edit==1" required type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="8" class="form-control" placeholder="n°" [(ngModel)]="proveedor.direccion.numero" name="numero">
+                                <input [disabled]="details==1" required type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="8" class="form-control" placeholder="n°" [(ngModel)]="proveedor.direccion.numero" name="numero">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['numero']?.hasError('required') && mostrarErrores)">
                                     Este campo es obligatorio.
                                 </div>
                             </div>
                             <div class="col-4">
-                                <input [disabled]="edit==1" required minlength="3" maxlength="10" type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal" name="codigoPostal">
+                                <input [disabled]="details==1" required minlength="3" maxlength="10" type="text" class="form-control" id="inputCodigoPostal" placeholder="CP" [(ngModel)]="proveedor.direccion.codigoPostal" name="codigoPostal">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['codigoPostal']?.hasError('required') && mostrarErrores) || formulario.controls['codigoPostal']?.hasError('minlength')">
                                     Este campo debe tener entre 3-10 caracteres.
                                 </div>
@@ -92,7 +92,7 @@
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select [disabled]="edit==1" required class="form-select" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)" name="pais">
+                                <select [disabled]="details==1" required class="form-select" [(ngModel)]="proveedor.direccion.pais" (change)="onSelectCountry($event)" name="pais">
                                     <option disabled value="">Seleccione un país:</option>
                                     <option *ngFor="let item of countries" value={{item.name}}>{{item.name}}</option>
                                 </select>
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <select [disabled]="edit==1" required class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)" name="provincia">
+                                <select [disabled]="details==1" required class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.direccion.provincia" (change)="onSelectState($event)" name="provincia">
                                     <option disabled value="">Seleccione una provincia:</option>
                                     <option *ngFor="let item of states" value={{item.name}}>{{item.name}}</option>
                                 </select>     
@@ -110,7 +110,7 @@
                                 </div>                                  
                             </div>
                             <div class="col-4">
-                                <select [disabled]="edit==1" required class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad" name="ciudad">
+                                <select [disabled]="details==1" required class="form-select " name="inputLocalidad" id="inputLocalidad" [(ngModel)]="proveedor.direccion.localidad" name="ciudad">
                                     <option disabled value="">Seleccione una ciudad:</option>
                                     <option *ngFor="let item of cities" value="{{item.name}}">{{item.name}}</option>
                                 </select>                                        
@@ -124,7 +124,7 @@
                 <div class="row mb-3 ">
                     <label class="col-md-2 col-form-label">Datos fiscales*</label>
                     <div class="col-md-5">    
-                        <input [disabled]="edit==1" (keyup)="comprobarRepetido(cuit.value, 'cuit')" required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit" #cuit="ngModel">
+                        <input [disabled]="details==1" (keyup)="comprobarRepetido(cuit.value, 'cuit')" required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="disabledInput" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.datosFiscales.cuit" name="cuit" #cuit="ngModel">
                         <div class="form-text text-danger " *ngIf="cuitRepetido && cuit.value.length > 0">
                             Este CUIT pertenece a otro proveedor.
                         </div>
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <select [disabled]="edit==1" required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva" name="iva">
+                        <select [disabled]="details==1" required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.datosFiscales.iva" name="iva">
                             <option disabled value="">Seleccione una condición:</option>
                             <option *ngFor="let item of IVA" value="{{item}}">{{item}}</option>
                         </select> 
@@ -150,19 +150,19 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <input [disabled]="edit==1" required type="text" class="form-control" id="inputNombre" minlength="2" maxlength="50" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre" name="nombre">
+                                <input [disabled]="details==1" required type="text" class="form-control" id="inputNombre" minlength="2" maxlength="50" placeholder="Nombre" [(ngModel)]="proveedor.personaContacto.nombre" name="nombre">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['nombre']?.hasError('required') && mostrarErrores) || formulario.controls['nombre']?.hasError('minlength')">
                                     Este campo debe tener entre 2-50 caracteres.
                                 </div>    
                             </div>
                             <div class="col-4">
-                                <input [disabled]="edit==1" required type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido" name="apellido">
+                                <input [disabled]="details==1" required type="text" class="form-control" id="inputApellido" placeholder="Apellido" [(ngModel)]="proveedor.personaContacto.apellido" name="apellido">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['apellido']?.hasError('required') && mostrarErrores) || formulario.controls['apellido']?.hasError('minlength')">
                                     Este campo debe tener entre 2-50 caracteres.
                                 </div>     
                             </div>
                             <div class="col-4">
-                                <input [disabled]="edit==1" required oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal" name="telefonoPersonal">
+                                <input [disabled]="details==1" required oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" type="text" class="form-control" id="inputTelefonoContacto" placeholder="Teléfono" [(ngModel)]="proveedor.personaContacto.telefonoPersonal" name="telefonoPersonal">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['telefonoPersonal']?.hasError('required') && mostrarErrores) || formulario.controls['telefonoPersonal']?.hasError('minlength')">
                                     Este campo debe tener entre 6-20 caracteres.
                                 </div>         
@@ -170,7 +170,7 @@
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input [disabled]="edit==1" required type="email" class="form-control" placeholder="email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal" #emailPersonal="ngModel">
+                                <input [disabled]="details==1" required type="email" class="form-control" placeholder="email" [(ngModel)]="proveedor.personaContacto.emailPersonal" name="emailPersonal" #emailPersonal="ngModel">
                                     <div class="form-text text-danger " *ngIf="!validarEmail(emailPersonal.value) && emailPersonal.value?.length > 0">
                                         email incorrecto.
                                     </div>  
@@ -179,7 +179,7 @@
                                     </div>
                                 </div>
                             <div class="col-4">
-                                <input [disabled]="edit==1" required type="text" class="form-control" id="inputRol" minlength="4" maxlength="50" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
+                                <input [disabled]="details==1" required type="text" class="form-control" id="inputRol" minlength="4" maxlength="50" placeholder="Rol" [(ngModel)]="proveedor.personaContacto.rol" name="rol">
                                 <div class="form-text text-danger " *ngIf="(formulario.controls['rol']?.hasError('required') && mostrarErrores) || formulario.controls['rol']?.hasError('minlength')">
                                     Este campo debe tener entre 4-50 caracteres.
                                 </div>   
@@ -190,7 +190,7 @@
                 <div class="row mb-3">
                     <label for="inputURL" class="col-sm-2 col-form-label">URL logo</label>
                     <div class="col-sm-7">
-                        <input [disabled]="edit==1" type="text" class="form-control" [(ngModel)]="proveedor.logo" id="inputURL" name="url">
+                        <input [disabled]="details==1" type="text" class="form-control" [(ngModel)]="proveedor.logo" id="inputURL" name="url">
                         <div class="form-text text-danger " *ngIf="(formulario.controls['codigo']?.hasError('required') && mostrarErrores) || formulario.controls['codigo']?.hasError('minlength')">
                             Este campo debe tener entre 4-6 caracteres.
                         </div>
@@ -199,11 +199,11 @@
                         <img (error)="imageNotFound($event)" src="{{proveedor.logo}}" alt="logo {{proveedor.razonSocial}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
-                <div *ngIf="edit!=1">
+                <div *ngIf="details!=1">
                     <button class="btn btn-primary me-4" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
                     <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>
                 </div>
-                <div *ngIf="edit==1">
+                <div *ngIf="details==1">
                     <button class="btn btn-warning" routerLink="/listar-proveedores">Volver atrás</button>
                 </div>
             </form>    

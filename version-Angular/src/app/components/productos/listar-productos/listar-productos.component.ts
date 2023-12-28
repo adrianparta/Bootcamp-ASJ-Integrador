@@ -21,11 +21,24 @@ export class ListarProductosComponent {
   getProducts(){
     this.serv.getProducts().subscribe((data: Product[]) => {
       this.datos = data;
+      this.ordenar();
     });
   }
 
   deleteProduct(id: number | undefined){
     this.serv.deleteProduct(id).subscribe();
     this.getProducts();
+    this.ordenar();
   }
+
+  imageNotFound(event: Event): void {
+    (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+  }
+
+  ordenar(){
+    this.datos.sort(function(a, b) {
+      return a.name.localeCompare(b.name);
+    });
+  }
+
 }
