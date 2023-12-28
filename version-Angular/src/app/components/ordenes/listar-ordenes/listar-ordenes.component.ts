@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceOrdenService } from '../../../services/service-orden.service';
 import { Order } from '../../../models/orders';
+import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 
 @Component({
   selector: 'app-listar-ordenes',
@@ -11,7 +12,7 @@ export class ListarOrdenesComponent {
 
   datos!: Order[];
 
-  constructor(public serv: ServiceOrdenService){
+  constructor(public serv: ServiceOrdenService, public servSupplier: ServiceProveedorService){
   }  
 
   ngOnInit() {
