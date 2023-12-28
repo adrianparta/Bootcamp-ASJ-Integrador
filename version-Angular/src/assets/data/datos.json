@@ -1,0 +1,131 @@
+"productos": [
+      {
+        "supplierName": "Samsung",
+        "code": "PU123",
+        "category": "Teléfonos móviles",
+        "name": "Galaxy S23 Ultra",
+        "description": "El mejor teléfono, lejos",
+        "price": 1300,
+        "img": "https://samsungar.vtexassets.com/arquivos/ids/191397-800-auto?width=800&height=auto&aspect=true",
+        "id": 1
+      },
+      {
+        "supplierName": "Samsung",
+        "code": "PU124",
+        "category": "Laptops",
+        "name": "Tab S8",
+        "description": "Una tablet única",
+        "price": 900,
+        "img": "https://images.samsung.com/is/image/samsung/p6pim/ar/sm-x900nzadaro/gallery/ar-galaxy-tab-s8-ultra-wifi-x900-sm-x900nzadaro-534300787?$650_519_PNG$",
+        "id": 2
+      },
+      {
+        "supplierName": "Sodimac",
+        "code": "PO444",
+        "category": "Batidoras",
+        "name": "Batinator 3000",
+        "description": "La peor batidora del planeta, pero barata.",
+        "price": 50,
+        "img": "https://http2.mlstatic.com/D_NQ_NP_708885-MLA43122255361_082020-O.webp",
+        "id": 3
+      }
+    ],
+    "proveedores": [
+      {
+        "codigo": "ABCDE",
+        "razonSocial": "Samsung",
+        "rubro": "Tecnología",
+        "web": "www.samgung.com",
+        "email": "contacto@samsung.com",
+        "telefono": "1122334455",
+        "direccion": {
+          "calle": "rivadavia",
+          "numero": "574",
+          "codigoPostal": "1847",
+          "pais": "South Korea",
+          "provincia": "Daegu",
+          "localidad": "Dalseo-gu"
+        },
+        "datosFiscales": {
+          "cuit": "20-40849666-7",
+          "iva": "Monotribustista"
+        },
+        "personaContacto": {
+          "nombre": "Kentaro",
+          "apellido": "Lee",
+          "telefonoPersonal": "78475444",
+          "emailPersonal": "kentarolee@samsung.com",
+          "rol": "gerente de marketing"
+        },
+        "logo": "https://images.samsung.com/is/image/samsung/assets/global/about-us/brand/logo/mo/360_197_1.png?$FB_TYPE_B_PNG$",
+        "id": 1
+      },
+      {
+        "codigo": "QWERTY",
+        "razonSocial": "Sodimac",
+        "rubro": "Construcción",
+        "web": "www.sodimac.com.ar",
+        "email": "contacto@sodimac.com",
+        "telefono": "1122545079",
+        "direccion": {
+          "calle": "Santoro",
+          "numero": "153",
+          "codigoPostal": "1865",
+          "pais": "Argentina",
+          "provincia": "Buenos Aires",
+          "localidad": "Buenos Aires"
+        },
+        "datosFiscales": {
+          "cuit": "20-40849665-9",
+          "iva": "Consumidor Final"
+        },
+        "personaContacto": {
+          "nombre": "Adrián",
+          "apellido": "Partarrieu",
+          "telefonoPersonal": "11224554774",
+          "emailPersonal": "adrian@sodimac.com",
+          "rol": "gerente de ventas"
+        },
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/8/83/Sodimac.svg",
+        "id": 2
+      }
+    ],
+    "ordenes": [
+      {
+        "issueDate": "2023-12-28",
+        "expectedDeliveryDate": "2024-01-04",
+        "info": "Por favor traiganlo a mi casa",
+        "supplier": "Samsung",
+        "products": [
+          {
+            "product": {
+              "supplierName": "Samsung",
+              "code": "PU123",
+              "category": "Teléfonos móviles",
+              "name": "Galaxy S23 Ultra",
+              "description": "El mejor teléfono, lejos",
+              "price": 1300,
+              "img": "https://samsungar.vtexassets.com/arquivos/ids/191397-800-auto?width=800&height=auto&aspect=true",
+              "id": 1
+            },
+            "quantity": 4
+          },
+          {
+            "product": {
+              "supplierName": "Samsung",
+              "code": "PU124",
+              "category": "Laptops",
+              "name": "Tab S8",
+              "description": "Una tablet única",
+              "price": 900,
+              "img": "https://images.samsung.com/is/image/samsung/p6pim/ar/sm-x900nzadaro/gallery/ar-galaxy-tab-s8-ultra-wifi-x900-sm-x900nzadaro-534300787?$650_519_PNG$",
+              "id": 2
+            },
+            "quantity": 5
+          }
+        ],
+        "total": 9700,
+        "status": "Finalizado",
+        "id": 1
+      }
+    ]
