@@ -1,0 +1,20 @@
+.triangle {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-color: transparent transparent transparent #212529;
+    transform: rotate(0deg);
+    position: relative;
+    top:515px;
+    left: -24px;
+    animation: triangle 0.5s ease forwards;
+}
+
+@keyframes triangle {
+    from {
+        border-width: 12px 0 12px 0px;
+    }
+    to {
+        border-width: 12px 0 12px 20px;
+    }
+}
