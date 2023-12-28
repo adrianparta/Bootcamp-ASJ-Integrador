@@ -3,7 +3,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Proveedores</h1>
             <div class="row d-flex justify-content-end mx-1">
-            <a class=" col-1 btn btn-success my-4" routerLink="/add-edit-supplier/-1">Agregar</a>
+            <a class=" col-1 btn btn-success my-4" routerLink="/add-edit-supplier/-1/0">Agregar</a>
             </div>
             
             <div class="card mb-4">
@@ -12,24 +12,35 @@
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Logo</th>
                                 <th>Código</th>
                                 <th>Razon Social</th>
-                                <th>Rubro</th>
-                                <th>Email</th>
+                                <th>web/email/telefono</th>
+                                <th>Nombre y apellido</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         
                         <tbody id="contenido-tabla">
                             <tr *ngFor="let data of datos">
-                                <td>{{data.id}}</td>
+                                <td>
+                                    <div >
+                                        <img (error)="imageNotFound($event)" src="{{data.logo}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
+                                    </div>
+                                </td>
                                 <td>{{data.codigo}}</td>
                                 <td>{{data.razonSocial}}</td>
-                                <td>{{data.rubro}}</td>
-                                <td>{{data.email}}</td>
                                 <td>
-                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-supplier',data.id]">Editar</button>
+                                    <div class="d-flex flex-column ">
+                                        <span>{{data.web}}</span>
+                                        <span>{{data.email}}</span>
+                                        <span>{{data.telefono}}</span>
+                                    </div>
+                                </td>
+                                <td>{{data.personaContacto.nombre}} {{data.personaContacto.apellido}}</td>
+                                <td>
+                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-supplier',data.id, 1]">Detalles</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-supplier',data.id, 0]">Editar</button>
                                     <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteSupplier(data.id)">Borrar</button>
                                 </td>
                             </tr>

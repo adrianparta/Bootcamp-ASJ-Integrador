@@ -23,6 +23,7 @@ export class AgregarProveedorComponent implements OnInit{
   codigoRepetido!: boolean;
   razonSocialRepetida!: boolean;
   id:number = parseInt(this.route.snapshot.params['id']);
+  edit:number = parseInt(this.route.snapshot.params['edit']);
   countries: any;
   states: any;
   cities: any;
@@ -94,6 +95,9 @@ export class AgregarProveedorComponent implements OnInit{
 
     this.serv.getSuppliers().subscribe((data)=>{
       this.supplierList = data;
+      if(this.id != -1){
+        this.supplierList = this.supplierList?.filter((supplier: Supplier) => supplier.id != this.id);
+      }
     });
     
   }
@@ -161,7 +165,7 @@ export class AgregarProveedorComponent implements OnInit{
       case 'codigo':
         valid = this.supplierList.some((supplier: Supplier) => supplier.codigo == value);
         valid ? this.formularioValido = false : this.formularioValido = true;
-        this.codigoRepetido = valid;
+        this.codigoRepetido = valid;        
         break;
       case 'razonSocial':
         valid = this.supplierList.some((supplier: Supplier) => supplier.razonSocial == value);
@@ -174,4 +178,5 @@ export class AgregarProveedorComponent implements OnInit{
   imageNotFound(event: Event): void {
     (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
   }
-}
+
+} 
