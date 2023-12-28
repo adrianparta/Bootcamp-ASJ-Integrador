@@ -100,6 +100,9 @@ export class AgregarProveedorComponent implements OnInit{
       }
     });
     
+    if(this.edit == 1){
+      this.title = 'Detalles del Proveedor';
+    }
   }
 
   agregar(formulario: any){
