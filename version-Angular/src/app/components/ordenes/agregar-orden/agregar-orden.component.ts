@@ -39,7 +39,6 @@ export class AgregarOrdenComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.orden.issueDate = new Date();
     this.mostrarErrores = false;
     if(this.details!=0){
       this.agregarODetalles = 'Detalles de la';
