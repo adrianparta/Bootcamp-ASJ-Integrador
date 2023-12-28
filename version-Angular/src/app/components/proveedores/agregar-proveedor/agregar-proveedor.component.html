@@ -2,7 +2,17 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="my-4">{{title}}</h1>
-            
+            <div class="row mt-4">
+                <div class="col align-items-center  d-flex flex-row justify-content-between mx-1">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/listar-proveedores">Listar proveedores</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row mb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código*</label>
@@ -199,10 +209,28 @@
                         <img (error)="imageNotFound($event)" src="{{proveedor.logo}}" alt="logo {{proveedor.razonSocial}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
-                <div *ngIf="details!=1">
-                    <button class="btn btn-primary me-4" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
-                    <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>
+                <div class="row">
+                <div class="col-2" *ngIf="details!=1">
+                    <div class=" d-flex flex-row">
+                        <button class="btn btn-primary me-4" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
+                        <button class="btn btn-warning" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>        
+                    </div>
                 </div>
+                <div *ngIf="showAlert" class="col-4">
+                    <div class="alert alert-success d-flex justify-content-evenly align-items-center " role="alert">
+                        <div *ngIf="id==-1">
+                            Proveedor agregado con éxito.
+                        </div>
+                        <div *ngIf="id!=-1">
+                            Proveedor modificado con éxito.
+                        </div>
+                        <div>
+                            <button class="btn btn-success " routerLink="/listar-proveedores"><img width="10" height="10" src="https://img.icons8.com/ios/50/delete-sign.png" alt="delete-sign"/></button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
                 <div *ngIf="details==1">
                     <button class="btn btn-warning" routerLink="/listar-proveedores">Volver atrás</button>
                 </div>

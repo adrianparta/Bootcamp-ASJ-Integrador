@@ -13,6 +13,7 @@ import { AgregarOrdenComponent } from './components/ordenes/agregar-orden/agrega
 import { ListarOrdenesComponent } from './components/ordenes/listar-ordenes/listar-ordenes.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ListarProductosComponent,
     AgregarOrdenComponent,
     ListarOrdenesComponent,
-    SidebarComponent
+    SidebarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

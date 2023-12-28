@@ -25,9 +25,11 @@ export class ListarOrdenesComponent {
   }
 
   cancelOrder(order: Order){    
-    order.status = 'Cancelado';
-    this.serv.updateOrder(order).subscribe(()=>{
-      this.getOrders();
-    });
+    if(confirm('¿Está seguro que desea cancelar la orden?')){
+      order.status = 'Cancelado';
+      this.serv.updateOrder(order).subscribe(()=>{
+        this.getOrders();
+      });
+    }
   }
 }

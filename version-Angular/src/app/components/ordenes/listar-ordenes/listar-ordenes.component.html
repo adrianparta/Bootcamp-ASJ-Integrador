@@ -2,12 +2,18 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Ordenes de compra</h1>
-            <div class="row d-flex justify-content-end mx-1">
-                <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-orden/-1/0">Agregar</a>
+            <div class="row">
+                <div class="col align-items-center  d-flex flex-row justify-content-between mx-1">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Listar ordenes</li>
+                        </ol>
+                    </nav>
+                    <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-orden/-1/0">Agregar</a>
+                </div>
             </div>
-            
-            <div class="card mb-4">
-                
+            <div class="row d-flex justify-content-end mx-1">
                 <div class="card-body" *ngIf="datos.length==0">
                     <h2 class="h1">No hay ordenes para listar, agregue una desde el boton de arriba a la derecha</h2>
                 </div>
@@ -34,8 +40,8 @@
                                 <td>{{data.total}}</td>
                                 <td>{{data.status}}</td>
                                 <td>
-                                    <button [routerLink]="['/agregar-orden',data.id,1]">Detalles</button>
-                                    <button (click)="cancelOrder(data)">Cancelar</button>
+                                    <button [routerLink]="['/agregar-orden',data.id,1]" class="btn btn-outline-warning btn-sm me-2">Detalles</button>
+                                    <button (click)="cancelOrder(data)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
                                 </td>
                             </tr>
                         </tbody>

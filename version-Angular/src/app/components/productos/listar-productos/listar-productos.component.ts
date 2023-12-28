@@ -26,9 +26,11 @@ export class ListarProductosComponent {
   }
 
   deleteProduct(id: number | undefined){
-    this.serv.deleteProduct(id).subscribe();
-    this.getProducts();
-    this.ordenar();
+    if(confirm('¿Está seguro que desea eliminar el producto?')){
+      this.serv.deleteProduct(id).subscribe();
+      this.getProducts();
+      this.ordenar();
+    }
   }
 
   imageNotFound(event: Event): void {

@@ -2,8 +2,18 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Productos/Servicios</h1>
+            <div class="row">
+                <div class="col align-items-center  d-flex flex-row justify-content-between mx-1">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Listar productos</li>
+                        </ol>
+                    </nav>
+                    <a class=" col-1 btn btn-success my-4 " routerLink="/add-edit-product/-1/0">Agregar</a>
+                </div>
+            </div>
             <div class="row d-flex justify-content-end mx-1">
-                <a class=" col-1 btn btn-success my-4 " routerLink="/add-edit-product/-1/0">Agregar</a>
             </div>
             
             <div class="card mb-4">

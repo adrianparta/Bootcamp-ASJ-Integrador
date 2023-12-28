@@ -2,6 +2,17 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="my-4">{{title}} producto/servicio</h1>  
+            <div class="row mt-4">
+                <div class="col align-items-center  d-flex flex-row justify-content-between mx-1">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/listar-productos">Listar productos</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{title}} producto/servicio</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
 
                 <div class="row mb-3">

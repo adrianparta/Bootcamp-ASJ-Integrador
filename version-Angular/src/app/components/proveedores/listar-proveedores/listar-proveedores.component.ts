@@ -25,9 +25,11 @@ export class ListarProveedoresComponent implements OnInit {
   }
 
   deleteSupplier(id: number | undefined, supplierName: string){
-    this.serv.deleteSupplier(id, supplierName).subscribe(() => {
-      this.getSuppliers();
-    });
+    if(confirm('¿Está seguro que desea eliminar el proveedor?')){
+      this.serv.deleteSupplier(id, supplierName).subscribe(() => {
+        this.getSuppliers();
+      });
+    }
   }
 
   imageNotFound(event: Event): void {

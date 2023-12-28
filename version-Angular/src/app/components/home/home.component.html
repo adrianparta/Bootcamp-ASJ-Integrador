@@ -1,0 +1,51 @@
+<div *ngIf="serv.login">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Bienvenido</h3>
+                        <h4>Elija una opcion:</h4>
+                    </div>
+                    <div class="card-body">
+                        <button class="text-center btn btn-light btn-lg" routerLink="/listar-proveedores">Proveedores</button>
+                    </div>
+                    <div class="card-body">
+                        <button class="text-center btn btn-light btn-lg" routerLink="/listar-productos">Productos</button>
+                    </div>
+                    <div class="card-body">
+                        <button class="text-center btn btn-light btn-lg" routerLink="/listar-ordenes">Ordenes</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!serv.login">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="usuario">Usuario:</label>
+                                <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contrasena">Contraseña:</label>
+                                <input type="password" class="form-control" id="contrasena" placeholder="Ingrese su contraseña" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" (click)="serv.login = true">Acceder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

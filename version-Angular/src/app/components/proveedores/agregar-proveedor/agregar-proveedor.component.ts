@@ -30,6 +30,7 @@ export class AgregarProveedorComponent implements OnInit{
   disabledInput = false;
   industries: string[] = []
   supplierList!: Supplier[];
+  showAlert: boolean = false;
 
   IVA: string[] = [
     'Consumidor Final',
@@ -113,7 +114,7 @@ export class AgregarProveedorComponent implements OnInit{
       else{
         this.serv.updateSupplier(this.proveedor).subscribe();
       }
-      this.router.navigate(['/listar-proveedores']);
+      this.showAlert = true;
     }
     else{
       this.mostrarErrores = true;

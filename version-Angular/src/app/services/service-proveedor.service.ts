@@ -59,4 +59,6 @@ export class ServiceProveedorService{
   public getIndustries(): Observable<string[]>{
     return this.http.get<string[]>(this.urlindustries);
   }
+
+  public login: boolean = false;
 }
