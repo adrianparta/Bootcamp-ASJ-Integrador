@@ -1,6 +1,9 @@
-"productos": [
-      {
-        "supplierName": "Samsung",
+{
+
+  
+  "productos": [
+    {
+      "supplierName": "Samsung",
         "code": "PU123",
         "category": "Teléfonos móviles",
         "name": "Galaxy S23 Ultra",
@@ -129,3 +132,4 @@
         "id": 1
       }
     ]
+    }
