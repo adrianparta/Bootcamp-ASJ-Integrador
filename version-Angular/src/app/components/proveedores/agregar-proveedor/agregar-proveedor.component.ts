@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Supplier } from '../../../models/supplier';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agregar-proveedor',
@@ -13,7 +14,7 @@ export class AgregarProveedorComponent implements OnInit{
   constructor(public serv: ServiceProveedorService, private route: ActivatedRoute, private router: Router) { }
   
   formularioValido = false;
-  mostrarErrores!: boolean;
+  showErrors!: boolean;
   urlPattern: RegExp = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
   emailPattern: RegExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
   CUITPattern: RegExp = /^(20|23|24|27|30|33|34|40|50|60|70)-?\d{8}-?\d$/;
@@ -22,15 +23,16 @@ export class AgregarProveedorComponent implements OnInit{
   cuitRepetido!: boolean;
   codigoRepetido!: boolean;
   razonSocialRepetida!: boolean;
-  id:number = parseInt(this.route.snapshot.params['id']);
-  details:number = parseInt(this.route.snapshot.params['details']);
+  id?:number;
+  details?:number;
   countries: any;
   states: any;
   cities: any;
   disabledInput = false;
-  industries: string[] = []
+  industries: any;
   supplierList!: Supplier[];
   showAlert: boolean = false;
+  newIndustry: string = '';
 
   IVA: string[] = [
     'Consumidor Final',
@@ -70,7 +72,11 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.mostrarErrores = false;
+
+    this.id = parseInt(this.route.snapshot.params['id']);
+    this.details = parseInt(this.route.snapshot.params['details']);
+
+    this.showErrors = false;
     this.serv.getCountries().subscribe((data)=>{
       this.countries = data;
     });    
@@ -114,10 +120,18 @@ export class AgregarProveedorComponent implements OnInit{
       else{
         this.serv.updateSupplier(this.proveedor).subscribe();
       }
-      this.showAlert = true;
+      Swal.fire({
+        title: 'Proveedor agregado con éxito',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then(()=>{
+        this.router.navigate(['/listar-productos']);
+      });
     }
     else{
-      this.mostrarErrores = true;
+      this.showErrors = true;
     }
   }
 
@@ -180,4 +194,13 @@ export class AgregarProveedorComponent implements OnInit{
     (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
   }
 
+  addNewIndustry(){    
+    this.serv.addIndustry(this.newIndustry).subscribe(() =>{
+      this.serv.getIndustries().subscribe((data)=>{        
+        this.industries = data;
+        this.proveedor.rubro = this.industries[this.industries.length - 1].rubro;
+      });
+      this.newIndustry = '';
+    })
+  }
 } 

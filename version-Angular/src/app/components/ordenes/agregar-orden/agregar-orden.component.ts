@@ -6,6 +6,7 @@ import { ServiceProductoService } from '../../../services/service-producto.servi
 import { Supplier } from '../../../models/supplier';
 import { Product } from '../../../models/products';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agregar-orden',
@@ -21,13 +22,12 @@ export class AgregarOrdenComponent implements OnInit{
   supplierList!: Supplier[];
   productList!: Product[];
   productIdSelected!: number;
-  mostrarErrores!: boolean;
-  showAlert: boolean = false;
+  showErrors!: boolean;
   amountSelected: number = 1;
   blockSelectSupplier: boolean = false;
   toasts: boolean = false;
-  details:number = parseInt(this.route.snapshot.params['details']);
-  id:number = parseInt(this.route.snapshot.params['id']);
+  details?:number;
+  id:number = -1;
   orden: Order = {
     issueDate: new Date(),
     expectedDeliveryDate: new Date(),
@@ -39,7 +39,11 @@ export class AgregarOrdenComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.mostrarErrores = false;
+
+  this.details = parseInt(this.route.snapshot.params['details']);
+  this.id = parseInt(this.route.snapshot.params['id']);
+
+    this.showErrors = false;
     if(this.details!=0){
       this.agregarODetalles = 'Detalles de la';
       this.servSupplier.getSuppliers().subscribe((data: Supplier[])=>{
@@ -64,9 +68,17 @@ export class AgregarOrdenComponent implements OnInit{
     if(formulario.valid && this.orden.expectedDeliveryDate>=this.orden.issueDate || this.orden.total!=0){
       this.orden.status = 'Finalizado';
       this.serv.addOrder(this.orden).subscribe();
-      this.showAlert = true;
+      Swal.fire({
+        title: 'Orden agregada con éxito',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then(()=>{
+        this.router.navigate(['/listar-ordenes']);
+      });
     }else{
-      this.mostrarErrores = true;      
+      this.showErrors = true;      
     }
   }
 

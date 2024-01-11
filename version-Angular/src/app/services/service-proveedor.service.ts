@@ -11,20 +11,18 @@ import { Product } from '../models/products';
 export class ServiceProveedorService{
 
   url = 'http://localhost:3000/proveedores/';
-  private url_countries: string = 'assets/data/countries.json';
-  private url_states: string = 'assets/data/states.json';
-  private url_cities: string = 'assets/data/cities.json';
-  private urlindustries = 'assets/data/industries.json';
 
 
   getCountries(): Observable<any>{
-    return this.http.get(this.url_countries);
+    return this.http.get<String[]>('http://localhost:3000/paises/');
   }
   getStates(): Observable<any>{
-    return this.http.get(this.url_states);
+    return this.http.get<any[]>('http://localhost:3000/provincias/');
+    
   }
   getCities(): Observable<any>{
-    return this.http.get(this.url_cities);
+    return this.http.get<String[]>('http://localhost:3000/localidades/');
+
   }
 
   constructor(private http: HttpClient, private servProduct: ServiceProductoService) {}
@@ -56,8 +54,12 @@ export class ServiceProveedorService{
     return this.http.put<Supplier>(this.url + supplier.id, supplier);
   }
 
-  public getIndustries(): Observable<string[]>{
-    return this.http.get<string[]>(this.urlindustries);
+  public getIndustries(): Observable<any>{
+    return this.http.get<any>('http://localhost:3000/rubros/');
+  }
+
+  public addIndustry(string: string): Observable<any>{
+    return this.http.post<any>('http://localhost:3000/rubros/', {"rubro": string});
   }
 
   public login: boolean = false;

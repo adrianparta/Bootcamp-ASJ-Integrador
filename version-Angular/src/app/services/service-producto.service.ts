@@ -29,11 +29,15 @@ export class ServiceProductoService {
     return this.http.delete<Product>(this.url + id);
   }
 
-  public getCategories(): Observable<string[]>{
-    return this.http.get<string[]>(this.urlCategories);
+  public getCategories(): Observable<any>{
+    return this.http.get<any>('http://localhost:3000/categorias/');
   }
 
   public getSingleProduct(id: number): Observable<Product>{
     return this.http.get<Product>(this.url + id);
+  }
+
+  public addCategory(string: string): Observable<any>{
+    return this.http.post<any>('http://localhost:3000/categorias/', {"categoria": string});
   }
 }

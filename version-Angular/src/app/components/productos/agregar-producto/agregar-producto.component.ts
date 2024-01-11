@@ -4,6 +4,8 @@ import { Product } from '../../../models/products';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 import { Supplier } from '../../../models/supplier';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-agregar-producto',
@@ -14,14 +16,14 @@ export class AgregarProductoComponent implements OnInit{
 
   constructor(public serv: ServiceProductoService, private router: Router, public list: ServiceProveedorService, private route: ActivatedRoute){}
 
-  id: number = parseInt(this.route.snapshot.params['id']);
-  details: number = parseInt(this.route.snapshot.params['details']);
+  id?: number;
+  details?: number;
   title = 'Agregar';
   productList!: Product[];
   agregarOEditar = 'Agregar';
-  mostrarErrores!: boolean;
+  showErrors!: boolean;
   codigoRepetido = false;
-  showAlert: boolean = false;
+  newCategory = '';
 
   product: Product = {
     supplierName: '',
@@ -34,9 +36,12 @@ export class AgregarProductoComponent implements OnInit{
   }
 
   suppliersList!: Supplier[];
-  categoriesList!: string[];
+  categoriesList!: any;
 
   ngOnInit(): void {
+    this.id = parseInt(this.route.snapshot.params['id']);
+    this.details = parseInt(this.route.snapshot.params['details']);
+    
     this.list.getSuppliers().subscribe((data: Supplier[])=>{
       this.suppliersList = data;
     })
@@ -72,10 +77,19 @@ export class AgregarProductoComponent implements OnInit{
       }else{
         this.serv.updateProduct(this.product).subscribe();
       }
-      this.showAlert = true;
+      formulario.reset();
+      Swal.fire({
+        title: 'Producto agregado con éxito',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then(()=>{
+        this.router.navigate(['/listar-productos']);
+      });
     }
     else{
-      this.mostrarErrores = true;
+      this.showErrors = true;
     }
   }
 
@@ -87,5 +101,15 @@ export class AgregarProductoComponent implements OnInit{
 
   imageNotFound(event: Event): void {
     (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+  }
+
+  addNewCategory(){    
+    this.serv.addCategory(this.newCategory).subscribe(() =>{
+      this.serv.getCategories().subscribe((data)=>{        
+        this.categoriesList = data;
+        this.product.category = this.categoriesList[this.categoriesList.length - 1].categoria;
+      });
+      this.newCategory = '';
+    })
   }
 }
