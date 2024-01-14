@@ -13,6 +13,9 @@
                             <li class="breadcrumb-item active" aria-current="page">Listar ordenes</li>
                         </ol>
                     </nav>
+                    <div class="col-4">
+                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filterText">
+                    </div>
                     <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-orden/-1/0">Agregar</a>
                 </div>
             </div>
@@ -35,7 +38,7 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let data of datos">
+                            <tr *ngFor="let data of datos | filterPipe:filterText">
                                 <td>{{data.id}}</td>
                                 <td>{{data.issueDate}}</td>
                                 <td>{{data.expectedDeliveryDate}}</td>

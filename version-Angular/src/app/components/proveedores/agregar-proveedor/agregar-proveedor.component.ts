@@ -127,7 +127,7 @@ export class AgregarProveedorComponent implements OnInit{
         allowEscapeKey: false,
         allowOutsideClick: false,
       }).then(()=>{
-        this.router.navigate(['/listar-productos']);
+        this.router.navigate(['/listar-proveedores']);
       });
     }
     else{

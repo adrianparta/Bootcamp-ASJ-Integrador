@@ -13,10 +13,12 @@
                             <li class="breadcrumb-item active" aria-current="page">Listar proveedores</li>
                         </ol>
                     </nav>
+                    <div class="col-4">
+                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filterText">
+                    </div>
                     <a class=" col-1 btn btn-success my-4" routerLink="/add-edit-supplier/-1/0">Agregar</a>
                 </div>
             </div>
-            
             <div class="card mb-4">
                 <div class="card-body" *ngIf="datos?.length==0">
                     <h2 class="h1">No hay proveedores para listar, agregue uno desde el boton de arriba a la derecha</h2>
@@ -35,7 +37,7 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let data of datos">
+                            <tr *ngFor="let data of datos | filterPipe:filterText">
                                 <td>
                                     <div >
                                         <img (error)="imageNotFound($event)" src="{{data.logo}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">

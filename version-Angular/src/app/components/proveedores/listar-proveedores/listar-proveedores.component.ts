@@ -10,6 +10,7 @@ import { Supplier } from '../../../models/supplier';
 export class ListarProveedoresComponent implements OnInit {
 
   datos!: Supplier[];
+  filterText: string = '';
 
   constructor(public serv: ServiceProveedorService){
   }  
@@ -22,6 +23,7 @@ export class ListarProveedoresComponent implements OnInit {
   
   ngOnInit() {
     this.getSuppliers();
+    this.filterText = '';
   }
 
   deleteSupplier(id: number | undefined, supplierName: string){

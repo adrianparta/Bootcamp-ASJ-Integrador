@@ -11,12 +11,14 @@ import { ServiceProveedorService } from '../../../services/service-proveedor.ser
 export class ListarOrdenesComponent {
 
   datos!: Order[];
+  filterText: string = '';
 
   constructor(public serv: ServiceOrdenService, public servSupplier: ServiceProveedorService){
   }  
 
   ngOnInit() {
     this.getOrders();
+    this.filterText = '';
   }
 
   getOrders(){
