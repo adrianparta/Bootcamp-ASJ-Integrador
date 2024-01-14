@@ -66,7 +66,7 @@ export class AgregarOrdenComponent implements OnInit{
     console.log("hola");
     
     if(formulario.valid && this.orden.expectedDeliveryDate>=this.orden.issueDate || this.orden.total!=0){
-      this.orden.status = 'Finalizado';
+      this.orden.status = 'Activo';
       this.serv.addOrder(this.orden).subscribe();
       Swal.fire({
         title: 'Orden agregada con éxito',
