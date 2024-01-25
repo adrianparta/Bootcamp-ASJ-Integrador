@@ -1,5 +1,6 @@
 package com.bootcamp.proyectointegrador.Controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class ProductoController {
 	ProductoService productoService;
 	
 	@GetMapping
-	public ResponseEntity<Object> getProductos() {
-		return new ResponseEntity<>(productoService.obtenerProductos(), HttpStatus.OK);
+	public ResponseEntity<List<Producto>> getProductos() {
+		return new ResponseEntity<List<Producto>>(productoService.obtenerProductos(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> getProducto(@PathVariable Integer id){
-		return new ResponseEntity<>(productoService.obtenerProducto(id), HttpStatus.OK);
+	public ResponseEntity<Producto> getProducto(@PathVariable Integer id){
+		return new ResponseEntity<Producto>(productoService.obtenerProducto(id), HttpStatus.OK);
 	}
 	
 	@PostMapping
@@ -53,13 +54,13 @@ public class ProductoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProducto(@PathVariable Integer id){
-		return new ResponseEntity<>(productoService.borrarProducto(id), HttpStatus.OK);
+	public ResponseEntity<Producto> deleteProducto(@PathVariable Integer id){
+		return new ResponseEntity<Producto>(productoService.borrarProducto(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> putProducto(@PathVariable Integer id, @RequestBody Producto producto){
-		return new ResponseEntity<>(productoService.modificarProducto(id, producto), HttpStatus.CREATED);
+	public ResponseEntity<Producto> putProducto(@PathVariable Integer id, @RequestBody Producto producto){
+		return new ResponseEntity<Producto>(productoService.modificarProducto(id, producto), HttpStatus.CREATED);
 	}
 	
 	

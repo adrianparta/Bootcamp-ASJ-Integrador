@@ -1,5 +1,6 @@
 package com.bootcamp.proyectointegrador.Models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,16 +17,19 @@ public class Categoria {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(unique = true)
 	@NotBlank(message = "El nombre de la categoría no puede estar vacío")
 	private String categoria;
 	
+	@NotNull(message = "El estado de la categoria no puede ser nulo")
 	private Boolean estado;
 
-	public Categoria(Integer id, @NotBlank(message = "El nombre de la categoría no puede estar vacío") String categoria, Boolean estado) {
+	public Categoria(Integer id, @NotBlank(message = "El nombre de la categoría no puede estar vacío") String categoria,
+			@NotNull(message = "El estado de la categoria no puede ser nulo") Boolean estado) {
 		super();
 		this.id = id;
 		this.categoria = categoria;
-		this.estado = true;
+		this.estado = estado;
 	}
 
 	public Categoria() {
@@ -46,10 +50,6 @@ public class Categoria {
 
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getId() {

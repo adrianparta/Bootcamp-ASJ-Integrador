@@ -30,6 +30,6 @@ public class OrdenService {
 		Orden orden = ordenRepository.findById(id).get();
 		orden.setEstado(false);
 		ordenRepository.save(orden);
-		return orden;  
+		return orden;
 	}
 }

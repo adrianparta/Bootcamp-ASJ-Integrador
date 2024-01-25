@@ -1,19 +1,13 @@
 package com.bootcamp.proyectointegrador.Models;
 
-import java.sql.Timestamp;
-
-import java.sql.*;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Detalles")
@@ -30,10 +24,12 @@ public class Detalle {
 	private Double precio_unitario;
 	
 	@NotNull(message = "La orden no puede estar vacía")
-	private Orden ordenId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Orden orden;
 	
 	@NotNull(message = "El producto no puede estar vacío")
-	private Producto productoId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Producto producto;
 
 	public Detalle(Integer id, @NotNull(message = "La cantidad no puede estar vacía") Integer cantidad,
 			@NotNull(message = "El precio no puede estar vacío") Double precio_unitario, Orden ordenId,
@@ -42,8 +38,8 @@ public class Detalle {
 		this.id = id;
 		this.cantidad = cantidad;
 		this.precio_unitario = precio_unitario;
-		this.ordenId = ordenId;
-		this.productoId = productoId;
+		this.orden = ordenId;
+		this.producto = productoId;
 	}
 
 	public Detalle() {
@@ -67,19 +63,19 @@ public class Detalle {
 	}
 
 	public Orden getOrdenId() {
-		return ordenId;
+		return orden;
 	}
 
 	public void setOrdenId(Orden ordenId) {
-		this.ordenId = ordenId;
+		this.orden = ordenId;
 	}
 
 	public Producto getProductoId() {
-		return productoId;
+		return producto;
 	}
 
 	public void setProductoId(Producto productoId) {
-		this.productoId = productoId;
+		this.producto = productoId;
 	}
 
 	public Integer getId() {

@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 import java.sql.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -52,10 +54,12 @@ public class Producto {
 	private Timestamp updated_at;
 	
 	@NotBlank(message = "Debe seleccionar una categoría")
-	private Categoria categoria_id;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Categoria categoria;
 	
 	@NotBlank(message = "Debe seleccionar un proveedor")
-	private Proveedor proveedor_id;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Proveedor proveedor;
 
 	public Producto(Integer id,
 			@NotBlank(message = "El codigo no puede estar vacío") @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números") String codigo,
@@ -76,8 +80,8 @@ public class Producto {
 		this.estado = estado;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
-		this.categoria_id = categoria_id;
-		this.proveedor_id = proveedor_id;
+		this.categoria = categoria_id;
+		this.proveedor = proveedor_id;
 	}
 
 	public Producto() {
@@ -148,19 +152,19 @@ public class Producto {
 	}
 
 	public Categoria getCategoria_id() {
-		return categoria_id;
+		return categoria;
 	}
 
 	public void setCategoria_id(Categoria categoria_id) {
-		this.categoria_id = categoria_id;
+		this.categoria = categoria_id;
 	}
 
 	public Proveedor getProveedor_id() {
-		return proveedor_id;
+		return proveedor;
 	}
 
 	public void setProveedor_id(Proveedor proveedor_id) {
-		this.proveedor_id = proveedor_id;
+		this.proveedor = proveedor_id;
 	}
 
 	public Integer getId() {

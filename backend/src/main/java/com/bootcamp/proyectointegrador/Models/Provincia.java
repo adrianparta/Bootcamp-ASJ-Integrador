@@ -1,11 +1,9 @@
 package com.bootcamp.proyectointegrador.Models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,15 +20,14 @@ public class Provincia {
 	private String provincia;
 	
 	@NotNull(message = "El pais no puede estar vacío")
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Pais pais;
+	private String pais;
 
 	public Provincia(Integer id, @NotBlank(message = "El nombre de la provincia no puede estar vacío") String provincia,
-			@NotNull(message = "El pais no puede estar vacío") Pais pais) {
+			@NotNull(message = "El pais no puede estar vacío") String paisId) {
 		super();
 		this.id = id;
 		this.provincia = provincia;
-		this.pais = pais;
+		this.pais = paisId;
 	}
 
 	public Provincia() {
@@ -45,12 +42,12 @@ public class Provincia {
 		this.provincia = provincia;
 	}
 
-	public Pais getPais() {
+	public String getPaisId() {
 		return pais;
 	}
 
-	public void setPais(Pais pais) {
-		this.pais = pais;
+	public void setPaisId(String paisId) {
+		this.pais = paisId;
 	}
 
 	public Integer getId() {

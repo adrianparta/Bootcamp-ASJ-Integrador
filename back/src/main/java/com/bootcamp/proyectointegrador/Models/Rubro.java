@@ -20,11 +20,16 @@ public class Rubro {
 	@Column(unique = true)
 	@NotBlank(message = "El nombre del rubro no puede estar vacío")
 	private String rubro;
+	
+	@NotNull(message = "El estado del rubro no puede estar vacío")
+	private Boolean estado;
 
-	public Rubro(Integer id, @NotBlank(message = "El nombre del rubro no puede estar vacío") String rubro) {
+	public Rubro(Integer id, @NotBlank(message = "El nombre del rubro no puede estar vacío") String rubro,
+			@NotNull(message = "El estado del rubro no puede estar vacío") Boolean estado) {
 		super();
 		this.id = id;
 		this.rubro = rubro;
+		this.estado = estado;
 	}
 
 	public Rubro() {
@@ -39,8 +44,18 @@ public class Rubro {
 		this.rubro = rubro;
 	}
 
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+
 	public Integer getId() {
 		return id;
 	}
+	
+
 	
 }

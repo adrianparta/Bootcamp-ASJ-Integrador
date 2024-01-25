@@ -2,18 +2,17 @@ package com.bootcamp.proyectointegrador.Models;
 
 import java.sql.Timestamp;
 
-import java.sql.*;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Ordenes")
@@ -46,7 +45,8 @@ public class Orden {
 	private Timestamp updated_at;
 	
 	@NotNull(message = "Debe seleccionar un proveedor")
-	private Proveedor proveedorId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Proveedor proveedor;
 
 	public Orden(Integer id, @NotNull(message = "La fecha de emision no puede estar vacía") Timestamp fechaEmision,
 			@NotBlank(message = "La fecha de entrega no puede estar vacía") Timestamp fechaEntrega,
@@ -63,7 +63,7 @@ public class Orden {
 		this.estado = estado;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
-		this.proveedorId = proveedorId;
+		this.proveedor = proveedorId;
 	}
 
 	public Orden() {
@@ -119,11 +119,11 @@ public class Orden {
 	}
 
 	public Proveedor getProveedorId() {
-		return proveedorId;
+		return proveedor;
 	}
 
 	public void setProveedorId(Proveedor proveedorId) {
-		this.proveedorId = proveedorId;
+		this.proveedor = proveedorId;
 	}
 
 	public Integer getId() {

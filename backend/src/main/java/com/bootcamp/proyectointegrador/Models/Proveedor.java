@@ -73,9 +73,6 @@ public class Proveedor {
 
 	@NotBlank(message = "El estado no puede estar vacío")
 	private Boolean estado;
-
-	@NotBlank(message = "La localidad no puede estar vacía")
-	private String localidad;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotBlank(message = "created_at vacío")
@@ -89,14 +86,14 @@ public class Proveedor {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Provincia provincia;
 	
+	@NotBlank(message = "La localidad no puede estar vacía")
+	private String localidad;
 	
 	@NotBlank(message = "Debe seleccionar un rubro")
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Rubro rubro;
+	private Integer rubroId;
 	
 	@NotBlank(message = "Debe seleccionar una situación ante el IVA")
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Iva iva;
+	private String ivaId;
 
 	public String getCodigo() {
 		return codigo;
@@ -218,14 +215,6 @@ public class Proveedor {
 		this.estado = estado;
 	}
 
-	public String getLocalidad() {
-		return localidad;
-	}
-
-	public void setLocalidad(String localidad) {
-		this.localidad = localidad;
-	}
-
 	public Timestamp getCreated_at() {
 		return created_at;
 	}
@@ -246,24 +235,32 @@ public class Proveedor {
 		return provincia;
 	}
 
-	public void setProvincia(Provincia provincia) {
+	public void setProvinciaId(Provincia provincia) {
 		this.provincia = provincia;
 	}
 
-	public Rubro getRubro() {
-		return rubro;
+	public String getLocalidad() {
+		return localidad;
 	}
 
-	public void setRubro(Rubro rubro) {
-		this.rubro = rubro;
+	public void setLocalidad(String localidad) {
+		this.localidad = localidad;
 	}
 
-	public Iva getIva() {
-		return iva;
+	public Integer getRubroId() {
+		return rubroId;
 	}
 
-	public void setIva(Iva iva) {
-		this.iva = iva;
+	public void setRubroId(Integer rubroId) {
+		this.rubroId = rubroId;
+	}
+
+	public String getIvaId() {
+		return ivaId;
+	}
+
+	public void setIvaId(String ivaId) {
+		this.ivaId = ivaId;
 	}
 
 	public Integer getId() {
@@ -286,12 +283,12 @@ public class Proveedor {
 			@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "email incorrecto") @NotBlank(message = "El email del contacto no puede estar vacío") String contactoEmail,
 			@NotBlank(message = "El rol del contacto no puede estar vacío") String contactoRol,
 			@NotBlank(message = "El estado no puede estar vacío") Boolean estado,
-			@NotBlank(message = "La localidad no puede estar vacía") String localidad,
 			@NotBlank(message = "created_at vacío") Timestamp created_at,
 			@NotBlank(message = "updated_at vacío") Timestamp updated_at,
 			@NotBlank(message = "Debe seleccionar una provincia") Provincia provincia,
-			@NotBlank(message = "Debe seleccionar un rubro") Rubro rubro,
-			@NotBlank(message = "Debe seleccionar una situación ante el IVA") Iva iva) {
+			@NotBlank(message = "La localidad no puede estar vacía") String localidad,
+			@NotBlank(message = "Debe seleccionar un rubro") Integer rubroId,
+			@NotBlank(message = "Debe seleccionar una situación ante el IVA") String ivaId) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -309,18 +306,19 @@ public class Proveedor {
 		this.contactoEmail = contactoEmail;
 		this.contactoRol = contactoRol;
 		this.estado = estado;
-		this.localidad = localidad;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 		this.provincia = provincia;
-		this.rubro = rubro;
-		this.iva = iva;
+		this.localidad = localidad;
+		this.rubroId = rubroId;
+		this.ivaId = ivaId;
 	}
 
 	public Proveedor() {
 		super();
 	}
 
+	
 	
 }
 

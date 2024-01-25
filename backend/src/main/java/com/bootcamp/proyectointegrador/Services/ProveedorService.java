@@ -29,7 +29,7 @@ public class ProveedorService {
 		Proveedor proveedor = proveedorRepository.findById(id).get();
 		proveedor.setEstado(false);
 		proveedorRepository.save(proveedor);
-		return proveedor;
+		return proveedor;  
 	}
 	
 	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {

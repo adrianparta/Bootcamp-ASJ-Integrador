@@ -10,40 +10,37 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Iva")
-public class Iva {
+@Table(name = "Paises")
+public class Pais {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(unique = true)
-	@NotBlank(message = "El nombre de la condicion frente al IVA no puede estar vacío")
-	private String iva;
+	@NotBlank(message = "El nombre del pais no puede estar vacío")
+	private String pais;
 
-	public Iva(Integer id,
-			@NotBlank(message = "El nombre de la condicion frente al IVA no puede estar vacío") String iva) {
-		super();
+	public Pais(Integer id, @NotBlank(message = "El nombre del pais no puede estar vacío") String pais) {
 		this.id = id;
-		this.iva = iva;
+		this.pais = pais;
 	}
 
-	public Iva() {
-		super();
-		
+	public Pais() {
 	}
 
-	public String getIva() {
-		return iva;
+	public String getPais() {
+		return pais;
 	}
 
-	public void setIva(String iva) {
-		this.iva = iva;
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 	public Integer getId() {
 		return id;
 	}
+	
+	
 	
 	
 }
