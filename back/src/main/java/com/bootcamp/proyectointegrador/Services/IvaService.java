@@ -20,4 +20,8 @@ public class IvaService {
 		return ivaRepository.findAll();
 	}
 	
+	public Iva obtenerIva(Integer id) {
+		return ivaRepository.findById(id).get();
+	}
+	
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,34 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
 import com.bootcamp.proyectointegrador.Models.Categoria;
+import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Services.CategoriaService;
+import com.bootcamp.proyectointegrador.Services.RubroService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaController {
+@RequestMapping("/rubros")
+public class RubroController {
 
 	@Autowired
-	CategoriaService categoriaService;
+	RubroService rubroService;
 	
 	@GetMapping
-	public ResponseEntity<List<Categoria>> getCategorias(){
-		return new ResponseEntity<List<Categoria>>(categoriaService.obtenerCategorias(), HttpStatus.OK);
+	public ResponseEntity<List<Rubro>> getRubros(){
+		return new ResponseEntity<List<Rubro>>(rubroService.obtenerRubros(), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> postCategoria(@Valid @RequestBody Categoria categoria, BindingResult bindingResult){
+	public ResponseEntity<Object> postRubro(@Valid @RequestBody Rubro rubro, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(categoriaService.crearCategoria(categoria), HttpStatus.CREATED);
+		return new ResponseEntity<>(rubroService.crearRubro(rubro), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Categoria> deleteCategoria(@PathVariable Integer id){
-		return new ResponseEntity<Categoria>(categoriaService.borrarCategoria(id), HttpStatus.OK);
+	public ResponseEntity<Rubro> deleteRubro(@PathVariable Integer id){
+		return new ResponseEntity<Rubro>(rubroService.borrarRubro(id), HttpStatus.OK);
 	}
 	
 	

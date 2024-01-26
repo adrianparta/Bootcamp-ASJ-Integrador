@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -29,9 +30,10 @@ public class Proveedor {
 	private String codigo;
 	
 	@NotBlank(message = "La razon social no puede estar vacía")
+	@Pattern(regexp = "^\\w{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos")
 	private String razonSocial;
 
-	@Pattern(regexp = "(https?://(?:www\\\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\\\.[^\\\\s]{2,}|www\\\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\\\.[^\\\\s]{2,}|https?://(?:www\\\\.|(?!www))[a-zA-Z0-9]+\\\\.[^\\\\s]{2,}|www\\\\.[a-zA-Z0-9]+\\\\.[^\\\\s]{2,})\"", message= "url invalida")
+	@Pattern(regexp = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})" , message = "web incorrecta")
 	@NotBlank(message = "La web no puede estar vacía")	
 	private String web;
 	
@@ -39,28 +41,36 @@ public class Proveedor {
 	@NotBlank(message = "El email no puede estar vacío")
 	private String email;
 	
+	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "telefono incorrecto, debe ingresar entre 6 y 20 digitos")
 	@NotBlank(message = "El telefono no puede estar vacío")
 	private String telefono;
 	
+	@Pattern(regexp = "^\\w{4,50}$", message = "calle incorrecta, debe ingresar 4-50 caracteres alfanumericos")
 	@NotBlank(message = "La calle no puede estar vacía")
 	private String calle;
 	
+	@Pattern(regexp = "^[1-9]\\d{0,7}$", message = "altura incorrecta, debe ingresar 1-8 numeros")
 	@NotBlank(message = "La altura de la calle no puede estar vacía")
 	private String altura;
 	
+	@Pattern(regexp = "^\\w{3,10}$", message = "Codigo postal incorrecto, debe ingresar 3-10 caracteres alfanumericos")
 	@NotBlank(message = "El codigo postal no puede estar vacío")
 	private String codigoPostal;
 	
 	@Column(unique = true)
+	@Pattern(regexp = "^(20|23|24|25|26|27|30|33|34)-?\\d{8}-?\\d$", message = "Formato de CUIT invalido")
 	@NotBlank(message = "El CUIT no puede estar vacío")
 	private String cuit;
 	
+	@Pattern(regexp = "^\\w{2,50}$", message = "Nombre invalido, debe ingresar 2-50 caracteres alfanumericos")
 	@NotBlank(message = "El nombre del contacto no puede estar vacío")
 	private String contactoNombre;
 	
+	@Pattern(regexp = "^\\w{2,50}$", message = "Apellido invalido, debe ingresar 2-50 caracteres alfanumericos")
 	@NotBlank(message = "El apellido del contacto no puede estar vacío")
 	private String contactoApellido;
 	
+	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "Telefono invalido, debe ingresar entre 6-20 numeros")
 	@NotBlank(message = "El telefono del contacto no puede estar vacío")
 	private String contactoTelefono;
 	
@@ -68,33 +78,32 @@ public class Proveedor {
 	@NotBlank(message = "El email del contacto no puede estar vacío")
 	private String contactoEmail;
 	
+	@Pattern(regexp = "^\\w{4,50}$", message = "Rol invalido, debe ingresar 4-50 caracteres alfanumericos")
 	@NotBlank(message = "El rol del contacto no puede estar vacío")
 	private String contactoRol;
 
-	@NotBlank(message = "El estado no puede estar vacío")
 	private Boolean estado;
 
+	@Pattern(regexp = "^\\w{4,50}$", message = "Localidad invalida, debe ingresar 4-50 caracteres alfanumericos")
 	@NotBlank(message = "La localidad no puede estar vacía")
 	private String localidad;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank(message = "created_at vacío")
 	private Timestamp created_at;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank(message = "updated_at vacío")
 	private Timestamp updated_at;
 	
-	@NotBlank(message = "Debe seleccionar una provincia")
+	@NotNull(message = "Debe seleccionar una provincia")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Provincia provincia;
 	
 	
-	@NotBlank(message = "Debe seleccionar un rubro")
+	@NotNull(message = "Debe seleccionar un rubro")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Rubro rubro;
 	
-	@NotBlank(message = "Debe seleccionar una situación ante el IVA")
+	@NotNull(message = "Debe seleccionar una situación ante el IVA")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Iva iva;
 
@@ -285,10 +294,7 @@ public class Proveedor {
 			@NotBlank(message = "El telefono del contacto no puede estar vacío") String contactoTelefono,
 			@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "email incorrecto") @NotBlank(message = "El email del contacto no puede estar vacío") String contactoEmail,
 			@NotBlank(message = "El rol del contacto no puede estar vacío") String contactoRol,
-			@NotBlank(message = "El estado no puede estar vacío") Boolean estado,
 			@NotBlank(message = "La localidad no puede estar vacía") String localidad,
-			@NotBlank(message = "created_at vacío") Timestamp created_at,
-			@NotBlank(message = "updated_at vacío") Timestamp updated_at,
 			@NotBlank(message = "Debe seleccionar una provincia") Provincia provincia,
 			@NotBlank(message = "Debe seleccionar un rubro") Rubro rubro,
 			@NotBlank(message = "Debe seleccionar una situación ante el IVA") Iva iva) {
@@ -308,17 +314,19 @@ public class Proveedor {
 		this.contactoTelefono = contactoTelefono;
 		this.contactoEmail = contactoEmail;
 		this.contactoRol = contactoRol;
-		this.estado = estado;
+		this.estado = true;
 		this.localidad = localidad;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
 		this.provincia = provincia;
 		this.rubro = rubro;
 		this.iva = iva;
 	}
 
 	public Proveedor() {
-		super();
+		this.estado = true;
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
 	}
 
 	

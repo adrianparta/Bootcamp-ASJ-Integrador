@@ -17,4 +17,14 @@ public class ProvinciaService {
 	public List<Provincia> obtenerProvincias(){
 		return provinciaRepository.findAll();
 	}
+	
+	public Provincia obtenerProvincia(Integer id) {
+		try {
+			return provinciaRepository.findById(id).get();			
+		}
+		catch(Exception e) {
+			e.getMessage();
+			return null;
+		}
+	}
 }

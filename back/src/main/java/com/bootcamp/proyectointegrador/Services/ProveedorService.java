@@ -1,11 +1,13 @@
 package com.bootcamp.proyectointegrador.Services;
 
+import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Repositories.ProveedorRepository;
+import com.bootcamp.proyectointegrador.Repositories.ProvinciaRepository;
 
 @Service
 public class ProveedorService {
@@ -13,8 +15,17 @@ public class ProveedorService {
 	@Autowired
 	ProveedorRepository proveedorRepository;
 	
+	@Autowired
+	ProvinciaService provinciaService;
+	
+	@Autowired
+	IvaService ivaService;
+	
+	@Autowired
+	RubroService rubroService;
+	
 	public List<Proveedor> obtenerProveedores(){
-		return proveedorRepository.findAll();
+		return proveedorRepository.findByEstadoTrue();
 	}
 	
 	public Proveedor obtenerProveedor(Integer id) {
@@ -22,6 +33,10 @@ public class ProveedorService {
 	}
 	
 	public Proveedor agregarProveedor(Proveedor proveedor) {
+		proveedor.setEstado(true);
+		proveedor.setProvincia(provinciaService.obtenerProvincia(proveedor.getProvincia().getId()));
+		proveedor.setIva(ivaService.obtenerIva(proveedor.getIva().getId()));
+		proveedor.setRubro(rubroService.obtenerRubro(proveedor.getRubro().getId()));
 		return proveedorRepository.save(proveedor);
 	}
 	
@@ -33,6 +48,8 @@ public class ProveedorService {
 	}
 	
 	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {
+		Timestamp time = new Timestamp(System.currentTimeMillis());
+		proveedor.setUpdated_at(time);
 		if(proveedorRepository.findById(id).get() != null) {
 			return proveedorRepository.save(proveedor);
 		}

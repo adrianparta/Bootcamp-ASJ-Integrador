@@ -1,6 +1,9 @@
 package com.bootcamp.proyectointegrador.Services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,15 +23,25 @@ public class RubroService {
 		return rubroRepository.findAll();
 	}
 	
-	public Rubro crearRubro(Rubro rubro) {
-		
-        for (Rubro rubroAux : obtenerRubros()) {
-            if (rubroAux.getRubro().equals(rubro.getRubro())) {
-                rubroAux.setEstado(true);
-                return rubroRepository.save(rubroAux);
-            }
-        }
-		
+	public Rubro obtenerRubro(Integer id) {
+		return rubroRepository.findById(id).get();
+	}
+	
+	public Object crearRubro(Rubro rubro) {
+		rubro.setEstado(true);
+		Optional<Rubro> rubroEncontrado = rubroRepository.findByRubro(rubro.getRubro());
+		if(rubroEncontrado.isPresent()) {
+			if(rubroEncontrado.get().getEstado() == true) {
+				Map<String, String> error = new HashMap<>();
+	        	error.put("categoria", "nombre de categoría repetido");
+	        	return error;
+			}
+			else {
+				rubro.setEstado(true);
+				rubro.setId(rubroEncontrado.get().getId());
+				return rubroRepository.save(rubro);
+			}
+		}
 		return rubroRepository.save(rubro);
 	}
 	

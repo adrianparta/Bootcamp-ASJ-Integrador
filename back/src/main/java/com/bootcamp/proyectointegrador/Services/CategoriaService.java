@@ -24,7 +24,7 @@ public class CategoriaService {
 	public Object crearCategoria(Categoria categoria) {
 		categoria.setEstado(true);
 		Optional<Categoria> categoriaEncontrada = categoriaRepository.findByCategoria(categoria.getCategoria());
-		if(categoriaEncontrada.isPresent()) {	
+		if(categoriaEncontrada.isPresent()) {
 			if(categoriaEncontrada.get().getEstado() == true) {
 				Map<String, String> error = new HashMap<>();
 	        	error.put("categoria", "nombre de categoría repetido");
