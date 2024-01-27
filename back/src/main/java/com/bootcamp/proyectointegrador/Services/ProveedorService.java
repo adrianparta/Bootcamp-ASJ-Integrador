@@ -7,11 +7,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bootcamp.proyectointegrador.Exceptions.IvaNotFoundException;
+import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
+import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
+import com.bootcamp.proyectointegrador.Models.Iva;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Models.Provincia;
+import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Repositories.ProveedorRepository;
 import com.bootcamp.proyectointegrador.Repositories.ProvinciaRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProveedorService {
@@ -29,33 +36,53 @@ public class ProveedorService {
 	RubroService rubroService;
 	
 	public List<Proveedor> obtenerProveedores(){
-		return proveedorRepository.findByEstadoTrue();
+		try {
+	        return proveedorRepository.findByEstadoTrue();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de proveedores.", e);
+	    }
 	}
 	
-	public Proveedor obtenerProveedor(Integer id) {
-		return proveedorRepository.findById(id).get();
+	public Proveedor obtenerProveedor(Integer id) throws ProveedorNotFoundException{
+	    try {
+	        return proveedorRepository.findById(id)
+	                .orElseThrow(() -> new EntityNotFoundException("El proveedor con el ID " + id + " no fue encontrado."));
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener el proveedor con el ID " + id, e);
+	    }
 	}
 	
 	public Proveedor agregarProveedor(Proveedor proveedor) {
 		try {
 	        Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvincia().getId());
-	        proveedor.setProvincia(provincia);
+	        Iva iva = ivaService.obtenerIva(proveedor.getIva().getId());
+	        Rubro rubro = rubroService.obtenerRubro(proveedor.getRubro().getId());
 	        proveedor.setEstado(true);
-	        proveedor.setIva(ivaService.obtenerIva(proveedor.getIva().getId()));
-	        proveedor.setRubro(rubroService.obtenerRubro(proveedor.getRubro().getId()));
+	        proveedor.setProvincia(provincia);
+	        proveedor.setIva(iva);
+	        proveedor.setRubro(rubro);
 	        return proveedorRepository.save(proveedor);
 	    } catch (ProvinciaNotFoundException e) {
-	        throw new RuntimeException("Error al agregar proveedor: " + e.getMessage(), e);
+	        throw new RuntimeException(e.getMessage(), e);
+	    } catch (IvaNotFoundException e) {
+	        throw new RuntimeException(e.getMessage(), e);
+	    } catch (RubroNotFoundException e) {
+	        throw new RuntimeException(e.getMessage(), e);
 	    } catch (Exception e) {
-	        throw new RuntimeException("Error al intentar agregar proveedor", e);
+	        throw new RuntimeException(e);
 	    }
 	}
 	
-	public Proveedor borrarProveedor(Integer id) {
-		Proveedor proveedor = proveedorRepository.findById(id).get();
-		proveedor.setEstado(false);
-		proveedorRepository.save(proveedor);
-		return proveedor;
+	public Proveedor borrarProveedor(Integer id) throws ProveedorNotFoundException{
+		try {
+			Proveedor proveedor = this.obtenerProveedor(id);
+			proveedor.setEstado(false);
+			return proveedorRepository.save(proveedor);
+		} catch (ProveedorNotFoundException e) {
+	        throw new RuntimeException(e.getMessage());
+	    } catch (Exception e) {
+	        throw new RuntimeException(e.getMessage());
+	    }
 	}
 	
 	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {
@@ -66,21 +93,4 @@ public class ProveedorService {
 		}
 		return null;
 	}
-
-	/* // CONSULTA: ALGUNO DE ESTOS METODOS ES MAS ADECUADO?
-	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {
-		Proveedor proveedorAux = proveedorRepository.findById(id).get();
-		if(proveedorAux != null) {
-			proveedorAux.setContactoNombre(proveedor.getContactoNombre());
-			proveedorAux.setCalle(proveedor.getCalle());
-			return proveedorRepository.save(proveedorAux);
-		}
-		return null;
-	}
-	
-	
-	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {
-		proveedorRepository.save(proveedor);
-	}
-	*/
 }

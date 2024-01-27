@@ -1,6 +1,8 @@
 package com.bootcamp.proyectointegrador.Controllers;
 
+import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
+import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Services.ProveedorService;
 
@@ -32,12 +36,22 @@ public class ProveedorController {
 	
 	@GetMapping
 	public ResponseEntity<Object> getProveedores() {
-		return new ResponseEntity<>(proveedorService.obtenerProveedores(), HttpStatus.OK);
+		try {
+	        List<Proveedor> proveedores = proveedorService.obtenerProveedores();
+	        return new ResponseEntity<>(proveedores, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de proveedores: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> getProveedor(@PathVariable Integer id){
-		return new ResponseEntity<>(proveedorService.obtenerProveedor(id), HttpStatus.OK);
+	public ResponseEntity<Object> getProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
+		try {
+			Proveedor proveedor = proveedorService.obtenerProveedor(id);
+			return new ResponseEntity<>(proveedor, HttpStatus.OK);
+		} catch (RuntimeException e){
+			return new ResponseEntity<>("Error al obtener un proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PostMapping
@@ -57,8 +71,13 @@ public class ProveedorController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProveedor(@PathVariable Integer id){
-		return new ResponseEntity<>(proveedorService.borrarProveedor(id), HttpStatus.OK);
+	public ResponseEntity<Object> deleteProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
+		try {
+			Proveedor proveedor = proveedorService.borrarProveedor(id);
+			return new ResponseEntity<>(proveedor, HttpStatus.OK);	
+		} catch(RuntimeException e) {
+			return new ResponseEntity<>("Error al eliminar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PutMapping("/{id}")

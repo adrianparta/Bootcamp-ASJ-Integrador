@@ -8,10 +8,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Categoria;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Repositories.CategoriaRepository;
 import com.bootcamp.proyectointegrador.Repositories.RubroRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class RubroService {
@@ -23,8 +26,16 @@ public class RubroService {
 		return rubroRepository.findAll();
 	}
 	
-	public Rubro obtenerRubro(Integer id) {
-		return rubroRepository.findById(id).get();
+	public Rubro obtenerRubro(Integer id) throws RubroNotFoundException {
+	    try {
+	        return rubroRepository.findById(id)
+	                .orElseThrow(() -> new EntityNotFoundException("El rubro con el ID " + id + " no fue encontrado."));
+	    } catch (EntityNotFoundException e) {
+	        throw new RubroNotFoundException("El rubro con el ID " + id + " no fue encontrado.", e);
+	    } catch (Exception e) {
+	        // Manejo de otras excepciones si es necesario
+	        throw new RuntimeException("Error al intentar obtener el rubro con el ID " + id, e);
+	    }
 	}
 	
 	public Object crearRubro(Rubro rubro) {
