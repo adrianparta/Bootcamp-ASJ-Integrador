@@ -48,8 +48,12 @@ public class ProveedorController {
 			
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<>(proveedorService.agregarProveedor(proveedor), HttpStatus.CREATED);
+		try {
+	        Proveedor nuevoProveedor = proveedorService.agregarProveedor(proveedor);
+	        return new ResponseEntity<>(nuevoProveedor, HttpStatus.CREATED);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al agregar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@DeleteMapping("/{id}")

@@ -2,10 +2,14 @@ package com.bootcamp.proyectointegrador.Services;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
+import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Repositories.ProveedorRepository;
 import com.bootcamp.proyectointegrador.Repositories.ProvinciaRepository;
 
@@ -33,11 +37,18 @@ public class ProveedorService {
 	}
 	
 	public Proveedor agregarProveedor(Proveedor proveedor) {
-		proveedor.setEstado(true);
-		proveedor.setProvincia(provinciaService.obtenerProvincia(proveedor.getProvincia().getId()));
-		proveedor.setIva(ivaService.obtenerIva(proveedor.getIva().getId()));
-		proveedor.setRubro(rubroService.obtenerRubro(proveedor.getRubro().getId()));
-		return proveedorRepository.save(proveedor);
+		try {
+	        Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvincia().getId());
+	        proveedor.setProvincia(provincia);
+	        proveedor.setEstado(true);
+	        proveedor.setIva(ivaService.obtenerIva(proveedor.getIva().getId()));
+	        proveedor.setRubro(rubroService.obtenerRubro(proveedor.getRubro().getId()));
+	        return proveedorRepository.save(proveedor);
+	    } catch (ProvinciaNotFoundException e) {
+	        throw new RuntimeException("Error al agregar proveedor: " + e.getMessage(), e);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar agregar proveedor", e);
+	    }
 	}
 	
 	public Proveedor borrarProveedor(Integer id) {

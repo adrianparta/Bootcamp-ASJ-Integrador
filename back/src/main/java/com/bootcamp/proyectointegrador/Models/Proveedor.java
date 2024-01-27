@@ -30,7 +30,7 @@ public class Proveedor {
 	private String codigo;
 	
 	@NotBlank(message = "La razon social no puede estar vacía")
-	@Pattern(regexp = "^\\w{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos")
+	@Pattern(regexp = "^.{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos")
 	private String razonSocial;
 
 	@Pattern(regexp = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})" , message = "web incorrecta")
@@ -78,13 +78,13 @@ public class Proveedor {
 	@NotBlank(message = "El email del contacto no puede estar vacío")
 	private String contactoEmail;
 	
-	@Pattern(regexp = "^\\w{4,50}$", message = "Rol invalido, debe ingresar 4-50 caracteres alfanumericos")
+	@Pattern(regexp = "^.{4,50}$", message = "Rol invalido, debe ingresar 4-50 caracteres alfanumericos")
 	@NotBlank(message = "El rol del contacto no puede estar vacío")
 	private String contactoRol;
 
 	private Boolean estado;
 
-	@Pattern(regexp = "^\\w{4,50}$", message = "Localidad invalida, debe ingresar 4-50 caracteres alfanumericos")
+	@Pattern(regexp = "^.{4,50}$", message = "Localidad invalida, debe ingresar 4-50 caracteres alfanumericos")
 	@NotBlank(message = "La localidad no puede estar vacía")
 	private String localidad;
 	
