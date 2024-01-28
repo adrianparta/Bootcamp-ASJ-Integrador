@@ -85,12 +85,43 @@ public class ProveedorService {
 	    }
 	}
 	
-	public Proveedor modificarProveedor(Integer id, Proveedor proveedor) {
-		Timestamp time = new Timestamp(System.currentTimeMillis());
-		proveedor.setUpdated_at(time);
-		if(proveedorRepository.findById(id).get() != null) {
-			return proveedorRepository.save(proveedor);
-		}
-		return null;
+	public Proveedor modificarProveedor(Integer id, Proveedor proveedor){
+		try {
+			Proveedor proveedorModificado = this.obtenerProveedor(id);
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			proveedorModificado.setUpdated_at(time);
+			proveedorModificado.setRazonSocial(proveedor.getRazonSocial());
+			proveedorModificado.setWeb(proveedor.getWeb());
+			proveedorModificado.setEmail(proveedor.getEmail());
+			proveedorModificado.setTelefono(proveedor.getTelefono());
+			proveedorModificado.setCalle(proveedor.getCalle());
+			proveedorModificado.setAltura(proveedor.getAltura());
+			proveedorModificado.setCodigoPostal(proveedor.getCodigoPostal());
+			proveedorModificado.setContactoNombre(proveedor.getContactoNombre());
+			proveedorModificado.setContactoApellido(proveedor.getContactoApellido());
+			proveedorModificado.setContactoTelefono(proveedor.getContactoTelefono());
+			proveedorModificado.setContactoEmail(proveedor.getContactoEmail());
+			proveedorModificado.setContactoRol(proveedor.getContactoRol());
+			proveedorModificado.setLocalidad(proveedor.getLocalidad());
+			proveedorModificado.setUrlImagen(proveedor.getUrlImagen());
+			Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvincia().getId());
+	        Iva iva = ivaService.obtenerIva(proveedor.getIva().getId());
+	        Rubro rubro = rubroService.obtenerRubro(proveedor.getRubro().getId());
+	        proveedorModificado.setEstado(true);
+	        proveedorModificado.setProvincia(provincia);
+	        proveedorModificado.setIva(iva);
+	        proveedorModificado.setRubro(rubro);
+			return proveedorRepository.save(proveedorModificado);
+		} catch (ProveedorNotFoundException e) {
+	        throw new RuntimeException(e.getMessage());
+		} catch (ProvinciaNotFoundException e) {
+	        throw new RuntimeException(e.getMessage(), e);
+	    } catch (IvaNotFoundException e) {
+	        throw new RuntimeException(e.getMessage(), e);
+	    } catch (RubroNotFoundException e) {
+	        throw new RuntimeException(e.getMessage(), e);
+	    } catch (Exception e) {
+	        throw new RuntimeException(e.getMessage());
+	    }
 	}
 }

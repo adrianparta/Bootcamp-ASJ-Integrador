@@ -81,7 +81,7 @@ public class ProveedorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> putProveedor(@Valid @PathVariable Integer id, @RequestBody Proveedor proveedor, BindingResult bindingResult){
+	public ResponseEntity<Object> putProveedor(@PathVariable Integer id, @Valid @RequestBody Proveedor proveedor, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
