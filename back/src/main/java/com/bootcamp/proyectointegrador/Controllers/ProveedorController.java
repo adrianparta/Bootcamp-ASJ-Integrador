@@ -81,8 +81,17 @@ public class ProveedorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> putProveedor(@PathVariable Integer id, @RequestBody Proveedor proveedor){
-		return new ResponseEntity<>(proveedorService.modificarProveedor(id, proveedor), HttpStatus.CREATED);
+	public ResponseEntity<Object> putProveedor(@Valid @PathVariable Integer id, @RequestBody Proveedor proveedor, BindingResult bindingResult){
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
+			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+		}
+		try {
+			Proveedor proveedorModificado = proveedorService.modificarProveedor(id, proveedor);
+			return new ResponseEntity<>(proveedorModificado, HttpStatus.OK);
+		} catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al modificar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	
