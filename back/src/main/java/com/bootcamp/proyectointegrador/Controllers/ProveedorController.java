@@ -50,7 +50,7 @@ public class ProveedorController {
 			Proveedor proveedor = proveedorService.obtenerProveedor(id);
 			return new ResponseEntity<>(proveedor, HttpStatus.OK);
 		} catch (RuntimeException e){
-			return new ResponseEntity<>("Error al obtener un proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("Error al obtener proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

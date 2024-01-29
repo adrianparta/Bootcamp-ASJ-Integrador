@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceProductoService } from '../../../services/service-producto.service';
-import { Product } from '../../../models/products';
+import { Product } from '../../../models/producto';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
-import { Supplier } from '../../../models/supplier';
+import { Supplier } from '../../../models/proveedor';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 

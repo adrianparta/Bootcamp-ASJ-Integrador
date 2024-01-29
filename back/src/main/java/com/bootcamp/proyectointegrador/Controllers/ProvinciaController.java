@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootcamp.proyectointegrador.Models.Iva;
 import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Services.ProvinciaService;
 
@@ -20,7 +21,12 @@ public class ProvinciaController {
 	ProvinciaService provinciaService;
 	
 	@GetMapping
-	public ResponseEntity<List<Provincia>> getProvincias(){
-		return new ResponseEntity<List<Provincia>>(provinciaService.obtenerProvincias(), HttpStatus.OK);
+	public ResponseEntity<Object> getProvincias(){
+		try {
+	        List<Provincia> provincias = provinciaService.obtenerProvincias();
+	        return new ResponseEntity<>(provincias, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de provincias: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 }

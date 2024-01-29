@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
-import com.bootcamp.proyectointegrador.Models.Categoria;
+import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Rubro;
-import com.bootcamp.proyectointegrador.Services.CategoriaService;
 import com.bootcamp.proyectointegrador.Services.RubroService;
 
 import jakarta.validation.Valid;
@@ -32,8 +30,13 @@ public class RubroController {
 	RubroService rubroService;
 	
 	@GetMapping
-	public ResponseEntity<List<Rubro>> getRubros(){
-		return new ResponseEntity<List<Rubro>>(rubroService.obtenerRubros(), HttpStatus.OK);
+	public ResponseEntity<Object> getRubros(){
+		try {
+	        List<Rubro> rubros = rubroService.obtenerRubros();
+	        return new ResponseEntity<>(rubros, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de rubros: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 	
 	@PostMapping
@@ -42,12 +45,22 @@ public class RubroController {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(rubroService.crearRubro(rubro), HttpStatus.CREATED);
+		try {
+			Rubro rubroNuevo = rubroService.crearRubro(rubro);
+	        return new ResponseEntity<>(rubroNuevo, HttpStatus.CREATED);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al agregar rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Rubro> deleteRubro(@PathVariable Integer id){
-		return new ResponseEntity<Rubro>(rubroService.borrarRubro(id), HttpStatus.OK);
+	public ResponseEntity<Object> deleteRubro(@PathVariable Integer id) throws RubroNotFoundException{
+		try {
+			Rubro rubro = rubroService.borrarRubro(id);
+			return new ResponseEntity<>(rubro, HttpStatus.OK);	
+		} catch(RuntimeException e) {
+			return new ResponseEntity<>("Error al eliminar rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
 	}
 	
 	

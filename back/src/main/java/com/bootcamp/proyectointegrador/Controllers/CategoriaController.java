@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.Exceptions.CategoriaNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Categoria;
 import com.bootcamp.proyectointegrador.Services.CategoriaService;
 
@@ -30,8 +30,13 @@ public class CategoriaController {
 	CategoriaService categoriaService;
 	
 	@GetMapping
-	public ResponseEntity<List<Categoria>> getCategorias(){
-		return new ResponseEntity<List<Categoria>>(categoriaService.obtenerCategorias(), HttpStatus.OK);
+	public ResponseEntity<Object> getCategorias(){
+		try {
+	        List<Categoria> categorias = categoriaService.obtenerCategorias();
+	        return new ResponseEntity<>(categorias, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de categorías: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }		
 	}
 	
 	@PostMapping
@@ -40,12 +45,22 @@ public class CategoriaController {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(categoriaService.crearCategoria(categoria), HttpStatus.CREATED);
+		try {
+	        Categoria categoriaNueva = categoriaService.crearCategoria(categoria);
+	        return new ResponseEntity<>(categoriaNueva, HttpStatus.CREATED);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al agregar categoria: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Categoria> deleteCategoria(@PathVariable Integer id){
-		return new ResponseEntity<Categoria>(categoriaService.borrarCategoria(id), HttpStatus.OK);
+	public ResponseEntity<Object> deleteCategoria(@PathVariable Integer id) throws CategoriaNotFoundException{
+		try {
+			Categoria categoria = categoriaService.borrarCategoria(id);
+			return new ResponseEntity<>(categoria, HttpStatus.OK);	
+		} catch(RuntimeException e) {
+			return new ResponseEntity<>("Error al eliminar categoria: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
 	}
 	
 	

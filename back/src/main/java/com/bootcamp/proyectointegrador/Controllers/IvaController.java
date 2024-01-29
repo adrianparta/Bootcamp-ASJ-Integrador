@@ -32,7 +32,12 @@ public class IvaController {
 	IvaService ivaService;
 	
 	@GetMapping
-	public ResponseEntity<List<Iva>> getIvas(){
-		return new ResponseEntity<List<Iva>>(ivaService.obtenerIvas(), HttpStatus.OK);
+	public ResponseEntity<Object> getIvas(){
+		try {
+	        List<Iva> ivas = ivaService.obtenerIvas();
+	        return new ResponseEntity<>(ivas, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de ivas: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 }

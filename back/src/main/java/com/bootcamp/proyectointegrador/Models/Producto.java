@@ -36,28 +36,25 @@ public class Producto {
 	@NotBlank(message = "La descripción no puede estar vacía")
 	private String descripcion;
 	
-	@NotBlank(message = "El precio debe ser mayor a 0")
+	@NotNull(message = "El precio debe ser mayor a 0")
 	private Double precio;
 	
 	@Column(nullable = true)
 	private String imagen_url;
 	
-	@NotBlank(message = "El precio no puede estar vacío")
 	private Boolean estado;
 	
-	@NotBlank(message = "created_at vacío")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp created_at;
 	
-	@NotBlank(message = "updated_at vacío")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp updated_at;
 	
-	@NotBlank(message = "Debe seleccionar una categoría")
+	@NotNull(message = "Debe seleccionar una categoría")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Categoria categoria;
 	
-	@NotBlank(message = "Debe seleccionar un proveedor")
+	@NotNull(message = "Debe seleccionar un proveedor")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Proveedor proveedor;
 
@@ -66,22 +63,19 @@ public class Producto {
 			@NotBlank(message = "El codigo no puede estar vacío") String nombre,
 			@NotBlank(message = "La descripción no puede estar vacía") String descripcion,
 			@NotBlank(message = "El precio debe ser mayor a 0") Double precio, String imagen_url,
-			@NotBlank(message = "El precio no puede estar vacío") Boolean estado,
-			@NotBlank(message = "created_at vacío") Timestamp created_at,
-			@NotBlank(message = "updated_at vacío") Timestamp updated_at,
-			@NotBlank(message = "Debe seleccionar una categoría") Categoria categoria_id,
-			@NotBlank(message = "Debe seleccionar un proveedor") Proveedor proveedor_id) {
+			@NotBlank(message = "Debe seleccionar una categoría") Categoria categoria,
+			@NotBlank(message = "Debe seleccionar un proveedor") Proveedor proveedor) {
 		this.id = id;
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.imagen_url = imagen_url;
-		this.estado = estado;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-		this.categoria = categoria_id;
-		this.proveedor = proveedor_id;
+		this.estado = true;
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
+		this.categoria = categoria;
+		this.proveedor = proveedor;
 	}
 
 	public Producto() {
@@ -151,24 +145,28 @@ public class Producto {
 		this.updated_at = updated_at;
 	}
 
-	public Categoria getCategoria_id() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria_id(Categoria categoria_id) {
-		this.categoria = categoria_id;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
-	public Proveedor getProveedor_id() {
+	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	public void setProveedor_id(Proveedor proveedor_id) {
-		this.proveedor = proveedor_id;
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ServiceOrdenService } from '../../../services/service-orden.service';
-import { Order } from '../../../models/orders';
+import { Order } from '../../../models/orden';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 
 @Component({

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceOrdenService } from '../../../services/service-orden.service';
-import { Order } from '../../../models/orders';
+import { Orden } from '../../../models/orden';
 import { ServiceProveedorService } from '../../../services/service-proveedor.service';
 import { ServiceProductoService } from '../../../services/service-producto.service';
-import { Supplier } from '../../../models/supplier';
-import { Product } from '../../../models/products';
+import { Proveedor } from '../../../models/proveedor';
+import { Producto } from '../../../models/producto';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -19,8 +19,8 @@ export class AgregarOrdenComponent implements OnInit{
 
   fechaActual = new Date().toISOString().split('T')[0];
   agregarODetalles:string = 'Agregar'
-  supplierList!: Supplier[];
-  productList!: Product[];
+  supplierList!: Proveedor[];
+  productList!: Producto[];
   productIdSelected!: number;
   showErrors!: boolean;
   amountSelected: number = 1;
@@ -28,14 +28,37 @@ export class AgregarOrdenComponent implements OnInit{
   toasts: boolean = false;
   details?:number;
   id:number = -1;
-  orden: Order = {
-    issueDate: new Date(),
-    expectedDeliveryDate: new Date(),
+  order: Orden = {
+    id: 0,
+    fechaEmision: new Date(),
+    fechaEntrega: new Date(),
     info: '',
-    supplier: '',
-    products: [],
-    total: 0,
-    status: ''
+    estado: true,
+    created_at: new Date(),
+    updated_at: new Date(),
+    proveedor: {
+      id: 0,
+    codigo: '',
+    razonSocial: '',
+    web: '',
+    email: '',
+    telefono: '',
+    calle: '',
+    altura: '',
+    codigoPostal: '',
+    cuit: '',
+    contactoNombre: '',
+    contactoApellido: '',
+    contactoTelefono: '',
+    contactoEmail: '',
+    contactoRol: '',
+    estado: true,
+    localidad: '',
+    url_imagen: '',
+    created_at: Date,
+    updated_at: Date
+    provincia: Provincia
+    }
   }
 
   ngOnInit(): void {

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.Exceptions.ProductoNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Producto;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Services.ProductoService;
@@ -32,13 +33,23 @@ public class ProductoController {
 	ProductoService productoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Producto>> getProductos() {
-		return new ResponseEntity<List<Producto>>(productoService.obtenerProductos(), HttpStatus.OK);
+	public ResponseEntity<Object> getProductos() {
+		try {
+	        List<Producto> productos = productoService.obtenerProductos();
+	        return new ResponseEntity<>(productos, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }		
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Producto> getProducto(@PathVariable Integer id){
-		return new ResponseEntity<Producto>(productoService.obtenerProducto(id), HttpStatus.OK);
+	public ResponseEntity<Object> getProducto(@PathVariable Integer id) throws ProductoNotFoundException{
+		try {
+			Producto producto = productoService.obtenerProducto(id);
+			return new ResponseEntity<>(producto, HttpStatus.OK);
+		} catch (RuntimeException e){
+			return new ResponseEntity<>("Error al obtener producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	@PostMapping
@@ -46,23 +57,39 @@ public class ProductoController {
 		
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
-			
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<>(productoService.agregarProducto(producto), HttpStatus.CREATED);
+		try {
+	        Producto nuevoProducto = productoService.agregarProducto(producto);
+	        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al agregar producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Producto> deleteProducto(@PathVariable Integer id){
-		return new ResponseEntity<Producto>(productoService.borrarProducto(id), HttpStatus.OK);
+	public ResponseEntity<Object> deleteProducto(@PathVariable Integer id) throws ProductoNotFoundException{
+		try {
+			Producto producto = productoService.borrarProducto(id);
+			return new ResponseEntity<>(producto, HttpStatus.OK);	
+		} catch(RuntimeException e) {
+			return new ResponseEntity<>("Error al eliminar producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Producto> putProducto(@PathVariable Integer id, @RequestBody Producto producto){
-		return new ResponseEntity<Producto>(productoService.modificarProducto(id, producto), HttpStatus.CREATED);
+	public ResponseEntity<Object> putProducto(@PathVariable Integer id,@Valid @RequestBody Producto producto, BindingResult bindingResult){
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
+			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+		}
+		try {
+			Producto productoModificado = productoService.modificarProducto(id, producto);
+			return new ResponseEntity<>(productoModificado, HttpStatus.OK);
+		} catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al modificar producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
-	
 	
 	
 }

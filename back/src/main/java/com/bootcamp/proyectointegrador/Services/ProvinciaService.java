@@ -1,8 +1,6 @@
 package com.bootcamp.proyectointegrador.Services;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,11 @@ public class ProvinciaService {
 	ProvinciaRepository provinciaRepository;
 	
 	public List<Provincia> obtenerProvincias(){
-		return provinciaRepository.findAll();
+		try {
+	        return provinciaRepository.findAll();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de provincias.", e);
+	    }	
 	}
 	
 	public Provincia obtenerProvincia(Integer id) throws ProvinciaNotFoundException {

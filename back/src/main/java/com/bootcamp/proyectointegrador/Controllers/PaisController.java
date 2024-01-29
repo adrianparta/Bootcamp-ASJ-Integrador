@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootcamp.proyectointegrador.Models.Iva;
 import com.bootcamp.proyectointegrador.Models.Pais;
 import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Services.PaisService;
@@ -22,7 +23,12 @@ public class PaisController {
 	PaisService paisService;
 	
 	@GetMapping
-	public ResponseEntity<List<Pais>> getPaises(){
-		return new ResponseEntity<List<Pais>>(paisService.obtenerPaises(), HttpStatus.OK);
+	public ResponseEntity<Object> getPaises(){
+		try {
+	        List<Pais> paises = paisService.obtenerPaises();
+	        return new ResponseEntity<>(paises, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de paises: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
 	}
 }

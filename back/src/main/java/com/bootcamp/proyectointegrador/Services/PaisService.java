@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bootcamp.proyectointegrador.Models.Pais;
-import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Repositories.PaisRepository;
-import com.bootcamp.proyectointegrador.Repositories.ProvinciaRepository;
 
 @Service
 public class PaisService {
@@ -17,6 +15,10 @@ public class PaisService {
 	PaisRepository paisRepository;
 	
 	public List<Pais> obtenerPaises(){
-		return paisRepository.findAll();
+		try {
+	        return paisRepository.findAll();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de paises.", e);
+	    }	
 	}
 }
