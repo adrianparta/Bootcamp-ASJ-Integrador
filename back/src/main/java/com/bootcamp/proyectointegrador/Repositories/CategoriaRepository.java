@@ -10,4 +10,5 @@ import com.bootcamp.proyectointegrador.Models.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 	List<Categoria>findByEstadoTrue();
 	Optional<Categoria> findByCategoria(String categoria);
+	boolean existsByCategoria(String categoria);
 }

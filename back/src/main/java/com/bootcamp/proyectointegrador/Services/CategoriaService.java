@@ -54,13 +54,15 @@ public class CategoriaService {
 	    }
 	}
 	
-	public Categoria borrarCategoria(Integer id) {
+	public Categoria modificarCategoria(Integer id, Categoria categoria) {
 		try {
-			Categoria categoria = this.obtenerCategoria(id);
-			categoria.setEstado(false);
-			return categoriaRepository.save(categoria);
-		} catch (CategoriaNotFoundException e) {
-	        throw new RuntimeException(e.getMessage());
+			Categoria categoriaModificada = this.obtenerCategoria(id);
+			if(categoriaRepository.existsByCategoria(categoria.getCategoria()) && !categoriaModificada.getCategoria().equals(categoria.getCategoria())) {
+				throw new RuntimeException("El codigo ya está en uso");
+			}
+			categoriaModificada.setCategoria(categoria.getCategoria());
+			categoriaModificada.setEstado(categoria.getEstado());
+			return categoriaRepository.save(categoriaModificada);
 	    } catch (Exception e) {
 	        throw new RuntimeException(e.getMessage());
 	    }
