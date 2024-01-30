@@ -1,5 +1,6 @@
 package com.bootcamp.proyectointegrador.Controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
-import com.bootcamp.proyectointegrador.Models.Orden;
-import com.bootcamp.proyectointegrador.Models.Producto;
+import com.bootcamp.proyectointegrador.DTOs.OrdenDTO;
+import com.bootcamp.proyectointegrador.DTOs.ProductoDTO;
+import com.bootcamp.proyectointegrador.Exceptions.OrdenNotFoundException;
+import com.bootcamp.proyectointegrador.Exceptions.ProductoNotFoundException;
 import com.bootcamp.proyectointegrador.Services.OrdenService;
-import com.bootcamp.proyectointegrador.Services.ProductoService;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,29 +33,48 @@ public class OrdenController {
 	
 	@GetMapping
 	public ResponseEntity<Object> getOrdenes() {
-		return new ResponseEntity<>(ordenService.obtenerOrdenes(), HttpStatus.OK);
+		try {
+	        List<OrdenDTO> ordenes = ordenService.obtenerOrdenes();
+	        return new ResponseEntity<>(ordenes, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> getOrden(@PathVariable Integer id){
-		return new ResponseEntity<>(ordenService.obtenerOrden(id), HttpStatus.OK);
+	public ResponseEntity<Object> getOrden(@PathVariable Integer id) throws OrdenNotFoundException{
+		try {
+			OrdenDTO ordenDTO = ordenService.obtenerOrdenDTO(id);
+			return new ResponseEntity<>(ordenDTO, HttpStatus.OK);
+		} catch (RuntimeException e){
+			return new ResponseEntity<>("Error al obtener orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> postOrden(@Valid @RequestBody Orden orden, BindingResult bindingResult){
+	public ResponseEntity<Object> postOrden(@Valid @RequestBody OrdenDTO ordenDTO, BindingResult bindingResult){
 		
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<>(ordenService.agregarOrden(orden), HttpStatus.CREATED);
+		try {
+	        OrdenDTO nuevaOrdenDTO = ordenService.agregarOrden(ordenDTO);
+	        return new ResponseEntity<>(nuevaOrdenDTO, HttpStatus.CREATED);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al agregar orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteOrden(@PathVariable Integer id){
-		return new ResponseEntity<>(ordenService.borrarOrden(id), HttpStatus.OK);
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> deleteOrden(@PathVariable Integer id) throws OrdenNotFoundException{
+		try {
+			OrdenDTO ordenDTO = ordenService.borrarOrden(id);
+			return new ResponseEntity<>(ordenDTO, HttpStatus.OK);	
+		} catch(RuntimeException e) {
+			return new ResponseEntity<>("Error al eliminar/activar orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 }

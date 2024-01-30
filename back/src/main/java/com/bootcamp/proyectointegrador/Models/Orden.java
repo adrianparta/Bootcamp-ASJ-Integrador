@@ -2,6 +2,8 @@ package com.bootcamp.proyectointegrador.Models;
 
 import java.sql.Timestamp;
 
+import com.bootcamp.proyectointegrador.DTOs.OrdenDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,28 +25,21 @@ public class Orden {
 	private Integer id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "La fecha de emision no puede estar vacía")
 	private Timestamp fechaEmision;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank(message = "La fecha de entrega no puede estar vacía")
 	private Timestamp fechaEntrega;
 	
-	@NotBlank(message = "La informacion de recepción no puede estar vacía")
 	private String info;
 	
-	@NotNull(message = "El estado no puede estar vacío")
 	private Boolean estado;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank(message = "created_at vacío")
 	private Timestamp created_at;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank(message = "updated_at vacío")
 	private Timestamp updated_at;
 	
-	@NotNull(message = "Debe seleccionar un proveedor")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Proveedor proveedor;
 
@@ -66,6 +61,17 @@ public class Orden {
 		this.proveedor = proveedorId;
 	}
 
+	public Orden(OrdenDTO ordenDTO, Proveedor proveedor) {
+		this.id = ordenDTO.getId();
+		this.fechaEmision = ordenDTO.getFechaEmision();
+		this.fechaEntrega = ordenDTO.getFechaEntrega();
+		this.info = ordenDTO.getInfo();
+		this.estado = ordenDTO.getEstado();
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
+		this.proveedor = proveedor;
+	}
+	
 	public Orden() {
 		super();
 	}
@@ -118,11 +124,11 @@ public class Orden {
 		this.updated_at = updated_at;
 	}
 
-	public Proveedor getProveedorId() {
+	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	public void setProveedorId(Proveedor proveedorId) {
+	public void setProveedor(Proveedor proveedorId) {
 		this.proveedor = proveedorId;
 	}
 

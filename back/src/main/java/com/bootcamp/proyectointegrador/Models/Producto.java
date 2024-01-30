@@ -2,6 +2,8 @@ package com.bootcamp.proyectointegrador.Models;
 
 import java.sql.Timestamp;
 
+import com.bootcamp.proyectointegrador.DTOs.ProductoDTO;
+
 import java.sql.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,17 +28,12 @@ public class Producto {
 	private Integer id;
 	
 	@Column(unique = true)
-	@NotBlank(message = "El codigo no puede estar vacío")
-    @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números")
 	private String codigo;
 	
-	@NotBlank(message = "El codigo no puede estar vacío")
 	private String nombre;
 	
-	@NotBlank(message = "La descripción no puede estar vacía")
 	private String descripcion;
 	
-	@NotNull(message = "El precio debe ser mayor a 0")
 	private Double precio;
 	
 	@Column(nullable = true)
@@ -50,11 +47,9 @@ public class Producto {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp updated_at;
 	
-	@NotNull(message = "Debe seleccionar una categoría")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Categoria categoria;
 	
-	@NotNull(message = "Debe seleccionar un proveedor")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Proveedor proveedor;
 
@@ -78,6 +73,19 @@ public class Producto {
 		this.proveedor = proveedor;
 	}
 
+	public Producto(ProductoDTO productoDTO, Categoria categoria, Proveedor proveedor) {
+		this.codigo = productoDTO.getCodigo();
+		this.nombre = productoDTO.getNombre();
+		this.descripcion = productoDTO.getDescripcion();
+		this.precio = productoDTO.getPrecio();
+		this.imagen_url = productoDTO.getImagen_url();
+		this.estado = productoDTO.getEstado();
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
+		this.categoria = categoria;
+		this.proveedor = proveedor;
+	}
+	
 	public Producto() {
 	}
 

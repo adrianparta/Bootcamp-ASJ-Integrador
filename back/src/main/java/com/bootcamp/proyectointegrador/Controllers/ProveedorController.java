@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.DTOs.ProveedorDTO;
 import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
-import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
-import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Services.ProveedorService;
 
 import jakarta.validation.Valid;
@@ -37,7 +36,7 @@ public class ProveedorController {
 	@GetMapping
 	public ResponseEntity<Object> getProveedores() {
 		try {
-	        List<Proveedor> proveedores = proveedorService.obtenerProveedores();
+	        List<ProveedorDTO> proveedores = proveedorService.obtenerProveedores();
 	        return new ResponseEntity<>(proveedores, HttpStatus.OK);
 	    } catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al obtener la lista de proveedores: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,7 +46,7 @@ public class ProveedorController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
 		try {
-			Proveedor proveedor = proveedorService.obtenerProveedor(id);
+			ProveedorDTO proveedor = proveedorService.obtenerProveedorDTO(id);
 			return new ResponseEntity<>(proveedor, HttpStatus.OK);
 		} catch (RuntimeException e){
 			return new ResponseEntity<>("Error al obtener proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,7 +54,7 @@ public class ProveedorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> postProveedor(@Valid @RequestBody Proveedor proveedor, BindingResult bindingResult){
+	public ResponseEntity<Object> postProveedor(@Valid @RequestBody ProveedorDTO proveedorDTO, BindingResult bindingResult){
 		
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
@@ -63,8 +62,8 @@ public class ProveedorController {
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
 		try {
-	        Proveedor nuevoProveedor = proveedorService.agregarProveedor(proveedor);
-	        return new ResponseEntity<>(nuevoProveedor, HttpStatus.CREATED);
+	        ProveedorDTO nuevoProveedorDTO = proveedorService.agregarProveedor(proveedorDTO);
+	        return new ResponseEntity<>(nuevoProveedorDTO, HttpStatus.CREATED);
 	    } catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al agregar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
@@ -73,7 +72,7 @@ public class ProveedorController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
 		try {
-			Proveedor proveedor = proveedorService.borrarProveedor(id);
+			ProveedorDTO proveedor = proveedorService.borrarProveedor(id);
 			return new ResponseEntity<>(proveedor, HttpStatus.OK);	
 		} catch(RuntimeException e) {
 			return new ResponseEntity<>("Error al eliminar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,13 +80,13 @@ public class ProveedorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> putProveedor(@PathVariable Integer id, @Valid @RequestBody Proveedor proveedor, BindingResult bindingResult){
+	public ResponseEntity<Object> putProveedor(@PathVariable Integer id, @Valid @RequestBody ProveedorDTO proveedorDTO, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
 		try {
-			Proveedor proveedorModificado = proveedorService.modificarProveedor(id, proveedor);
+			ProveedorDTO proveedorModificado = proveedorService.modificarProveedor(id, proveedorDTO);
 			return new ResponseEntity<>(proveedorModificado, HttpStatus.OK);
 		} catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al modificar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

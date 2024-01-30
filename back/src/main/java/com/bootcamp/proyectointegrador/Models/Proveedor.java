@@ -2,6 +2,8 @@ package com.bootcamp.proyectointegrador.Models;
 
 import java.sql.Timestamp;
 
+import com.bootcamp.proyectointegrador.DTOs.ProveedorDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,70 +27,39 @@ public class Proveedor {
 	private Integer id;
 	
 	@Column(unique = true)
-	@NotBlank(message = "El codigo no puede estar vacío")
-    @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números")
 	private String codigo;
 	
-	@NotBlank(message = "La razon social no puede estar vacía")
-	@Pattern(regexp = "^.{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos")
 	private String razonSocial;
 
-	@Pattern(regexp = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})" , message = "web incorrecta")
-	@NotBlank(message = "La web no puede estar vacía")	
 	private String web;
 	
-	@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "email incorrecto")
-	@NotBlank(message = "El email no puede estar vacío")
 	private String email;
 	
-	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "telefono incorrecto, debe ingresar entre 6 y 20 digitos")
-	@NotBlank(message = "El telefono no puede estar vacío")
 	private String telefono;
 	
-	@Pattern(regexp = "^\\w{4,50}$", message = "calle incorrecta, debe ingresar 4-50 caracteres alfanumericos")
-	@NotBlank(message = "La calle no puede estar vacía")
 	private String calle;
 	
-	@Pattern(regexp = "^[1-9]\\d{0,7}$", message = "altura incorrecta, debe ingresar 1-8 numeros")
-	@NotBlank(message = "La altura de la calle no puede estar vacía")
 	private String altura;
 	
-	@Pattern(regexp = "^\\w{3,10}$", message = "Codigo postal incorrecto, debe ingresar 3-10 caracteres alfanumericos")
-	@NotBlank(message = "El codigo postal no puede estar vacío")
 	private String codigoPostal;
 	
 	@Column(unique = true)
-	@Pattern(regexp = "^(20|23|24|25|26|27|30|33|34)-?\\d{8}-?\\d$", message = "Formato de CUIT invalido")
-	@NotBlank(message = "El CUIT no puede estar vacío")
 	private String cuit;
 	
-	@Pattern(regexp = "^\\w{2,50}$", message = "Nombre invalido, debe ingresar 2-50 caracteres alfanumericos")
-	@NotBlank(message = "El nombre del contacto no puede estar vacío")
 	private String contactoNombre;
 	
-	@Pattern(regexp = "^\\w{2,50}$", message = "Apellido invalido, debe ingresar 2-50 caracteres alfanumericos")
-	@NotBlank(message = "El apellido del contacto no puede estar vacío")
 	private String contactoApellido;
 	
-	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "Telefono invalido, debe ingresar entre 6-20 numeros")
-	@NotBlank(message = "El telefono del contacto no puede estar vacío")
 	private String contactoTelefono;
 	
-	@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "email incorrecto")
-	@NotBlank(message = "El email del contacto no puede estar vacío")
 	private String contactoEmail;
 	
-	@Pattern(regexp = "^.{4,50}$", message = "Rol invalido, debe ingresar 4-50 caracteres alfanumericos")
-	@NotBlank(message = "El rol del contacto no puede estar vacío")
 	private String contactoRol;
 
 	private Boolean estado;
 
-	@Pattern(regexp = "^.{4,50}$", message = "Localidad invalida, debe ingresar 4-50 caracteres alfanumericos")
-	@NotBlank(message = "La localidad no puede estar vacía")
 	private String localidad;
 	
-	@NotBlank(message = "La url de la imagen no puede estar vacía")
 	private String urlImagen;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -97,16 +68,12 @@ public class Proveedor {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp updated_at;
 	
-	@NotNull(message = "Debe seleccionar una provincia")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Provincia provincia;
 	
-	
-	@NotNull(message = "Debe seleccionar un rubro")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Rubro rubro;
 	
-	@NotNull(message = "Debe seleccionar una situación ante el IVA")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Iva iva;
 
@@ -290,7 +257,7 @@ public class Proveedor {
 		return id;
 	}
 
-	public Proveedor(Integer id,
+	public Proveedor(
 			@NotBlank(message = "El codigo no puede estar vacío") @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números") String codigo,
 			@NotBlank(message = "La razon social no puede estar vacía") @Pattern(regexp = "^.{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos") String razonSocial,
 			@Pattern(regexp = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", message = "web incorrecta") @NotBlank(message = "La web no puede estar vacía") String web,
@@ -310,7 +277,6 @@ public class Proveedor {
 			@NotNull(message = "Debe seleccionar un rubro") Rubro rubro,
 			@NotNull(message = "Debe seleccionar una situación ante el IVA") Iva iva) {
 		super();
-		this.id = id;
 		this.codigo = codigo;
 		this.razonSocial = razonSocial;
 		this.web = web;
@@ -339,7 +305,30 @@ public class Proveedor {
 		super();
 	}
 
-	
+	public Proveedor(ProveedorDTO proveedorDTO, Provincia provincia, Rubro rubro, Iva iva) {
+		this.codigo = proveedorDTO.getCodigo();
+		this.razonSocial = proveedorDTO.getRazonSocial();
+		this.web = proveedorDTO.getWeb();
+		this.email = proveedorDTO.getEmail();
+		this.telefono = proveedorDTO.getTelefono();
+		this.calle = proveedorDTO.getCalle();
+		this.altura = proveedorDTO.getAltura();
+		this.codigoPostal = proveedorDTO.getCodigoPostal();
+		this.cuit = proveedorDTO.getCuit();
+		this.contactoNombre = proveedorDTO.getContactoNombre();
+		this.contactoApellido = proveedorDTO.getContactoApellido();
+		this.contactoTelefono = proveedorDTO.getContactoTelefono();
+		this.contactoEmail = proveedorDTO.getContactoEmail();
+		this.contactoRol = proveedorDTO.getContactoRol();
+		this.estado = proveedorDTO.getEstado();
+		this.localidad = proveedorDTO.getLocalidad();
+		this.urlImagen = proveedorDTO.getUrlImagen();
+		this.created_at = new Timestamp(System.currentTimeMillis());
+		this.updated_at = new Timestamp(System.currentTimeMillis());
+		this.provincia = provincia;
+		this.rubro = rubro;
+		this.iva = iva;
+	}
 
 	
 }

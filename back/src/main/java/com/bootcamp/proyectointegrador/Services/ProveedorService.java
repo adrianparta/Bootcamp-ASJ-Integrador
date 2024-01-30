@@ -1,14 +1,12 @@
 package com.bootcamp.proyectointegrador.Services;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bootcamp.proyectointegrador.DTOs.ProveedorDTO;
 import com.bootcamp.proyectointegrador.Exceptions.IvaNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
@@ -20,8 +18,6 @@ import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Repositories.ProductoRepository;
 import com.bootcamp.proyectointegrador.Repositories.ProveedorRepository;
-import com.bootcamp.proyectointegrador.Repositories.ProvinciaRepository;
-
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -42,9 +38,16 @@ public class ProveedorService {
 	@Autowired
 	ProductoRepository productoRepository;
 	
-	public List<Proveedor> obtenerProveedores(){
+	public List<ProveedorDTO> obtenerProveedores(){
 		try {
-	        return proveedorRepository.findByEstadoTrue();
+	        List<Proveedor> proveedores =  proveedorRepository.findByEstadoTrue();
+	        List<ProveedorDTO> proveedoresDTO = new ArrayList<ProveedorDTO>();
+	        for (Proveedor proveedor : proveedores) {
+				ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
+				proveedoresDTO.add(proveedorDTO);
+			}
+	        return proveedoresDTO;
+	        
 	    } catch (Exception e) {
 	        throw new RuntimeException("Error al intentar obtener la lista de proveedores.", e);
 	    }
@@ -59,25 +62,39 @@ public class ProveedorService {
 	    }
 	}
 	
-	public Proveedor agregarProveedor(Proveedor proveedor) {
+	public ProveedorDTO obtenerProveedorDTO(Integer id) throws ProveedorNotFoundException{
+	    try {
+	        Proveedor proveedor = this.obtenerProveedor(id);
+	    	ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
+	        return proveedorDTO;
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener el proveedor con el ID " + id, e);
+	    }
+	}
+	
+	public ProveedorDTO agregarProveedor(ProveedorDTO proveedorDTO) {
 		try {
-			if(proveedorRepository.existsByCodigo(proveedor.getCodigo())) {
+			if(proveedorRepository.existsByCodigo(proveedorDTO.getCodigo())) {
 				throw new RuntimeException("El codigo ya está en uso");
 			}
-			if(proveedorRepository.existsByCuit(proveedor.getCuit())) {
+			if(proveedorRepository.existsByCuit(proveedorDTO.getCuit())) {
 				throw new RuntimeException("El cuit ya está en uso");
 			}
-	        Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvincia().getId());
-	        Iva iva = ivaService.obtenerIva(proveedor.getIva().getId());
-	        Rubro rubro = rubroService.obtenerRubro(proveedor.getRubro().getId());
+	        Provincia provincia = provinciaService.obtenerProvincia(proveedorDTO.getProvinciaId());
+	        Iva iva = ivaService.obtenerIva(proveedorDTO.getIvaId());
+	        Rubro rubro = rubroService.obtenerRubro(proveedorDTO.getRubroId());
 	        if(!rubro.getEstado()) {
 	        	throw new RuntimeException("El rubro que intenta seleccionar está deshabilitado");
 	        }
-	        proveedor.setEstado(true);
-	        proveedor.setProvincia(provincia);
-	        proveedor.setIva(iva);
-	        proveedor.setRubro(rubro);
-	        return proveedorRepository.save(proveedor);
+	        
+	        Proveedor proveedor = new Proveedor(proveedorDTO, provincia, rubro, iva);
+	        proveedorRepository.save(proveedor);
+	        
+	        proveedorDTO.setId(proveedor.getId());
+	        proveedorDTO.setProvincia(proveedor.getProvincia().getProvincia());
+	        proveedorDTO.setPais(proveedor.getProvincia().getPais().getPais());
+	        proveedorDTO.setEstado(true);
+	        return proveedorDTO;
 	    } catch (ProvinciaNotFoundException e) {
 	        throw new RuntimeException(e.getMessage(), e);
 	    } catch (IvaNotFoundException e) {
@@ -89,7 +106,7 @@ public class ProveedorService {
 	    }
 	}
 	
-	public Proveedor borrarProveedor(Integer id) throws ProveedorNotFoundException{
+	public ProveedorDTO borrarProveedor(Integer id) throws ProveedorNotFoundException{
 		try {
 			Proveedor proveedor = this.obtenerProveedor(id);
 			proveedor.setEstado(false);
@@ -97,7 +114,9 @@ public class ProveedorService {
 			for (Producto producto : productos) {
 				productoRepository.delete(producto);
 			}
-			return proveedorRepository.save(proveedor);
+			proveedorRepository.save(proveedor);
+			ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
+			return proveedorDTO;
 		} catch (ProveedorNotFoundException e) {
 	        throw new RuntimeException(e.getMessage());
 	    } catch (Exception e) {
@@ -105,7 +124,7 @@ public class ProveedorService {
 	    }
 	}
 	
-	public Proveedor modificarProveedor(Integer id, Proveedor proveedor){
+	public ProveedorDTO modificarProveedor(Integer id, ProveedorDTO proveedor){
 		try {
 			Proveedor proveedorModificado = this.obtenerProveedor(id);
 			Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -124,9 +143,9 @@ public class ProveedorService {
 			proveedorModificado.setContactoRol(proveedor.getContactoRol());
 			proveedorModificado.setLocalidad(proveedor.getLocalidad());
 			proveedorModificado.setUrlImagen(proveedor.getUrlImagen());
-			Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvincia().getId());
-	        Iva iva = ivaService.obtenerIva(proveedor.getIva().getId());
-	        Rubro rubro = rubroService.obtenerRubro(proveedor.getRubro().getId());
+			Provincia provincia = provinciaService.obtenerProvincia(proveedor.getProvinciaId());
+	        Iva iva = ivaService.obtenerIva(proveedor.getIvaId());
+	        Rubro rubro = rubroService.obtenerRubro(proveedor.getRubroId());
 	        if(!rubro.getEstado() && rubro.getId() != proveedorModificado.getRubro().getId()) {
 	            throw new RuntimeException("El rubro que intenta seleccionar está deshabilitado");
 	        }
@@ -134,7 +153,10 @@ public class ProveedorService {
 	        proveedorModificado.setProvincia(provincia);
 	        proveedorModificado.setIva(iva);
 	        proveedorModificado.setRubro(rubro);
-			return proveedorRepository.save(proveedorModificado);
+			proveedorRepository.save(proveedorModificado);
+			
+			ProveedorDTO proveedorDTO = new ProveedorDTO(proveedorModificado);
+			return proveedorDTO;
 		} catch (ProveedorNotFoundException e) {
 	        throw new RuntimeException(e.getMessage());
 		} catch (ProvinciaNotFoundException e) {
