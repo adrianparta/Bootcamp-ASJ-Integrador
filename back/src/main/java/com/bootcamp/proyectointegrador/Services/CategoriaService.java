@@ -58,7 +58,7 @@ public class CategoriaService {
 		try {
 			Categoria categoriaModificada = this.obtenerCategoria(id);
 			if(categoriaRepository.existsByCategoria(categoria.getCategoria()) && !categoriaModificada.getCategoria().equals(categoria.getCategoria())) {
-				throw new RuntimeException("El codigo ya está en uso");
+				throw new RuntimeException("El nombre de categoría ya está en uso");
 			}
 			categoriaModificada.setCategoria(categoria.getCategoria());
 			categoriaModificada.setEstado(categoria.getEstado());

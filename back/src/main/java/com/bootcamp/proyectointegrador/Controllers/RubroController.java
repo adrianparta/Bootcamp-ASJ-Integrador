@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
-import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Services.RubroService;
 
@@ -53,14 +52,18 @@ public class RubroController {
 	    }
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteRubro(@PathVariable Integer id) throws RubroNotFoundException{
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> deleteRubro(@PathVariable Integer id,@Valid @RequestBody Rubro rubro, BindingResult bindingResult){
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
+			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+		}
 		try {
-			Rubro rubro = rubroService.borrarRubro(id);
-			return new ResponseEntity<>(rubro, HttpStatus.OK);	
-		} catch(RuntimeException e) {
-			return new ResponseEntity<>("Error al eliminar rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}		
+			Rubro rubroModificado = rubroService.modificarRubro(id, rubro);
+			return new ResponseEntity<>(rubroModificado, HttpStatus.OK);
+		} catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al modificar rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }			
 	}
 	
 	

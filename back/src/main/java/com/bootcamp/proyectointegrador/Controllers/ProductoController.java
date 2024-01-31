@@ -64,13 +64,13 @@ public class ProductoController {
 	    }	
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProducto(@PathVariable Integer id) throws ProductoNotFoundException{
+	@PutMapping("/{id}/estado")
+	public ResponseEntity<Object> deleteOrActivateProducto(@PathVariable Integer id) throws ProductoNotFoundException{
 		try {
-			ProductoDTO productoDTO = productoService.borrarProducto(id);
+			ProductoDTO productoDTO = productoService.modificarEstadoProducto(id);
 			return new ResponseEntity<>(productoDTO, HttpStatus.OK);	
 		} catch(RuntimeException e) {
-			return new ResponseEntity<>("Error al eliminar producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("Error al modificar el estado del producto producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
 	}
 	

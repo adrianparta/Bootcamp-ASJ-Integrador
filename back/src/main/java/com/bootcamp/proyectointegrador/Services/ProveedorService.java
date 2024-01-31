@@ -106,10 +106,10 @@ public class ProveedorService {
 	    }
 	}
 	
-	public ProveedorDTO borrarProveedor(Integer id) throws ProveedorNotFoundException{
+	public ProveedorDTO modificarEstadoProveedor(Integer id) throws ProveedorNotFoundException{
 		try {
 			Proveedor proveedor = this.obtenerProveedor(id);
-			proveedor.setEstado(false);
+			proveedor.setEstado(!proveedor.getEstado());
 			List<Producto> productos = productoRepository.findByProveedor(proveedor);
 			for (Producto producto : productos) {
 				productoRepository.delete(producto);

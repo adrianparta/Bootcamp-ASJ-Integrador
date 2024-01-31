@@ -57,13 +57,15 @@ public class RubroService {
 	    }
 	}
 	
-	public Rubro borrarRubro(Integer id) {
+	public Rubro modificarRubro(Integer id, Rubro rubro) {
 		try {
-			Rubro rubro = this.obtenerRubro(id);
-			rubro.setEstado(false);
-			return rubroRepository.save(rubro);
-		} catch (RubroNotFoundException e) {
-	        throw new RuntimeException(e.getMessage());
+			Rubro rubroModificado = this.obtenerRubro(id);
+			if(rubroRepository.existsByRubro(rubro.getRubro()) && !rubroModificado.getRubro().equals(rubro.getRubro())) {
+				throw new RuntimeException("El nombre de rubro ya está en uso ya está en uso");
+			}
+			rubroModificado.setRubro(rubro.getRubro());
+			rubroModificado.setEstado(rubro.getEstado());
+			return rubroRepository.save(rubroModificado);
 	    } catch (Exception e) {
 	        throw new RuntimeException(e.getMessage());
 	    }

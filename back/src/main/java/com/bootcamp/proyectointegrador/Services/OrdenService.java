@@ -9,14 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.bootcamp.proyectointegrador.DTOs.DetalleDTO;
 import com.bootcamp.proyectointegrador.DTOs.OrdenDTO;
-import com.bootcamp.proyectointegrador.DTOs.ProductoDTO;
 import com.bootcamp.proyectointegrador.Exceptions.OrdenNotFoundException;
-import com.bootcamp.proyectointegrador.Exceptions.ProductoNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Orden;
-import com.bootcamp.proyectointegrador.Models.Producto;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
-import com.bootcamp.proyectointegrador.Repositories.DetalleRepository;
 import com.bootcamp.proyectointegrador.Repositories.OrdenRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -100,7 +96,7 @@ public class OrdenService {
 	    }
 	}
 	
-	public OrdenDTO borrarOrden(Integer id) throws OrdenNotFoundException{
+	public OrdenDTO modificarEstadoOrden(Integer id) throws OrdenNotFoundException{
 		try {
 			Orden orden = this.obtenerOrden(id);
 			orden.setEstado(!orden.getEstado());

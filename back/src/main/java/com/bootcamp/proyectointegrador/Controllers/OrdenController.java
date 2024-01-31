@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
 import com.bootcamp.proyectointegrador.DTOs.OrdenDTO;
-import com.bootcamp.proyectointegrador.DTOs.ProductoDTO;
 import com.bootcamp.proyectointegrador.Exceptions.OrdenNotFoundException;
-import com.bootcamp.proyectointegrador.Exceptions.ProductoNotFoundException;
 import com.bootcamp.proyectointegrador.Services.OrdenService;
 import jakarta.validation.Valid;
 
@@ -68,9 +65,9 @@ public class OrdenController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> deleteOrden(@PathVariable Integer id) throws OrdenNotFoundException{
+	public ResponseEntity<Object> deleteActivateOrden(@PathVariable Integer id) throws OrdenNotFoundException{
 		try {
-			OrdenDTO ordenDTO = ordenService.borrarOrden(id);
+			OrdenDTO ordenDTO = ordenService.modificarEstadoOrden(id);
 			return new ResponseEntity<>(ordenDTO, HttpStatus.OK);	
 		} catch(RuntimeException e) {
 			return new ResponseEntity<>("Error al eliminar/activar orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

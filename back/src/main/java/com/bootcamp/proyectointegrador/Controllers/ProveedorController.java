@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,10 +68,10 @@ public class ProveedorController {
 	    }
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
+	@PutMapping("/{id}/estado")
+	public ResponseEntity<Object> deleteActivateProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
 		try {
-			ProveedorDTO proveedor = proveedorService.borrarProveedor(id);
+			ProveedorDTO proveedor = proveedorService.modificarEstadoProveedor(id);
 			return new ResponseEntity<>(proveedor, HttpStatus.OK);	
 		} catch(RuntimeException e) {
 			return new ResponseEntity<>("Error al eliminar proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

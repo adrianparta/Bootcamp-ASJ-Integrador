@@ -95,10 +95,10 @@ public class ProductoService {
 	    }
 	}
 	
-	public ProductoDTO borrarProducto(Integer id) throws ProductoNotFoundException{
+	public ProductoDTO modificarEstadoProducto(Integer id) throws ProductoNotFoundException{
 		try {
 			Producto producto = this.obtenerProducto(id);
-			producto.setEstado(false);
+			producto.setEstado(!producto.getEstado());
 			productoRepository.save(producto);
 			
 			ProductoDTO productoDTO = new ProductoDTO(producto);
@@ -113,7 +113,11 @@ public class ProductoService {
 	public ProductoDTO modificarProducto(Integer id, ProductoDTO producto) {
 		try {
 			Producto productoModificado = this.obtenerProducto(id);
+			if(productoRepository.existsByCodigo(producto.getCodigo()) && !producto.getCodigo().equals(productoModificado.getCodigo())) {
+				throw new RuntimeException("El codigo ya está en uso");
+			}
 			Timestamp time = new Timestamp(System.currentTimeMillis());
+			productoModificado.setCodigo(producto.getCodigo());
 			productoModificado.setUpdated_at(time);
 			productoModificado.setNombre(producto.getNombre());
 			productoModificado.setDescripcion(producto.getDescripcion());
