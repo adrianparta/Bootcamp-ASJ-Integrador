@@ -5,6 +5,7 @@ import com.bootcamp.proyectointegrador.Models.Proveedor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class ProveedorDTO {
 
@@ -12,11 +13,11 @@ public class ProveedorDTO {
 	
 
 	@NotBlank(message = "El codigo no puede estar vacío")
-    @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números")
+    @Pattern(regexp = "^[A-Z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras mayusculas seguidas de 3 números")
 	private String codigo;
 	
 	@NotBlank(message = "La razon social no puede estar vacía")
-	@Pattern(regexp = "^.{4,50}$", message = "Razon social incorrecta, debe ingresar 4-50 caracteres alfanumericos")
+	@Size(min = 4, max = 50, message = "El nombre debe tener entre 4 y 50 caracteres")
 	private String razonSocial;
 
 	@Pattern(regexp = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})" , message = "web incorrecta")
@@ -27,11 +28,11 @@ public class ProveedorDTO {
 	@NotBlank(message = "El email no puede estar vacío")
 	private String email;
 	
-	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "telefono incorrecto, debe ingresar entre 6 y 20 digitos")
-	@NotBlank(message = "El telefono no puede estar vacío")
+	@Pattern(regexp = "^[0-9]{6,20}$", message = "El campo debe contener solo números y tener entre 6 y 20 dígitos")
+    @NotBlank(message = "El telefono no puede estar vacío")
 	private String telefono;
 	
-	@Pattern(regexp = "^\\w{4,50}$", message = "calle incorrecta, debe ingresar 4-50 caracteres alfanumericos")
+	@Size(min = 4, max = 50, message = "El nombre debe tener entre 4 y 50 caracteres")
 	@NotBlank(message = "La calle no puede estar vacía")
 	private String calle;
 	
@@ -39,7 +40,7 @@ public class ProveedorDTO {
 	@NotBlank(message = "La altura de la calle no puede estar vacía")
 	private String altura;
 	
-	@Pattern(regexp = "^\\w{3,10}$", message = "Codigo postal incorrecto, debe ingresar 3-10 caracteres alfanumericos")
+	@Size(min = 3, max = 10, message = "El nombre debe tener entre 3 y 10 caracteres")
 	@NotBlank(message = "El codigo postal no puede estar vacío")
 	private String codigoPostal;
 	
@@ -47,29 +48,28 @@ public class ProveedorDTO {
 	@NotBlank(message = "El CUIT no puede estar vacío")
 	private String cuit;
 	
-	@Pattern(regexp = "^\\w{2,50}$", message = "Nombre invalido, debe ingresar 2-50 caracteres alfanumericos")
+	@Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
 	@NotBlank(message = "El nombre del contacto no puede estar vacío")
 	private String contactoNombre;
 	
-	@Pattern(regexp = "^\\w{2,50}$", message = "Apellido invalido, debe ingresar 2-50 caracteres alfanumericos")
-	@NotBlank(message = "El apellido del contacto no puede estar vacío")
+	@Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")@NotBlank(message = "El apellido del contacto no puede estar vacío")
 	private String contactoApellido;
 	
-	@Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "Telefono invalido, debe ingresar entre 6-20 numeros")
-	@NotBlank(message = "El telefono del contacto no puede estar vacío")
+	@Pattern(regexp = "^[0-9]{6,20}$", message = "El campo debe contener solo números y tener entre 6 y 20 dígitos")
+    @NotBlank(message = "El telefono del contacto no puede estar vacío")
 	private String contactoTelefono;
 	
 	@Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "email incorrecto")
 	@NotBlank(message = "El email del contacto no puede estar vacío")
 	private String contactoEmail;
 	
-	@Pattern(regexp = "^.{4,50}$", message = "Rol invalido, debe ingresar 4-50 caracteres alfanumericos")
+	@Size(min = 4, max = 50, message = "El nombre debe tener entre 4 y 50 caracteres")
 	@NotBlank(message = "El rol del contacto no puede estar vacío")
 	private String contactoRol;
 
 	private Boolean estado;
 
-	@Pattern(regexp = "^.{4,50}$", message = "Localidad invalida, debe ingresar 4-50 caracteres alfanumericos")
+	@Size(min = 4, max = 50, message = "El nombre debe tener entre 4 y 50 caracteres")
 	@NotBlank(message = "La localidad no puede estar vacía")
 	private String localidad;
 	

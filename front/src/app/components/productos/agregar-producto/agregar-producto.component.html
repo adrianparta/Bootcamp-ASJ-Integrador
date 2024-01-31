@@ -21,7 +21,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código/SKU*</label>
                     <div class="col-sm-10">
-                        <input (keyup)="comprobarRepetido(codigo)" [disabled]="details == 1" required type="text" class="form-control" id="inputCodigo" minlength="3" maxlength="6" [(ngModel)]="product.code" name="codigo" #codigo="ngModel">
+                        <input (keyup)="comprobarRepetido(codigo)" [disabled]="details == 1" required type="text" class="form-control" id="inputCodigo" minlength="3" maxlength="6" [(ngModel)]="product.codigo" name="codigo" #codigo="ngModel">
                         <div class="form-text text-danger" *ngIf="codigoRepetido && codigo.value.length > 0">
                             El código ingresado pertenece a otro producto.
                         </div>
@@ -34,7 +34,7 @@
                     <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría*</label>
                     <div class="col-sm-10 row">
                         <div class="col-4">
-                            <select [disabled]="details == 1" required class="form-select " name="categoria" id="selectCategoria" [(ngModel)]="product.category">
+                            <select [disabled]="details == 1" required class="form-select " name="categoria" id="selectCategoria" [(ngModel)]="product.categoria">
                                 <option disabled value="">Seleccione una categoría:</option>
                                 <option *ngFor="let item of categoriesList" value={{item.categoria}}>{{item.categoria}}</option>
                             </select>
@@ -54,7 +54,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto*</label>
                     <div class="col-sm-10">
-                        <input minlength="4" maxlength="50" [disabled]="details == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="product.name" name="nombre">
+                        <input minlength="4" maxlength="50" [disabled]="details == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="product.nombre" name="nombre">
                         <div class="form-text text-danger " *ngIf="formulario.controls['nombre']?.hasError('minlength') || (showErrors && formulario.controls['nombre']?.hasError('required'))">
                             Este campo debe tener entre 4-50 caracteres.
                         </div>
@@ -63,7 +63,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción*</label>
                     <div class="col-sm-10">
-                        <textarea required class="form-control" [disabled]="details == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="product.description" minlength="10" maxlength="250"></textarea>
+                        <textarea required class="form-control" [disabled]="details == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="product.descripcion" minlength="10" maxlength="250"></textarea>
                         <div class="form-text text-danger " *ngIf="formulario.controls['descripcion']?.hasError('minlength') || (showErrors && formulario.controls['descripcion']?.hasError('required'))">
                             Este campo debe tener entre 10-250 caracteres.
                         </div>
@@ -72,8 +72,8 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputPrecio" class="col-sm-2 col-form-label">Precio*</label>
                     <div class="col-sm-10">
-                        <input [disabled]="details == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="product.price" name="precio">
-                        <div class="form-text text-danger " *ngIf="product.price == null && showErrors || formulario.controls['precio']?.hasError('min') || formulario.controls['precio']?.hasError('max')">
+                        <input [disabled]="details == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="product.precio" name="precio">
+                        <div class="form-text text-danger " *ngIf="product.precio == null && showErrors || formulario.controls['precio']?.hasError('min') || formulario.controls['precio']?.hasError('max')">
                             El precio debe ser mayor o igual a 1 y menor a 10 millones.
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor*</label>
                     <div class="col-sm-10">
-                        <select [disabled]="details == 1" required class="form-select " name="proveedor" id="selectProveedor" [(ngModel)]="product.supplierName">
+                        <select [disabled]="details == 1" required class="form-select " name="proveedor" id="selectProveedor" [(ngModel)]="product.proveedor">
                             <option disabled value="">Seleccione un proveedor:</option>
                             <option *ngFor="let item of suppliersList" value={{item.razonSocial}}>{{item.razonSocial}}</option>
                         </select>
@@ -93,10 +93,10 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="url" class="col-sm-2 col-form-label">imagen</label>
                     <div class="col-sm-7">
-                        <input [disabled]="details == 1" type="text" class="form-control" id="url" [(ngModel)]="product.img" name="url">
+                        <input [disabled]="details == 1" type="text" class="form-control" id="url" [(ngModel)]="product.imagen_url" name="url">
                     </div>
                     <div class="col-sm-3">
-                        <img (error)="imageNotFound($event)" src="{{product.img}}" alt="{{product.name}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
+                        <img (error)="imageNotFound($event)" src="{{product.imagen_url}}" alt="{{product.nombre}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
                 <div class="row">

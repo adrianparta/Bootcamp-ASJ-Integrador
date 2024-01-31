@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,8 @@ import com.bootcamp.proyectointegrador.Services.RubroService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/rubros")
+@RequestMapping("/rubros/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RubroController {
 
 	@Autowired
@@ -38,7 +40,7 @@ public class RubroController {
 	    }	
 	}
 	
-	@PostMapping
+	@PostMapping()
 	public ResponseEntity<Object> postRubro(@Valid @RequestBody Rubro rubro, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
@@ -52,8 +54,8 @@ public class RubroController {
 	    }
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<Object> deleteRubro(@PathVariable Integer id,@Valid @RequestBody Rubro rubro, BindingResult bindingResult){
+	@PutMapping("{id}")
+	public ResponseEntity<Object> putRubro(@PathVariable Integer id,@Valid @RequestBody Rubro rubro, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);

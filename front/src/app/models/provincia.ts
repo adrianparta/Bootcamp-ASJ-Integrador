@@ -1,4 +1,4 @@
 export interface Provincia{
-    id?: number;
+    id: number;
     provincia: string;
 }

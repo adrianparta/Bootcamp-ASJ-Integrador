@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceOrdenService } from '../../../services/service-orden.service';
-import { Order } from '../../../models/orden';
-import { ServiceProveedorService } from '../../../services/service-proveedor.service';
+import { Orden } from '../../../models/orden';
+import { ProveedorService } from '../../../services/service-proveedor.service';
 
 @Component({
   selector: 'app-listar-ordenes',
@@ -10,10 +10,10 @@ import { ServiceProveedorService } from '../../../services/service-proveedor.ser
 })
 export class ListarOrdenesComponent {
 
-  datos!: Order[];
+  datos!: Orden[];
   filterText: string = '';
 
-  constructor(public serv: ServiceOrdenService, public servSupplier: ServiceProveedorService){
+  constructor(public serv: ServiceOrdenService, public servSupplier: ProveedorService){
   }  
 
   ngOnInit() {
@@ -27,9 +27,9 @@ export class ListarOrdenesComponent {
     });
   }
 
-  cancelOrder(order: Order){    
+  cancelOrder(order: Orden){    
     if(confirm('¿Está seguro que desea cancelar la orden?')){
-      order.status = 'Cancelado';
+      order.estado = true;
       this.serv.updateOrder(order).subscribe(()=>{
         this.getOrders();
       });

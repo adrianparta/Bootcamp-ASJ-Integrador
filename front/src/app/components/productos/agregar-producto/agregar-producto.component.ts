@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceProductoService } from '../../../services/service-producto.service';
-import { Product } from '../../../models/producto';
-import { ServiceProveedorService } from '../../../services/service-proveedor.service';
-import { Supplier } from '../../../models/proveedor';
+import { Producto } from '../../../models/producto';
+import { ProveedorService } from '../../../services/service-proveedor.service';
+import { Proveedor } from '../../../models/proveedor';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -14,35 +14,35 @@ import Swal from 'sweetalert2';
 })
 export class AgregarProductoComponent implements OnInit{
 
-  constructor(public serv: ServiceProductoService, private router: Router, public list: ServiceProveedorService, private route: ActivatedRoute){}
+  constructor(public serv: ServiceProductoService, private router: Router, public list: ProveedorService, private route: ActivatedRoute){}
 
   id?: number;
   details?: number;
   title = 'Agregar';
-  productList!: Product[];
+  productList!: Producto[];
   agregarOEditar = 'Agregar';
   showErrors!: boolean;
   codigoRepetido = false;
   newCategory = '';
 
-  product: Product = {
-    supplierName: '',
-    code: '',
-    category: '',
-    name: '',
-    description: '',
-    price: 1,
-    img: '',
+  product: Producto = {
+    codigo: '',
+    nombre: '',
+    descripcion: '',
+    precio: 0,
+    imagen_url: '',
+    categoriaId: 0,
+    proveedorId: 0
   }
 
-  suppliersList!: Supplier[];
+  suppliersList!: Proveedor[];
   categoriesList!: any;
 
   ngOnInit(): void {
     this.id = parseInt(this.route.snapshot.params['id']);
     this.details = parseInt(this.route.snapshot.params['details']);
     
-    this.list.getSuppliers().subscribe((data: Supplier[])=>{
+    this.list.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
       this.suppliersList = data;
     })
     this.serv.getCategories().subscribe((data: string[])=>{
@@ -52,15 +52,15 @@ export class AgregarProductoComponent implements OnInit{
     if(this.id!=-1){
       this.title = 'Editar';
       this.agregarOEditar = 'Editar';
-      this.serv.getSingleProduct(this.id).subscribe((data: Product)=>{
+      this.serv.getSingleProduct(this.id).subscribe((data: Producto)=>{
         this.product = data;
       })
     }
 
-    this.serv.getProducts().subscribe((data: Product[])=>{
+    this.serv.obtenerProductos().subscribe((data: Producto[])=>{
       this.productList = data;
       if(this.id!=-1){
-        this.productList = this.productList?.filter((product: Product)=>product.id!=this.id);
+        this.productList = this.productList?.filter((product: Producto)=>product.id!=this.id);
       }
     });
 
@@ -95,7 +95,7 @@ export class AgregarProductoComponent implements OnInit{
 
   comprobarRepetido(inputCode: any){
     let invalid!: boolean;
-    invalid = this.productList.some((product: Product)=> product.code==inputCode.value);
+    invalid = this.productList.some((producto: Producto)=> producto.codigo==inputCode.value);
     invalid ? this.codigoRepetido = true : this.codigoRepetido = false;    
   }
 
@@ -107,7 +107,7 @@ export class AgregarProductoComponent implements OnInit{
     this.serv.addCategory(this.newCategory).subscribe(() =>{
       this.serv.getCategories().subscribe((data)=>{        
         this.categoriesList = data;
-        this.product.category = this.categoriesList[this.categoriesList.length - 1].categoria;
+        this.product.categoria = this.categoriesList[this.categoriesList.length - 1].categoria;
       });
       this.newCategory = '';
     })

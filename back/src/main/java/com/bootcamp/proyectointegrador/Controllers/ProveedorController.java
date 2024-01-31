@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +27,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/proveedores")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/proveedores/")
 public class ProveedorController {
 
 	@Autowired
 	ProveedorService proveedorService;
 	
+	@GetMapping("estado/{estado}")
+	public ResponseEntity<Object> getProveedoresByEstado(@PathVariable Boolean estado) {
+		try {
+	        List<ProveedorDTO> proveedores = proveedorService.obtenerProveedoresPorEstado(estado);
+	        return new ResponseEntity<>(proveedores, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de proveedores: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
+	}
+	
 	@GetMapping
-	public ResponseEntity<Object> getProveedores() {
+	public ResponseEntity<Object> getProveedores(){
 		try {
 	        List<ProveedorDTO> proveedores = proveedorService.obtenerProveedores();
 	        return new ResponseEntity<>(proveedores, HttpStatus.OK);
@@ -42,7 +54,7 @@ public class ProveedorController {
 	    }	
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<Object> getProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
 		try {
 			ProveedorDTO proveedor = proveedorService.obtenerProveedorDTO(id);
@@ -68,7 +80,7 @@ public class ProveedorController {
 	    }
 	}
 	
-	@PutMapping("/{id}/estado")
+	@PutMapping("{id}/estado")
 	public ResponseEntity<Object> deleteActivateProveedor(@PathVariable Integer id) throws ProveedorNotFoundException{
 		try {
 			ProveedorDTO proveedor = proveedorService.modificarEstadoProveedor(id);
@@ -78,7 +90,7 @@ public class ProveedorController {
 		}
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("{id}")
 	public ResponseEntity<Object> putProveedor(@PathVariable Integer id, @Valid @RequestBody ProveedorDTO proveedorDTO, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new ErrorHandler().validation(bindingResult);

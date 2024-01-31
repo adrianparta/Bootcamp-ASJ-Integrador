@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServiceProveedorService } from '../../services/service-proveedor.service';
+import { ProveedorService } from '../../services/service-proveedor.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,5 +7,5 @@ import { ServiceProveedorService } from '../../services/service-proveedor.servic
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  constructor(public serv: ServiceProveedorService){}
+  constructor(public serv: ProveedorService){}
 }

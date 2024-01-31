@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,8 @@ import com.bootcamp.proyectointegrador.Services.OrdenService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/ordenes")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/ordenes/")
 public class OrdenController {
 
 	@Autowired
@@ -38,7 +40,7 @@ public class OrdenController {
 	    }
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<Object> getOrden(@PathVariable Integer id) throws OrdenNotFoundException{
 		try {
 			OrdenDTO ordenDTO = ordenService.obtenerOrdenDTO(id);
@@ -64,7 +66,7 @@ public class OrdenController {
 	    }
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("{id}")
 	public ResponseEntity<Object> deleteActivateOrden(@PathVariable Integer id) throws OrdenNotFoundException{
 		try {
 			OrdenDTO ordenDTO = ordenService.modificarEstadoOrden(id);

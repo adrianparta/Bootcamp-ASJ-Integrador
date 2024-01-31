@@ -1,4 +1,4 @@
 export interface Iva{
-    id?: number;
+    id: number;
     iva: string;
 }

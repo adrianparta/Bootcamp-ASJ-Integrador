@@ -1,4 +1,4 @@
-<div *ngIf="serv.login" style="position: relative;">
+<div *ngIf="proveedorService.login" style="position: relative;">
     <div class="triangle"></div>
 </div>
 <div id="layoutSidenav_content">
@@ -14,16 +14,16 @@
                         </ol>
                     </nav>
                     <div class="col-4">
-                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filterText">
+                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">
                     </div>
                     <a class=" col-1 btn btn-success my-4" routerLink="/add-edit-supplier/-1/0">Agregar</a>
                 </div>
             </div>
             <div class="card mb-4">
-                <div class="card-body" *ngIf="datos?.length==0">
+                <div class="card-body" *ngIf="proveedores?.length==0">
                     <h2 class="h1">No hay proveedores para listar, agregue uno desde el boton de arriba a la derecha</h2>
                 </div>
-                <div *ngIf="datos && datos.length>0" class="card-body">
+                <div *ngIf="proveedores && proveedores.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
@@ -37,7 +37,7 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let data of datos | filterPipe:filterText">
+                            <tr *ngFor="let data of proveedores | filterPipe:filtro">
                                 <td>
                                     <div >
                                         <img (error)="imageNotFound($event)" src="{{data.logo}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
@@ -56,7 +56,7 @@
                                 <td>
                                     <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-supplier',data.id, 1]">Detalles</button>
                                     <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-supplier',data.id, 0]">Editar</button>
-                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteSupplier(data.id, data.razonSocial)">Borrar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProveedor(data.id)">Borrar</button>
                                 </td>
                             </tr>
                         </tbody>

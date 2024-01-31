@@ -20,7 +20,6 @@ public class Rubro {
 	@NotBlank(message = "El nombre del rubro no puede estar vacío")
 	private String rubro;
 	
-	@NotNull(message = "El estado del rubro no puede estar vacío")
 	private Boolean estado;
 
 	public Rubro(Integer id, @NotBlank(message = "El nombre del rubro no puede estar vacío") String rubro) {

@@ -1,65 +1,72 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Supplier } from '../models/proveedor';
-import { ServiceProductoService } from './service-producto.service';
-import { Product } from '../models/producto';
+import { Proveedor } from '../models/proveedor';
+import { Pais } from '../models/pais';
+import { Provincia } from '../models/provincia';
+import { Rubro } from '../models/rubro';
+import { Iva } from '../models/iva';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceProveedorService{
+export class ProveedorService{
 
-  url = 'http://localhost:3000/proveedores/';
+  url = 'http://localhost:8080/proveedores/';
 
 
-  getCountries(): Observable<any>{
-    return this.http.get<String[]>('http://localhost:3000/paises/');
+  obtenerPaises(): Observable<Pais[]>{
+    return this.http.get<Pais[]>('http://localhost:8080/paises/');
   }
-  getStates(): Observable<any>{
-    return this.http.get<any[]>('http://localhost:3000/provincias/');
+  obtenerProvincias(paisId: number): Observable<Provincia[]>{
+    return this.http.get<Provincia[]>('http://localhost:8080/provincias/' + paisId);
     
   }
-  getCities(): Observable<any>{
-    return this.http.get<String[]>('http://localhost:3000/localidades/');
 
+  constructor(private http: HttpClient) {}
+
+  public obtenerProveedores(): Observable<Proveedor[]>{
+    return this.http.get<Proveedor[]>(this.url);
   }
 
-  constructor(private http: HttpClient, private servProduct: ServiceProductoService) {}
-
-  public addSupplier(supplier: Supplier): Observable<Supplier>{
-    return this.http.post<Supplier>(this.url, supplier);
+  public obtenerProveedoresPorEstado(estado: boolean): Observable<Proveedor[]>{
+    return this.http.get<Proveedor[]>(this.url + 'estado/' + estado);
   }
 
-  public getSuppliers(): Observable<Supplier[]>{
-    return this.http.get<Supplier[]>(this.url);
+  public obtenerProveedor(id: number): Observable<Proveedor>{
+    return this.http.get<Proveedor>(this.url + id);
+  }
+  
+  public agregarProveedor(proveedor: Proveedor): Observable<Proveedor>{
+    return this.http.post<Proveedor>(this.url, proveedor);
   }
 
-  public getSingleSupplier(id: number): Observable<Supplier>{
-    return this.http.get<Supplier>(this.url + id);
+  public modificarEstadoProveedor(id: number | undefined): Observable<Proveedor>{
+    return this.http.put<Proveedor>(this.url + id + '/estado', {});
   }
 
-  public deleteSupplier(id: number | undefined, supplierName: string): Observable<Supplier>{
-    this.servProduct.getProducts().subscribe((data: Product[])=>{
-      data.forEach((product: Product) => {
-        if(product.supplierName == supplierName){
-          this.servProduct.deleteProduct(product.id).subscribe();
-        }
-      });
-    });
-    return this.http.delete<Supplier>(this.url + id);
+  public modificarProveedor(proveedor: Proveedor): Observable<Proveedor>{
+    return this.http.put<Proveedor>(this.url + proveedor.id, proveedor);
   }
 
-  public updateSupplier(supplier: Supplier): Observable<Supplier>{
-    return this.http.put<Supplier>(this.url + supplier.id, supplier);
+  public obtenerRubros(): Observable<any>{
+    return this.http.get<any>('http://localhost:8080/rubros/');
   }
 
-  public getIndustries(): Observable<any>{
-    return this.http.get<any>('http://localhost:3000/rubros/');
+  public agregarRubro(nombre: string): Observable<Rubro>{
+    let rubro: Rubro = {
+      rubro: nombre
+    }
+    console.log(rubro);
+    
+    return this.http.post<Rubro>('http://localhost:8080/rubros/', rubro);
   }
 
-  public addIndustry(string: string): Observable<any>{
-    return this.http.post<any>('http://localhost:3000/rubros/', {"rubro": string});
+  public obtenerIvas(): Observable<Iva[]>{
+    let aux = this.http.get<Iva[]>('http://localhost:8080/ivas/');
+    console.log(aux);
+    return aux;
+    
   }
 
   public login: boolean = false;

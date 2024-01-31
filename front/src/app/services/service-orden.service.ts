@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Order } from '../models/orden';
+import { Orden } from '../models/orden';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,19 +12,19 @@ export class ServiceOrdenService {
 
   url = 'http://localhost:3000/ordenes/';
 
-  public addOrder(order: Order): Observable<Order>{
-    return this.http.post<Order>(this.url, order);
+  public addOrder(order: Orden): Observable<Orden>{
+    return this.http.post<Orden>(this.url, order);
   }
 
-  public getOrders(): Observable<Order[]>{
-    return this.http.get<Order[]>(this.url);
+  public getOrders(): Observable<Orden[]>{
+    return this.http.get<Orden[]>(this.url);
   }
 
-  public getSingleOrder(id: number): Observable<Order>{
-    return this.http.get<Order>(this.url + id);
+  public getSingleOrder(id: number): Observable<Orden>{
+    return this.http.get<Orden>(this.url + id);
   }
 
-  public updateOrder(order: Order): Observable<Order>{
-    return this.http.put<Order>(this.url + order.id, order);
+  public updateOrder(order: Orden): Observable<Orden>{
+    return this.http.put<Orden>(this.url + order.id, order);
   }
 }

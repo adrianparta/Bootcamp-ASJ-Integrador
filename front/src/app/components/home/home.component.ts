@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { ServiceProveedorService } from '../../services/service-proveedor.service';
+import { ProveedorService } from '../../services/service-proveedor.service';
 
 @Component({
   selector: 'app-home',
@@ -7,5 +7,5 @@ import { ServiceProveedorService } from '../../services/service-proveedor.servic
   styleUrl: './home.component.css'
 })
 export class HomeComponent{
-  constructor(public serv: ServiceProveedorService){}
+  constructor(public serv: ProveedorService){}
 }

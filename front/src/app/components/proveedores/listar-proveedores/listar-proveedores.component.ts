@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceProveedorService } from '../../../services/service-proveedor.service';
-import { Supplier } from '../../../models/proveedor';
+import { ProveedorService } from '../../../services/service-proveedor.service';
+import { Proveedor } from '../../../models/proveedor';
 
 @Component({
   selector: 'app-listar-proveedores',
@@ -9,27 +9,27 @@ import { Supplier } from '../../../models/proveedor';
 })
 export class ListarProveedoresComponent implements OnInit {
 
-  datos!: Supplier[];
-  filterText: string = '';
+  proveedores!: Proveedor[];
+  filtro: string = '';
 
-  constructor(public serv: ServiceProveedorService){
+  constructor(public proveedorService: ProveedorService){
   }  
 
-  getSuppliers(){
-    this.serv.getSuppliers().subscribe((data: Supplier[]) => {
-      this.datos = data;
+  obtenerProveedores(){
+    this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[]) => {
+      this.proveedores = data;
     });
   }
   
   ngOnInit() {
-    this.getSuppliers();
-    this.filterText = '';
+    this.obtenerProveedores();
+    this.filtro = '';
   }
 
-  deleteSupplier(id: number | undefined, supplierName: string){
+  modificarEstadoProveedor(id: number | undefined){
     if(confirm('¿Está seguro que desea eliminar el proveedor?')){
-      this.serv.deleteSupplier(id, supplierName).subscribe(() => {
-        this.getSuppliers();
+      this.proveedorService.modificarEstadoProveedor(id).subscribe(() => {
+        this.obtenerProveedores();
       });
     }
   }

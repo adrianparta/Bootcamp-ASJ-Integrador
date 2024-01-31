@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceProductoService } from '../../../services/service-producto.service';
-import { Product } from '../../../models/producto';
-import { ServiceProveedorService } from '../../../services/service-proveedor.service';
+import { Producto } from '../../../models/producto';
+import { ProveedorService } from '../../../services/service-proveedor.service';
 
 @Component({
   selector: 'app-listar-productos',
@@ -10,10 +10,10 @@ import { ServiceProveedorService } from '../../../services/service-proveedor.ser
 })
 export class ListarProductosComponent {
 
-  datos!: Product[];
+  datos!: Producto[];
   filterText: string = '';
 
-  constructor(public serv: ServiceProductoService, public servSupplier: ServiceProveedorService){
+  constructor(public serv: ServiceProductoService, public servSupplier: ProveedorService){
   }
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class ListarProductosComponent {
   }
 
   getProducts(){
-    this.serv.getProducts().subscribe((data: Product[]) => {
+    this.serv.obtenerProductos().subscribe((data: Producto[]) => {
       this.datos = data;
       this.ordenar();
     });
@@ -30,7 +30,7 @@ export class ListarProductosComponent {
 
   deleteProduct(id: number | undefined){
     if(confirm('¿Está seguro que desea eliminar el producto?')){
-      this.serv.deleteProduct(id).subscribe();
+      this.serv.borrarProducto(id).subscribe();
       this.getProducts();
       this.ordenar();
     }
@@ -42,7 +42,7 @@ export class ListarProductosComponent {
 
   ordenar(){
     this.datos.sort(function(a, b) {
-      return a.name.localeCompare(b.name);
+      return a.nombre.localeCompare(b.nombre);
     });
   }
 

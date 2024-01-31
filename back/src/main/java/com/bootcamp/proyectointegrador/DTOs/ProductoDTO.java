@@ -39,6 +39,8 @@ public class ProductoDTO {
 	private Integer proveedorId;
 	
 	private String proveedor;
+	
+	private Boolean proveedorEstado;
 
 	public ProductoDTO(Integer id,
 			@NotBlank(message = "El codigo no puede estar vacío") @Pattern(regexp = "^[A-Za-z]{2}[0-9]{3}$", message = "El formato del código debe ser: 2 letras seguidas de 3 números") String codigo,
@@ -78,6 +80,7 @@ public class ProductoDTO {
 		this.categoria = producto.getCategoria().getCategoria();
 		this.proveedorId = producto.getProveedor().getId();
 		this.proveedor = producto.getProveedor().getRazonSocial();
+		this.proveedorEstado = producto.getProveedor().getEstado();
 	}
 
 	public Integer getId() {
@@ -166,6 +169,14 @@ public class ProductoDTO {
 
 	public void setProveedor(String proveedor) {
 		this.proveedor = proveedor;
+	}
+
+	public Boolean getProveedorEstado() {
+		return proveedorEstado;
+	}
+
+	public void setProveedorEstado(Boolean proveedorEstado) {
+		this.proveedorEstado = proveedorEstado;
 	}
 	
 	

@@ -13,7 +13,7 @@ public class DetalleDTO {
 	@Positive(message = "La cantidad debe ser mayor a 0")
 	private Integer cantidad;
 	
-	private Double precio_unitario;
+	private Double precioUnitario;
 	
 	private Integer ordenId;
 	
@@ -30,7 +30,7 @@ public class DetalleDTO {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
-		this.precio_unitario = precio_unitario;
+		this.precioUnitario = precio_unitario;
 		this.ordenId = ordenId;
 		this.productoId = productoId;
 		this.producto = producto;
@@ -39,7 +39,7 @@ public class DetalleDTO {
 	public DetalleDTO(Detalle detalle) {
 		this.id = detalle.getId();
 		this.cantidad = detalle.getCantidad();
-		this.precio_unitario = detalle.getPrecio_unitario();
+		this.precioUnitario = detalle.getPrecio_unitario();
 		this.ordenId = detalle.getOrden().getId();
 		this.productoId = detalle.getProducto().getId();
 		this.producto = detalle.getProducto().getNombre();
@@ -66,11 +66,11 @@ public class DetalleDTO {
 	}
 
 	public Double getPrecio_unitario() {
-		return precio_unitario;
+		return precioUnitario;
 	}
 
 	public void setPrecio_unitario(Double precio_unitario) {
-		this.precio_unitario = precio_unitario;
+		this.precioUnitario = precio_unitario;
 	}
 
 	public Integer getOrdenId() {

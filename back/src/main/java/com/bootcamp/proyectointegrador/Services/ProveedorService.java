@@ -12,11 +12,9 @@ import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProvinciaNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Iva;
-import com.bootcamp.proyectointegrador.Models.Producto;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Models.Provincia;
 import com.bootcamp.proyectointegrador.Models.Rubro;
-import com.bootcamp.proyectointegrador.Repositories.ProductoRepository;
 import com.bootcamp.proyectointegrador.Repositories.ProveedorRepository;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -36,11 +34,26 @@ public class ProveedorService {
 	RubroService rubroService;
 	
 	@Autowired
-	ProductoRepository productoRepository;
+	ProductoService productoService;
 	
-	public List<ProveedorDTO> obtenerProveedores(){
+	public List<ProveedorDTO> obtenerProveedores() {
 		try {
-	        List<Proveedor> proveedores =  proveedorRepository.findByEstadoTrue();
+	        List<Proveedor> proveedores =  proveedorRepository.findAll();
+	        List<ProveedorDTO> proveedoresDTO = new ArrayList<ProveedorDTO>();
+	        for (Proveedor proveedor : proveedores) {
+				ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
+				proveedoresDTO.add(proveedorDTO);
+			}
+	        return proveedoresDTO;
+	        
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de proveedores.", e);
+	    }
+	}
+	
+	public List<ProveedorDTO> obtenerProveedoresPorEstado(Boolean estado){
+		try {
+	        List<Proveedor> proveedores =  proveedorRepository.findByEstado(estado);
 	        List<ProveedorDTO> proveedoresDTO = new ArrayList<ProveedorDTO>();
 	        for (Proveedor proveedor : proveedores) {
 				ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
@@ -110,10 +123,6 @@ public class ProveedorService {
 		try {
 			Proveedor proveedor = this.obtenerProveedor(id);
 			proveedor.setEstado(!proveedor.getEstado());
-			List<Producto> productos = productoRepository.findByProveedor(proveedor);
-			for (Producto producto : productos) {
-				productoRepository.delete(producto);
-			}
 			proveedorRepository.save(proveedor);
 			ProveedorDTO proveedorDTO = new ProveedorDTO(proveedor);
 			return proveedorDTO;
@@ -169,4 +178,5 @@ public class ProveedorService {
 	        throw new RuntimeException(e.getMessage());
 	    }
 	}
+
 }
