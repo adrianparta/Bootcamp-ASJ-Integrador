@@ -40,7 +40,7 @@
                             <tr *ngFor="let data of proveedores | filterPipe:filtro">
                                 <td>
                                     <div >
-                                        <img (error)="imageNotFound($event)" src="{{data.logo}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
+                                        <img (error)="imageNotFound($event)" src="{{data.urlImagen}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
                                     </div>
                                 </td>
                                 <td>{{data.codigo}}</td>
@@ -52,7 +52,7 @@
                                         <span>{{data.telefono}}</span>
                                     </div>
                                 </td>
-                                <td>{{data.personaContacto.nombre}} {{data.personaContacto.apellido}}</td>
+                                <td>{{data.contactoNombre}} {{data.contactoApellido}}</td>
                                 <td>
                                     <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-supplier',data.id, 1]">Detalles</button>
                                     <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-supplier',data.id, 0]">Editar</button>
