@@ -34,6 +34,8 @@ public class Orden {
 	
 	private Boolean estado;
 	
+	private Double total;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp created_at;
 	
@@ -42,14 +44,13 @@ public class Orden {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Proveedor proveedor;
-
 	public Orden(Integer id, @NotNull(message = "La fecha de emision no puede estar vacía") Timestamp fechaEmision,
 			@NotBlank(message = "La fecha de entrega no puede estar vacía") Timestamp fechaEntrega,
 			@NotBlank(message = "La informacion de recepción no puede estar vacía") String info,
 			@NotNull(message = "El estado no puede estar vacío") Boolean estado,
 			@NotBlank(message = "created_at vacío") Timestamp created_at,
 			@NotBlank(message = "updated_at vacío") Timestamp updated_at,
-			@NotNull(message = "Debe seleccionar un proveedor") Proveedor proveedorId) {
+			@NotNull(message = "Debe seleccionar un proveedor") Proveedor proveedorId, Double total) {
 		super();
 		this.id = id;
 		this.fechaEmision = fechaEmision;
@@ -59,6 +60,7 @@ public class Orden {
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 		this.proveedor = proveedorId;
+		this.total = total;
 	}
 
 	public Orden(OrdenDTO ordenDTO, Proveedor proveedor) {
@@ -67,6 +69,7 @@ public class Orden {
 		this.fechaEntrega = ordenDTO.getFechaEntrega();
 		this.info = ordenDTO.getInfo();
 		this.estado = ordenDTO.getEstado();
+		this.total = ordenDTO.getTotal();
 		this.created_at = new Timestamp(System.currentTimeMillis());
 		this.updated_at = new Timestamp(System.currentTimeMillis());
 		this.proveedor = proveedor;
@@ -134,6 +137,14 @@ public class Orden {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 	
 	

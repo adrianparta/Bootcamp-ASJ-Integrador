@@ -1,7 +1,3 @@
-import { Iva } from "./iva"
-import { Provincia } from "./provincia"
-import { Rubro } from "./rubro"
-
 export interface Proveedor{
     id?: number,
     codigo: string,
@@ -20,10 +16,9 @@ export interface Proveedor{
     contactoRol: string,
     estado: boolean,
     localidad: string,
-    url_imagen: string,
-    created_at: Date,
-    updated_at: Date
-    provincia: Provincia
-    rubro: Rubro,
-    iva: Iva
+    urlImagen: string,
+    provinciaId: number,
+    provincia: String,
+    rubroId: Number,
+    ivaId: Number,
 }

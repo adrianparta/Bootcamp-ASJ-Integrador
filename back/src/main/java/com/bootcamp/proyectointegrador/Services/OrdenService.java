@@ -12,6 +12,7 @@ import com.bootcamp.proyectointegrador.DTOs.OrdenDTO;
 import com.bootcamp.proyectointegrador.Exceptions.OrdenNotFoundException;
 import com.bootcamp.proyectointegrador.Exceptions.ProveedorNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Orden;
+import com.bootcamp.proyectointegrador.Models.Producto;
 import com.bootcamp.proyectointegrador.Models.Proveedor;
 import com.bootcamp.proyectointegrador.Repositories.OrdenRepository;
 
@@ -28,6 +29,9 @@ public class OrdenService {
 	
 	@Autowired
 	ProveedorService proveedorService;
+	
+	@Autowired
+	ProductoService productoService;
 	
 	public List<OrdenDTO> obtenerOrdenes(){
 		try {
@@ -49,7 +53,7 @@ public class OrdenService {
 	        return ordenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La orden con el ID " + id + " no fue encontrada."));
 	    } catch (Exception e) {
 	        throw new RuntimeException("Error al intentar obtener la orden con el ID " + id, e);
-	    }	
+	    }
 	}
 	
 	public OrdenDTO obtenerOrdenDTO(Integer id) throws OrdenNotFoundException{
@@ -76,18 +80,29 @@ public class OrdenService {
 	        orden.setFechaEmision(time);
 	        orden.setEstado(true);
 	        ordenRepository.save(orden);
+	        List<DetalleDTO> detallesDTO = new ArrayList<DetalleDTO>();
+	        for (DetalleDTO detalleDTO : ordenDTO.getDetalles()) {
+	        	detalleDTO.setOrdenId(orden.getId());
+	        	Producto producto  = productoService.obtenerProducto(detalleDTO.getProductoId());
+	        	if(producto.getProveedor().getId() != proveedor.getId()) {
+	        		throw new RuntimeException("Todos los productos deben pertenecer al mismo proveedor");
+	        	}
+	        	DetalleDTO nuevoDetalleDTO = detalleService.agregarDetalle(detalleDTO);
+	        	detallesDTO.add(nuevoDetalleDTO);
+	        }
+	        ordenDTO.setDetalles(detallesDTO);
+	        Double total = 0.0;
+	        for (DetalleDTO detalleDTO : detallesDTO) {
+				total += detalleDTO.getPrecio_unitario() * detalleDTO.getCantidad();
+			}
+	        orden.setTotal(total);
+	        ordenRepository.save(orden);
 	        
+	        ordenDTO.setTotal(total);
 	        ordenDTO.setId(orden.getId());
 	        ordenDTO.setFechaEmision(orden.getFechaEmision());
 	        ordenDTO.setEstado(true);
 	        ordenDTO.setProveedor(proveedor.getRazonSocial());
-	        List<DetalleDTO> detallesDTO = new ArrayList<DetalleDTO>();
-	        for (DetalleDTO detalleDTO : ordenDTO.getDetalles()) {
-	        	detalleDTO.setOrdenId(orden.getId());
-				DetalleDTO nuevoDetalleDTO = detalleService.agregarDetalle(detalleDTO);
-				detallesDTO.add(nuevoDetalleDTO);
-			}
-	        ordenDTO.setDetalles(detallesDTO);
 	        return ordenDTO;
 	    } catch (ProveedorNotFoundException e) {
 	        throw new RuntimeException(e.getMessage(), e);

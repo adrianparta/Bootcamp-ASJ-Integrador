@@ -21,6 +21,8 @@ public class OrdenDTO {
 	
 	private Boolean estado;
 	
+	private Double total;
+	
 	@NotNull(message = "Debe seleccionar un proveedor")
 	private Integer proveedorId;
 	
@@ -32,7 +34,7 @@ public class OrdenDTO {
 	public OrdenDTO(Integer id, Timestamp fechaEmision,
 			@NotBlank(message = "La fecha de entrega no puede estar vacía") Timestamp fechaEntrega,
 			@NotBlank(message = "La informacion de recepción no puede estar vacía") String info, Boolean estado,
-			@NotNull(message = "Debe seleccionar un proveedor") Integer proveedorId) {
+			@NotNull(message = "Debe seleccionar un proveedor") Integer proveedorId, Double total) {
 		super();
 		this.id = id;
 		this.fechaEmision = fechaEmision;
@@ -40,6 +42,7 @@ public class OrdenDTO {
 		this.info = info;
 		this.estado = estado;
 		this.proveedorId = proveedorId;
+		this.total = total;
 	}
 	
 	public OrdenDTO(Orden orden) {
@@ -50,6 +53,7 @@ public class OrdenDTO {
 		this.estado = orden.getEstado();
 		this.proveedorId = orden.getProveedor().getId();
 		this.proveedor = orden.getProveedor().getRazonSocial();
+		this.total = orden.getTotal();
 	}
 	
 	public OrdenDTO(Orden orden, List<DetalleDTO> detalles) {
@@ -61,6 +65,7 @@ public class OrdenDTO {
 		this.proveedorId = orden.getProveedor().getId();
 		this.proveedor = orden.getProveedor().getRazonSocial();
 		this.detalles = detalles;
+		this.total = orden.getTotal();
 	}
 
 	public OrdenDTO() {
@@ -130,6 +135,15 @@ public class OrdenDTO {
 	public void setDetalles(List<DetalleDTO> detalles) {
 		this.detalles = detalles;
 	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+	
 	
 	
 }
