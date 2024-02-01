@@ -44,7 +44,7 @@ public class ProductoService {
 	    }	
 	}
 	
-	public List<ProductoDTO> obtenerProductosPorPais(Integer id){
+	public List<ProductoDTO> obtenerProductosPorProveedor(Integer id){
 		try {
 			Proveedor proveedor = proveedorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El proveedor con el ID " + id + " no fue encontrado."));
 			List<Producto> productos =  productoRepository.findByProveedor(proveedor);

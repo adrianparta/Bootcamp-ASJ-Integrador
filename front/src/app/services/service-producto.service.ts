@@ -36,6 +36,10 @@ export class ServiceProductoService {
     return this.http.get<Producto>(this.url + id);
   }
 
+  public obtenerProductosPorProveedor(id: number): Observable<Producto[]>{
+    return this.http.get<Producto[]>(this.url + 'proveedor/' + id);
+  }
+  
   public agregarCategoria(categoria: string): Observable<Categoria>{
     return this.http.post<Categoria>('http://localhost:8080/categorias/', {"categoria": categoria});
   }

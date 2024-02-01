@@ -51,6 +51,16 @@ public class ProductoController {
 		}	
 	}
 	
+	@GetMapping("proveedor/{id}")
+	public ResponseEntity<Object> getProductosByProveedor(@PathVariable Integer id){
+		try {
+			List<ProductoDTO> productosDTO = productoService.obtenerProductosPorProveedor(id);
+			return new ResponseEntity<>(productosDTO, HttpStatus.OK);
+		} catch (RuntimeException e){
+			return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+	}
+	
 	@PostMapping
 	public ResponseEntity<Object> postProducto(@Valid @RequestBody ProductoDTO productoDTO, BindingResult bindingResult){
 		

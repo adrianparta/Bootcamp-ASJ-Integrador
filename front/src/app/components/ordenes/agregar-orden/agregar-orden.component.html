@@ -1,10 +1,10 @@
-<div *ngIf="servSupplier.login" style="position: relative;">
+<div *ngIf="proveedorService.login" style="position: relative;">
     <div class="triangle"></div>
 </div>
 
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-4 mb-5">
             <div class="row my-3">
                 <div class="col d-flex flex-row justify-content-between ">
                     <h1>{{agregarODetalles}} orden de compra</h1>  
@@ -26,32 +26,30 @@
                 <div *ngIf="id!=-1" class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputNumeroOrden" class="col-sm-2 col-form-label">Número de orden*</label>
                     <div class="col-sm-10">
-                        <input [disabled]="details!=0" type="text" class="form-control" id="inputNumeroOrden" [(ngModel)]="id" name="numeroOrden">    
+                        <input [disabled]="detalles!=0" type="text" class="form-control" id="inputNumeroOrden" [(ngModel)]="id" name="numeroOrden">    
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEmision" class="col-sm-2 col-form-label">Fecha de emisión*</label>
                     <div class="col-sm-10">
-                        <input required min="{{fechaActual}}" [disabled]="details!=0" type="text" class="form-control" id="inputFechaEmision" [(ngModel)]="fechaEmision" name="fechaEmision">
-                        <div class="form-text text-danger" *ngIf="formulario.controls['fechaEmision']?.hasError('required') && showErrors">
-                            Este campo es obligatorio.
-                        </div>
+                        <input *ngIf="id==-1" disabled type="text" class="form-control" id="inputFechaEmision" [(ngModel)]="fechaEmision" name="fechaEmision">                        
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Fecha de entrega esperada</label>
                     <div class="col-sm-10">
-                        <input required [disabled]="details!=0" min="{{orden.fechaEmision}}" (change)="comprobar()" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega">
-                        <div class="form-text text-danger" *ngIf="orden.fechaEntrega < fechaActual">
-                            La fecha de recepción estimada debe ser mayor o igual a la fecha de emisión.
-                        </div>    
+                        <input *ngIf="id==-1" required [disabled]="detalles!=0" [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega" >
+                        <input *ngIf="id!=-1" required disabled [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="fechaFormateada" name="fechaEntrega" >
+                        <div class="form-text text-danger" *ngIf="comprobarFecha() && mostrarErrores">
+                            La fecha de entrega estimada debe ser mayor o igual a la fecha de emisión.
+                        </div>   
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Detalles de entrega</label>
                         <div class="col-sm-10">
-                            <textarea minlength="10" maxlength="250" required [disabled]="details!=0" class="form-control " name="info" id="" cols="30" rows="3" [(ngModel)]="orden.info"></textarea>
-                            <div class="form-text text-danger " *ngIf="formulario.controls['info']?.hasError('minlength') || (showErrors && formulario.controls['info']?.hasError('required'))">
+                            <textarea minlength="10" maxlength="250" required [disabled]="detalles!=0" class="form-control " name="info" id="" cols="30" rows="3" [(ngModel)]="orden.info"></textarea>
+                            <div class="form-text text-danger " *ngIf="formulario.controls['info']?.hasError('minlength') || (mostrarErrores && formulario.controls['info']?.hasError('required'))">
                                 Este campo debe tener entre 10-250 caracteres.
                             </div>
                         </div>
@@ -59,43 +57,41 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor</label>
                     <div class="col-sm-10">
-                        <select required [disabled]="details!=0 || blockSelectSupplier" class="form-select " name="selectProveedor" id="selectProveedor" (change)="onSelectSupplier($event)" [(ngModel)]="orden.proveedor" #proveedores="ngModel">
-                            <option disabled value="">Seleccione un proveedor:</option>
-                            <option *ngFor="let item of supplierList" value="{{item.razonSocial}}">{{item.razonSocial}}</option>
-                            <option *ngIf="details!=0" value="{{orden.proveedor}}">{{orden.proveedor}}</option>
+                        <select required [disabled]="detalles!=0 || orden.detalles.length > 0" class="form-select " name="selectProveedor" id="selectProveedor" (change)="onSelectProveedor($event)" [(ngModel)]="orden.proveedorId">
+                            <option disabled value=0 >Seleccione un proveedor:</option>
+                            <option *ngFor="let proveedor of proveedores" value="{{proveedor.id}}">{{proveedor.razonSocial}}</option>
+                            <option *ngIf="detalles!=0" value="{{orden.proveedor}}">{{orden.proveedor}}</option>
                         </select> 
-                        <div class="form-text text-danger" *ngIf="formulario.controls['selectProveedor']?.hasError('required') && showErrors">
+                        <div class="form-text text-danger" *ngIf="formulario.controls['selectProveedor']?.hasError('required') && mostrarErrores">
                             Este campo es obligatorio.
                         </div>                             
                     </div>
                 </div>
-                <div *ngIf="details!=1" class="row mb-3 border-bottom  border-2 pb-3">
+                <div *ngIf="detalles!=1" class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="selectProductos" class="col-sm-2 col-form-label">Productos</label>
                     <div class="col-sm-8">
-                        <select [disabled]="details!=0" class="form-select " name="selectProductos" id="selectProductos" [(ngModel)]="productIdSelected">
-                            <option disabled value=0>Seleccione un producto:</option>
-                            <option *ngFor="let item of productList" value={{item.id}}>{{item.nombre}}</option>
+                        <select [disabled]="detalles!=0 || productos === undefined" class="form-select " name="selectProductos" id="selectProductos" [(ngModel)]="productoId">
+                            <option disabled value=0 >Seleccione un producto:</option>
+                            <option *ngFor="let producto of productos" value={{producto.id}}>{{producto.nombre}}</option>
                         </select>              
-                        <div class="form-text text-danger" *ngIf="orden.total==0 && showErrors">
+                        <div class="form-text text-danger" *ngIf="orden.total==0 && mostrarErrores">
                             Debe agregar un producto como mínimo.
                         </div>             
                     </div>
                     <div class="col-sm-1">
-                        <input [disabled]="details!=0" class="form-control" type="number" name="cantidad" placeholder="cant" min="1" max="999" [(ngModel)]="amountSelected">
+                        <input [disabled]="detalles!=0" class="form-control" type="number" name="cantidad" placeholder="cant" min="1" max="999" [(ngModel)]="cantidad">
                     </div>
                     <div class="col-sm-1">
-                        <button type="button" [disabled]="details!=0" class="btn btn-primary" (click)="addProduct()">Agregar</button>
+                        <button type="button" [disabled]="detalles!=0" class="btn btn-primary" (click)="agregarProducto()">Agregar</button>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label class="col-sm-2 col-form-label">Subtotal</label>
-                    <div class="col-sm-3 d-flex flex-column ">
-                        <div *ngFor="let item of orden.detalles"  class="d-flex flex-row justify-content-between ">
-                            <p>{{item.producto}}({{item.cantidad}})</p>
-                            //todo cambiar numero por el precio que le corresponda(precio del producto)
-                            <p class="h5">${{2 * item.cantidad}}</p>
-                            
-                            <button *ngIf="details!=1" class="btn btn-sm btn-danger " (click)="deleteProduct(item.productoId)">Borrar</button>
+                    <div class="col-sm-3 d-flex flex-column">
+                        <div *ngFor="let detalle of orden.detalles"  class="d-flex flex-row justify-content-between">
+                            <p class="align-items-center m-0">{{detalle.producto}}({{detalle.cantidad}})</p>
+                            <p class="h5 text-center m-0">${{detalle.precioUnitario! * detalle.cantidad}}</p>
+                            <button *ngIf="detalles!=1" class="btn btn-sm my-1 btn-danger " (click)="deleteProduct(detalle.productoId)">Borrar</button>
                         </div>
                     </div>
                 </div>
@@ -107,11 +103,8 @@
                 </div>
                 <div class="row">
                     <div class="col d-flex flex-row ">
-
-                        //cambiar fecha emision < fecha emision por fecha entrega
-                    
-                        <button *ngIf="details != 1" [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.fechaEntrega< orden.fechaEntrega}" type="submit" class="btn btn-primary me-3" id="agregar">Agregar</button>
-                        <button *ngIf="details != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>            
+                        <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.fechaEntrega< orden.fechaEntrega}" type="submit" class="btn btn-primary me-3" id="agregar">Agregar</button>
+                        <button *ngIf="detalles != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>            
                         <button class="btn btn-warning " routerLink="/listar-ordenes">Volver atrás</button>
                     </div>
                     

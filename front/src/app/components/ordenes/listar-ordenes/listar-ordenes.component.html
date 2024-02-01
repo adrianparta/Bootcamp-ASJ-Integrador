@@ -32,7 +32,6 @@
                                 <th>Fecha de entrega esperada</th>
                                 <th>Proveedor</th>
                                 <th>Total</th>
-                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -40,12 +39,13 @@
                         <tbody id="contenido-tabla">
                             <tr *ngFor="let orden of ordenes | filterPipe:filtro">
                                 <td>{{orden.id}}</td>
-                                <td>{{orden.fechaEntrega}}</td>
+                                <td>{{orden.fechaEmision | date:"dd MMM, yyyy 'a las ' hh:mm a"}}</td>
+                                <td>{{orden.fechaEntrega | date:'dd MMM, yyyy'}}</td>
                                 <td>{{orden.proveedor}}</td>
                                 <td>{{orden.total}}</td>
                                 <td>
                                     <button [routerLink]="['/agregar-orden',orden.id,1]" class="btn btn-outline-info btn-sm me-2">Detalles</button>
-                                    <button *ngIf="!orden.estado" (click)="modificarEstadoOrden(orden.id)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
+                                    <button *ngIf="orden.estado" (click)="modificarEstadoOrden(orden.id)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
                                 </td>
                             </tr>
                         </tbody>
