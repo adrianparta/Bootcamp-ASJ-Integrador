@@ -1,4 +1,4 @@
-<div *ngIf="servSupplier.login" style="position: relative;">
+<div *ngIf="proveedorService.login" style="position: relative;">
     <div class="triangle"></div>
 </div>
 <div id="layoutSidenav_content">
@@ -14,7 +14,7 @@
                         </ol>
                     </nav>
                     <div class="col-4">
-                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filterText">
+                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">
                     </div>
                     <a class=" col-1 btn btn-success my-4 " routerLink="/add-edit-product/-1/0">Agregar</a>
                 </div>
@@ -23,34 +23,34 @@
             </div>
             
             <div class="card mb-4">
-                <div class="card-body" *ngIf="datos.length==0">
+                <div class="card-body" *ngIf="productos.length==0 ">
                     <h2 class="h1">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
                 </div>
-                <div *ngIf="datos.length>0" class="card-body">
+                <div *ngIf="productos.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
-                                <th>Nombre del producto</th>
+                                <th>SKU y producto</th>
                                 <th>Categoría</th>
-                                <th>Proveedor</th>
                                 <th>Precio</th>
+                                <th>Proveedor</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let data of datos | filterPipe:filterText">
+                            <tr *ngFor="let producto of productos | filterPipe:filtro">
                                 <div >
-                                    <img (error)="imageNotFound($event)" src="{{data.img}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
+                                    <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
                                 </div>
-                                <td>{{data.name}}</td>
-                                <td>{{data.category}}</td>
-                                <td>{{data.supplierName}}</td>
-                                <td>{{data.price}}</td>
+                                <td>{{producto.codigo}} {{producto.nombre}}</td>
+                                <td>{{producto.categoria}}</td>
+                                <td>{{producto.precio}}</td>
+                                <td>{{producto.proveedor}}</td>
                                 <td>
-                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-product',data.id,1]">Detalles</button>
-                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-product',data.id,0]">Editar</button>
-                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="deleteProduct(data.id)">Borrar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-product',producto.id,1]">Detalles</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-product',producto.id,0]">Editar</button>
+                                    <button class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto.id)">Borrar</button>
                                 </td>
                             </tr>
                         </tbody>

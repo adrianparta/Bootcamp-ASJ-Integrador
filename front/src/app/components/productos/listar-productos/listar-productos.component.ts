@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { ServiceProductoService } from '../../../services/service-producto.service';
+import { ServiceProductoService as ProductoService } from '../../../services/service-producto.service';
 import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-listar-productos',
@@ -10,30 +11,49 @@ import { ProveedorService } from '../../../services/service-proveedor.service';
 })
 export class ListarProductosComponent {
 
-  datos!: Producto[];
-  filterText: string = '';
+  productos: Producto[] = [];
+  filtro: string = '';
 
-  constructor(public serv: ServiceProductoService, public servSupplier: ProveedorService){
+  constructor(public productoService: ProductoService, public proveedorService: ProveedorService){
   }
 
   ngOnInit() {
-    this.getProducts();
-    this.filterText = '';
+    this.obtenerProductos();
+    this.filtro = '';
   }
 
-  getProducts(){
-    this.serv.obtenerProductos().subscribe((data: Producto[]) => {
-      this.datos = data;
+  obtenerProductos(){
+    this.productoService.obtenerProductos().subscribe((data: Producto[]) => {
+      this.productos = data;
       this.ordenar();
     });
   }
 
-  deleteProduct(id: number | undefined){
-    if(confirm('¿Está seguro que desea eliminar el producto?')){
-      this.serv.borrarProducto(id).subscribe();
-      this.getProducts();
-      this.ordenar();
-    }
+  modificarEstadoProducto(id: number | undefined){
+    Swal.fire({
+      title: "¿Esta seguro que desea eliminar el producto?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Producto deshabilitado!",
+          text: "Puede volver a habilitar el producto en la sección de productos deshabilitados.",
+          icon: "success",
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        }).then(()=>{
+          this.productoService.modificarEstadoProducto(id).subscribe(()=>{
+            this.obtenerProductos();
+            this.ordenar();
+          });
+          
+        });
+      }
+    });
   }
 
   imageNotFound(event: Event): void {
@@ -41,7 +61,7 @@ export class ListarProductosComponent {
   }
 
   ordenar(){
-    this.datos.sort(function(a, b) {
+    this.productos.sort(function(a, b) {
       return a.nombre.localeCompare(b.nombre);
     });
   }

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceProductoService } from '../../../services/service-producto.service';
+import { ServiceProductoService as ProductoService } from '../../../services/service-producto.service';
 import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import { Proveedor } from '../../../models/proveedor';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Categoria } from '../../../models/categoria';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -14,72 +16,100 @@ import Swal from 'sweetalert2';
 })
 export class AgregarProductoComponent implements OnInit{
 
-  constructor(public serv: ServiceProductoService, private router: Router, public list: ProveedorService, private route: ActivatedRoute){}
+  constructor(public productoService: ProductoService, private router: Router, public proveedorService: ProveedorService, private route: ActivatedRoute){}
 
   id?: number;
-  details?: number;
-  title = 'Agregar';
-  productList!: Producto[];
+  detalles?: number;
+  titulo = 'Agregar';
+  productos!: Producto[];
   agregarOEditar = 'Agregar';
-  showErrors!: boolean;
+  mostrarErrores!: boolean;
   codigoRepetido = false;
-  newCategory = '';
+  nuevaCategoria = '';
+  codigoRegex: RegExp = /^[A-Z]{2}[0-9]{3}$/;
 
-  product: Producto = {
+
+  producto: Producto = {
     codigo: '',
     nombre: '',
     descripcion: '',
-    precio: 0,
+    precio: 1,
     imagen_url: '',
     categoriaId: 0,
     proveedorId: 0
   }
 
-  suppliersList!: Proveedor[];
-  categoriesList!: any;
+  proveedores!: Proveedor[];
+  categorias!: any;
 
   ngOnInit(): void {
     this.id = parseInt(this.route.snapshot.params['id']);
-    this.details = parseInt(this.route.snapshot.params['details']);
+    this.detalles = parseInt(this.route.snapshot.params['details']);
     
-    this.list.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
-      this.suppliersList = data;
+    this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
+      this.proveedores = data;
     })
-    this.serv.getCategories().subscribe((data: string[])=>{
-      this.categoriesList = data;
+    this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{
+      this.categorias = data;
     })
 
     if(this.id!=-1){
-      this.title = 'Editar';
+      this.titulo = 'Editar';
       this.agregarOEditar = 'Editar';
-      this.serv.getSingleProduct(this.id).subscribe((data: Producto)=>{
-        this.product = data;
+      this.productoService.obtenerProducto(this.id).subscribe((data: Producto)=>{
+        this.producto = data;
       })
     }
 
-    this.serv.obtenerProductos().subscribe((data: Producto[])=>{
-      this.productList = data;
+    this.productoService.obtenerProductos().subscribe((data: Producto[])=>{
+      this.productos = data;
       if(this.id!=-1){
-        this.productList = this.productList?.filter((product: Producto)=>product.id!=this.id);
+        this.productos = this.productos?.filter((product: Producto)=>product.id!=this.id);
       }
     });
 
-    if(this.details==1){
-      this.title = 'Detalles del';
+    if(this.detalles==1){
+      this.titulo = 'Detalles del';
     }
   }
 
   agregar(formulario: any){
     
-    if(formulario.valid && !this.codigoRepetido){
+    if(formulario.valid && !this.codigoRepetido && this.validarCodigo()){
       if(this.id==-1){
-        this.serv.addProduct(this.product).subscribe();
+        this.productoService.agregarProducto(this.producto).subscribe(()=>{
+          this.redirigir('Producto agregado con éxito', formulario);
+        },  
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: JSON.stringify(error.error),
+          });
+        });
       }else{
-        this.serv.updateProduct(this.product).subscribe();
+        this.productoService.modificarProducto(this.producto).subscribe(()=>{
+          this.redirigir('Producto modificado con éxito', formulario);
+        },  
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: JSON.stringify(error.error),
+          });
+        });
       }
-      formulario.reset();
+      
+    }
+    else{
+      this.mostrarErrores = true;
+    }
+  }
+
+  redirigir(titulo: string, formulario: any){
+    formulario.reset();
       Swal.fire({
-        title: 'Producto agregado con éxito',
+        title: titulo,
         icon: 'success',
         confirmButtonText: 'OK',
         allowEscapeKey: false,
@@ -87,15 +117,11 @@ export class AgregarProductoComponent implements OnInit{
       }).then(()=>{
         this.router.navigate(['/listar-productos']);
       });
-    }
-    else{
-      this.showErrors = true;
-    }
   }
 
   comprobarRepetido(inputCode: any){
     let invalid!: boolean;
-    invalid = this.productList.some((producto: Producto)=> producto.codigo==inputCode.value);
+    invalid = this.productos.some((producto: Producto)=> producto.codigo==inputCode.value);
     invalid ? this.codigoRepetido = true : this.codigoRepetido = false;    
   }
 
@@ -103,13 +129,23 @@ export class AgregarProductoComponent implements OnInit{
     (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
   }
 
-  addNewCategory(){    
-    this.serv.addCategory(this.newCategory).subscribe(() =>{
-      this.serv.getCategories().subscribe((data)=>{        
-        this.categoriesList = data;
-        this.product.categoria = this.categoriesList[this.categoriesList.length - 1].categoria;
+  agregarCategoria(){   
+    this.productoService.agregarCategoria(this.nuevaCategoria).subscribe(() =>{
+      this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{        
+        this.categorias = data;
+        this.producto.categoria = this.categorias[this.categorias.length - 1].categoria;
       });
-      this.newCategory = '';
+      this.nuevaCategoria = '';
     })
+  }
+
+  validarCodigo(){
+    const valido = this.codigoRegex.test(this.producto.codigo);
+    return valido;
+  }
+
+  toUpperCase(event: any) {
+    const newValue = event.target.value.toUpperCase();
+    event.target.value = newValue;
   }
 }

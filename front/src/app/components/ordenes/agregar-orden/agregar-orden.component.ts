@@ -89,7 +89,7 @@ export class AgregarOrdenComponent implements OnInit{
 
   addProduct(){
     let productSelected: Producto;
-    this.servProduct.getSingleProduct(this.productIdSelected).subscribe((data: Producto)=>{
+    this.servProduct.obtenerProducto(this.productIdSelected).subscribe((data: Producto)=>{
       productSelected = data;
 
       let index = this.orden.detalles.findIndex((objeto: any)=>{                

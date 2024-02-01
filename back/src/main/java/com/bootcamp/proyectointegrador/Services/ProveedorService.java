@@ -101,6 +101,7 @@ public class ProveedorService {
 	        }
 	        
 	        Proveedor proveedor = new Proveedor(proveedorDTO, provincia, rubro, iva);
+	        proveedor.setEstado(true);
 	        proveedorRepository.save(proveedor);
 	        
 	        proveedorDTO.setId(proveedor.getId());

@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Producto } from '../models/producto';
+import { Categoria } from '../models/categoria';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProductoService {
 
-  private urlCategories = 'assets/data/categories.json';
-
   constructor(private http: HttpClient) {}
-  url = 'http://localhost:3000/productos/';
+  url = 'http://localhost:8080/productos/';
 
-  addProduct(producto: Producto): Observable<Producto>{
+  agregarProducto(producto: Producto): Observable<Producto>{
     return this.http.post<Producto>(this.url, producto);
   }
 
@@ -21,23 +20,23 @@ export class ServiceProductoService {
     return this.http.get<Producto[]>(this.url);
   }
 
-  public updateProduct(product: Producto): Observable<Producto>{
-    return this.http.put<Producto>(this.url + product.id, product);
+  public modificarProducto(producto: Producto): Observable<Producto>{
+    return this.http.put<Producto>(this.url + producto.id, producto);
   }
 
-  public borrarProducto(id: number | undefined): Observable<Producto>{
-    return this.http.delete<Producto>(this.url + id);
+  public modificarEstadoProducto(id: number | undefined): Observable<Producto>{
+    return this.http.put<Producto>(this.url + id + '/estado', {});
   }
 
-  public getCategories(): Observable<any>{
-    return this.http.get<any>('http://localhost:3000/categorias/');
+  public obtenerCategorias(): Observable<Categoria[]>{
+    return this.http.get<Categoria[]>('http://localhost:8080/categorias/');
   }
 
-  public getSingleProduct(id: number): Observable<Producto>{
+  public obtenerProducto(id: number): Observable<Producto>{
     return this.http.get<Producto>(this.url + id);
   }
 
-  public addCategory(string: string): Observable<any>{
-    return this.http.post<any>('http://localhost:3000/categorias/', {"categoria": string});
+  public agregarCategoria(categoria: string): Observable<Categoria>{
+    return this.http.post<Categoria>('http://localhost:8080/categorias/', {"categoria": categoria});
   }
 }

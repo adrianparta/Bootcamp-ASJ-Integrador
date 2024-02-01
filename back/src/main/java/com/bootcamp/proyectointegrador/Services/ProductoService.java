@@ -92,6 +92,7 @@ public class ProductoService {
 	        }
 	        
 	        Producto producto = new Producto(productoDTO, categoria, proveedor);
+	        producto.setEstado(true);
 	        productoRepository.save(producto);
 	        
 	        productoDTO = new ProductoDTO(producto);

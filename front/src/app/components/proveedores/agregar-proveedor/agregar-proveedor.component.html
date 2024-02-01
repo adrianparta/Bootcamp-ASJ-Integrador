@@ -20,7 +20,7 @@
                 <div class="row mb-3 border-bottom border-2 pb-3">
                     <label for="inputCodigo" class="col-sm-2 col-form-label">Código*</label>
                     <div class="col-sm-10">
-                        <input [disabled]="detalles==1" (keyup)="comprobarRepetido(codigo.value, 'codigo')" type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" #codigo="ngModel" required>
+                        <input [disabled]="detalles==1" (input)="toUpperCase($event)" (keyup)="comprobarRepetido(codigo.value, 'codigo')" type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" #codigo="ngModel" required>
                         <div class="form-text text-danger " *ngIf="codigoRepetido && codigo.value.length > 0">
                             Este codigo pertenece a otro proveedor.
                         </div>

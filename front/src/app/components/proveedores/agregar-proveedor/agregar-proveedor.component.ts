@@ -209,4 +209,9 @@ export class AgregarProveedorComponent implements OnInit{
       this.nuevoRubro = '';
     })
   }
+
+  toUpperCase(event: any) {
+    const newValue = event.target.value.toUpperCase();
+    event.target.value = newValue;
+  }
 } 
