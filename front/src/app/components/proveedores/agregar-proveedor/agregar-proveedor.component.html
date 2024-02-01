@@ -27,6 +27,9 @@
                         <div class="form-text text-danger " *ngIf="!validarCodigo() && codigo.value?.length > 0">
                             Formato requerido: dos letras y tres números. Ej: AB123.
                         </div>
+                        <div class="form-text text-danger " *ngIf="formulario.controls['codigo']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
@@ -57,9 +60,9 @@
                             </div>
                             <button type="button" class="col-2 btn btn-secondary btn-sm" (click)="agregarRubro()">Agregar</button>
                         </div>
-                        <div class="form-text text-danger" *ngIf="formulario.controls['rubro']?.hasError('required') && mostrarErrores">
+                        <div class="form-text text-danger " *ngIf="proveedor.rubroId == 0 && mostrarErrores">
                             Este campo es obligatorio.
-                        </div> 
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 gy-3 border-bottom border-2">
@@ -98,7 +101,7 @@
                                     <option disabled selected value="0">Seleccione un país:</option>
                                     <option *ngFor="let item of paises" value={{item.id}}>{{item.pais}}</option>
                                 </select>
-                                <div class="form-text text-danger" *ngIf="formulario.controls['pais']?.hasError('required') && mostrarErrores">
+                                <div class="form-text text-danger" *ngIf="pais == 0 && mostrarErrores">
                                     Este campo es obligatorio.
                                 </div>
                             </div>
@@ -107,12 +110,12 @@
                                     <option disabled selected value="0">Seleccione una provincia:</option>
                                     <option *ngFor="let item of provincias" value={{item.id}}>{{item.provincia}}</option>
                                 </select>     
-                                <div class="form-text text-danger" *ngIf="formulario.controls['provincia']?.hasError('required') && mostrarErrores">
+                                <div class="form-text text-danger" *ngIf="proveedor.provinciaId == 0 && mostrarErrores">
                                     Este campo es obligatorio.
                                 </div>                                  
                             </div>
                             <div class="col-4">
-                                <input [disabled]="detalles==1" required minlength="4" maxlength="50" type="text" class="form-control" id="inputLocalidad" placeholder="Localidad" [(ngModel)]="proveedor.localidad" name="localidad">
+                                <input [disabled]="detalles==1" required minlength="4" maxlength="50" type="text" class="form-control" id="inputLocalidad" placeholder="Localidad" [(ngModel)]="proveedor.localidad" name="ciudad">
                                 <div class="form-text text-danger" *ngIf="formulario.controls['ciudad']?.hasError('required') && mostrarErrores">
                                     Este campo es obligatorio.
                                 </div>
@@ -159,7 +162,7 @@
                             <option disabled selected value="0">Seleccione una condición:</option>
                             <option *ngFor="let item of ivas" value="{{item.id}}">{{item.iva}}</option>
                         </select> 
-                        <div class="form-text text-danger" *ngIf="formulario.controls['iva']?.hasError('required') && mostrarErrores">
+                        <div class="form-text text-danger" *ngIf="proveedor.ivaId == 0 && mostrarErrores">
                             Este campo es obligatorio.
                         </div>
                     </div>
@@ -207,11 +210,11 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom border-2 pb-3">
-                    <label for="inputURL" class="col-sm-2 col-form-label">URL logo</label>
+                    <label for="inputURL" class="col-sm-2 col-form-label">URL logo*</label>
                     <div class="col-sm-7">
-                        <input [disabled]="detalles==1" type="text" class="form-control" [(ngModel)]="proveedor.urlImagen" id="inputURL" name="url">
-                        <div class="form-text text-danger " *ngIf="(formulario.controls['codigo']?.hasError('required') && mostrarErrores) || formulario.controls['codigo']?.hasError('minlength')">
-                            Este campo debe tener entre 4-6 caracteres.
+                        <input required [disabled]="detalles==1" type="text" class="form-control" [(ngModel)]="proveedor.urlImagen" name="urlImagen">
+                        <div class="form-text text-danger " *ngIf="formulario.controls['urlImagen']?.hasError('required') && mostrarErrores">
+                            Este campo es obligatorio.
                         </div>
                     </div>
                     <div class="col-sm-3">
