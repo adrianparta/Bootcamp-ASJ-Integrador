@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServiceOrdenService } from '../../../services/service-orden.service';
+import { ServiceOrdenService as OrdenService } from '../../../services/service-orden.service';
 import { Orden } from '../../../models/orden';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 
@@ -10,29 +10,28 @@ import { ProveedorService } from '../../../services/service-proveedor.service';
 })
 export class ListarOrdenesComponent {
 
-  datos!: Orden[];
-  filterText: string = '';
+  ordenes: Orden[] = [];
+  filtro: string = '';
 
-  constructor(public serv: ServiceOrdenService, public servSupplier: ProveedorService){
+  constructor(public ordenService: OrdenService, public proveedorService: ProveedorService){
   }  
 
   ngOnInit() {
-    this.getOrders();
-    this.filterText = '';
+    this.obtenerOrdenes();
+    this.filtro = '';
   }
 
-  getOrders(){
-    this.serv.getOrders().subscribe((data: any[]) => {
-      this.datos = data;
+  obtenerOrdenes(){
+    this.ordenService.obtenerOrdenes().subscribe((data: Orden[]) => {
+      this.ordenes = data;
     });
   }
 
-  cancelOrder(order: Orden){    
-    if(confirm('¿Está seguro que desea cancelar la orden?')){
-      order.estado = true;
-      this.serv.updateOrder(order).subscribe(()=>{
-        this.getOrders();
-      });
-    }
+  modificarEstadoOrden(id: number){
+    //todo: implementar sweetalert2, para confirmar la modificación del estado de la orden
+
+    this.ordenService.modificarEstadoOrden(id || undefined).subscribe(()=>{
+      this.obtenerOrdenes();
+    });
   }
 }

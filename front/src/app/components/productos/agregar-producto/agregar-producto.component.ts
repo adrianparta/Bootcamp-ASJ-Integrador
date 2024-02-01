@@ -133,7 +133,7 @@ export class AgregarProductoComponent implements OnInit{
     this.productoService.agregarCategoria(this.nuevaCategoria).subscribe(() =>{
       this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{        
         this.categorias = data;
-        this.producto.categoria = this.categorias[this.categorias.length - 1].categoria;
+        this.producto.categoriaId = this.categorias[this.categorias.length - 1].id;
       });
       this.nuevaCategoria = '';
     })

@@ -32,7 +32,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEmision" class="col-sm-2 col-form-label">Fecha de emisión*</label>
                     <div class="col-sm-10">
-                        <input required min="{{fechaActual}}" [disabled]="details!=0" type="date" class="form-control" id="inputFechaEmision" [(ngModel)]="orden.fechaEmision" name="fechaEmision">
+                        <input required min="{{fechaActual}}" [disabled]="details!=0" type="text" class="form-control" id="inputFechaEmision" [(ngModel)]="fechaEmision" name="fechaEmision">
                         <div class="form-text text-danger" *ngIf="formulario.controls['fechaEmision']?.hasError('required') && showErrors">
                             Este campo es obligatorio.
                         </div>
@@ -41,12 +41,8 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Fecha de entrega esperada</label>
                     <div class="col-sm-10">
-                        <input required [disabled]="details!=0" min="{{orden.fechaEmision}}" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega">
-                        
-                        //todo agregar validacion de fecha de entrega mayor a fecha de emision
-
-
-                        <div class="form-text text-danger" >
+                        <input required [disabled]="details!=0" min="{{orden.fechaEmision}}" (change)="comprobar()" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega">
+                        <div class="form-text text-danger" *ngIf="orden.fechaEntrega < fechaActual">
                             La fecha de recepción estimada debe ser mayor o igual a la fecha de emisión.
                         </div>    
                     </div>

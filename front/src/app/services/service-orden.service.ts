@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Orden } from '../models/orden';
 import { Observable } from 'rxjs';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,21 @@ export class ServiceOrdenService {
 
   constructor(private http: HttpClient) {}
 
-  url = 'http://localhost:3000/ordenes/';
+  url = 'http://localhost:8080/ordenes/';
 
-  public addOrder(order: Orden): Observable<Orden>{
+  public agregarOrden(order: Orden): Observable<Orden>{
     return this.http.post<Orden>(this.url, order);
   }
 
-  public getOrders(): Observable<Orden[]>{
+  public obtenerOrdenes(): Observable<Orden[]>{
     return this.http.get<Orden[]>(this.url);
   }
 
-  public getSingleOrder(id: number): Observable<Orden>{
+  public obtenerOrden(id: number): Observable<Orden>{
     return this.http.get<Orden>(this.url + id);
   }
 
-  public updateOrder(order: Orden): Observable<Orden>{
-    return this.http.put<Orden>(this.url + order.id, order);
+  public modificarEstadoOrden(id: number | undefined): Observable<Orden>{
+    return this.http.put<Orden>(this.url + id, {});
   }
 }

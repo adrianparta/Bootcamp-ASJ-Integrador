@@ -17,7 +17,7 @@ export class AgregarOrdenComponent implements OnInit{
 
   constructor(public serv: ServiceOrdenService, private router: Router,private route: ActivatedRoute, public servSupplier: ProveedorService, public servProduct: ServiceProductoService) { }
 
-  fechaActual = new Date().toISOString().split('T')[0];
+  fechaActual = new Date()
   agregarODetalles:string = 'Agregar'
   supplierList!: Proveedor[];
   productList!: Producto[];
@@ -28,16 +28,22 @@ export class AgregarOrdenComponent implements OnInit{
   toasts: boolean = false;
   details?:number;
   id:number = -1;
+  fechaEmision: string = new Date().toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
   orden: Orden = {
-    fechaEmision: new Date(),
     fechaEntrega: new Date(),
     info: '',
     proveedorId: 0,
     detalles: []
   }
+  
+  comprobar(){
+    console.log(this.orden.fechaEntrega);
+    console.log(this.fechaActual);
+    
+    console.log(this.orden.fechaEntrega<this.fechaActual);
+  }
 
   ngOnInit(): void {
-
   this.details = parseInt(this.route.snapshot.params['details']);
   this.id = parseInt(this.route.snapshot.params['id']);
 
@@ -46,7 +52,7 @@ export class AgregarOrdenComponent implements OnInit{
       this.agregarODetalles = 'Detalles de la';
       this.servSupplier.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
         this.supplierList = data;
-        this.serv.getSingleOrder(this.id).subscribe((data: Orden)=>{
+        this.serv.obtenerOrden(this.id).subscribe((data: Orden)=>{
           this.orden = data;
         }); 
       });
@@ -65,7 +71,7 @@ export class AgregarOrdenComponent implements OnInit{
     
     if(formulario.valid && this.orden.fechaEntrega>=new Date() || this.orden.total!=0){
       this.orden.estado = true;
-      this.serv.addOrder(this.orden).subscribe();
+      this.serv.agregarOrden(this.orden).subscribe();
       Swal.fire({
         title: 'Orden agregada con éxito',
         icon: 'success',

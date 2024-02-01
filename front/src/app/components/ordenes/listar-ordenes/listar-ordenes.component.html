@@ -1,4 +1,4 @@
-<div *ngIf="servSupplier.login" style="position: relative;">
+<div *ngIf="proveedorService.login" style="position: relative;">
     <div class="triangle"></div>
 </div>
 <div id="layoutSidenav_content">
@@ -14,16 +14,16 @@
                         </ol>
                     </nav>
                     <div class="col-4">
-                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filterText">
+                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">
                     </div>
                     <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-orden/-1/0">Agregar</a>
                 </div>
             </div>
             <div class="row d-flex justify-content-end mx-1">
-                <div class="card-body" *ngIf="datos.length==0">
+                <div class="card-body" *ngIf="ordenes.length==0">
                     <h2 class="h1">No hay ordenes para listar, agregue una desde el boton de arriba a la derecha</h2>
                 </div>
-                <div *ngIf="datos.length>0" class="card-body">
+                <div *ngIf="ordenes.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
@@ -38,16 +38,14 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let data of datos | filterPipe:filterText">
-                                <td>{{data.id}}</td>
-                                <td>{{data.issueDate}}</td>
-                                <td>{{data.expectedDeliveryDate}}</td>
-                                <td>{{data.supplier}}</td>
-                                <td>{{data.total}}</td>
-                                <td>{{data.status}}</td>
+                            <tr *ngFor="let orden of ordenes | filterPipe:filtro">
+                                <td>{{orden.id}}</td>
+                                <td>{{orden.fechaEntrega}}</td>
+                                <td>{{orden.proveedor}}</td>
+                                <td>{{orden.total}}</td>
                                 <td>
-                                    <button [routerLink]="['/agregar-orden',data.id,1]" class="btn btn-outline-info btn-sm me-2">Detalles</button>
-                                    <button *ngIf="data.status != 'Cancelado'" (click)="cancelOrder(data)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
+                                    <button [routerLink]="['/agregar-orden',orden.id,1]" class="btn btn-outline-info btn-sm me-2">Detalles</button>
+                                    <button *ngIf="!orden.estado" (click)="modificarEstadoOrden(orden.id)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
                                 </td>
                             </tr>
                         </tbody>
