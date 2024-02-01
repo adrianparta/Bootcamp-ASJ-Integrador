@@ -33,6 +33,7 @@ export class AgregarProveedorComponent implements OnInit{
   id?:number;
   detalles?:number;
   paises!: Pais[];
+  pais: number = 0;
   provincias!: Provincia[];
   localidades: any;
   inputDesactivado = false;
@@ -89,6 +90,8 @@ export class AgregarProveedorComponent implements OnInit{
       this.agregarOEditar = 'Editar';
       this.proveedorService.obtenerProveedor(this.id).subscribe((data: Proveedor) => {
         this.proveedor = data;
+        this.pais = this.paises.find((pais: Pais) => pais.pais == this.proveedor.pais)?.id || 0;
+        this.onSelectPais();
       });
     }
 
@@ -141,9 +144,8 @@ export class AgregarProveedorComponent implements OnInit{
     }
   }
 
-  onSelectPais(event: any) {
-    let pais = event.target.value;
-    this.proveedorService.obtenerProvincias(pais).subscribe((data: Provincia[])=>{
+  onSelectPais() {
+    this.proveedorService.obtenerProvincias(this.pais).subscribe((data: Provincia[])=>{
       this.provincias = data;
     });
   }

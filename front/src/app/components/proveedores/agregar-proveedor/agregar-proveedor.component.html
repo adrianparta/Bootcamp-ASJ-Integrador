@@ -94,7 +94,7 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select [disabled]="detalles==1" required class="form-select" (change)="onSelectPais($event)" name="pais">
+                                <select [disabled]="detalles==1" required class="form-select" (change)="onSelectPais()" name="pais" [(ngModel)]="pais">
                                     <option disabled selected value="0">Seleccione un país:</option>
                                     <option *ngFor="let item of paises" value={{item.id}}>{{item.pais}}</option>
                                 </select>
