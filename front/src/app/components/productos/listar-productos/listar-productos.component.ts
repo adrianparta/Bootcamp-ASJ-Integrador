@@ -4,6 +4,7 @@ import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
 import { Categoria } from '../../../models/categoria';
+import { Proveedor } from '../../../models/proveedor';
 
 @Component({
   selector: 'app-listar-productos',
@@ -18,6 +19,7 @@ export class ListarProductosComponent {
   filtroCategoria: number = 0;
   estado: boolean = true;
   ascdesc: string = 'desc';
+  proveedores: Proveedor[] = [];
 
   constructor(public productoService: ProductoService, public proveedorService: ProveedorService){
   }
@@ -25,6 +27,7 @@ export class ListarProductosComponent {
   ngOnInit() {
     this.estado = true;
     this.filtroCategoria = 0;
+    this.obtenerProveedores();
     this.obtenerProductos();
     this.filtro = '';
     this.productoService.obtenerCategoriasActivas().subscribe((data: Categoria[])=>{
@@ -37,6 +40,12 @@ export class ListarProductosComponent {
     this.productoService.obtenerProductosPorEstado(this.estado).subscribe((data: Producto[]) => {
       this.productos = data;
       this.ordenar();
+    });
+  }
+
+  obtenerProveedores(){
+    this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[])=>{
+      this.proveedores = data;
     });
   }
 
@@ -110,6 +119,12 @@ export class ListarProductosComponent {
     this.filtro = '';
     this.filtroCategoria = 0;
     this.obtenerProductos();
+  }
+
+  proveedorDesactivado(id: number){
+    let proveedor = this.proveedores.find((proveedor) => proveedor.id == id);    
+    return !proveedor?.estado;
+
   }
 
 }

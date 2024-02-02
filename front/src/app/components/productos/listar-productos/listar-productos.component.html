@@ -60,14 +60,14 @@
                             </tr>
                         </thead>
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let producto of productos | filterPipe:filtro">
+                            <tr [ngClass]="{'bg-danger-subtle': proveedorDesactivado(producto.proveedorId)}" *ngFor="let producto of productos | filterPipe:filtro">
                                 <div >
                                     <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 80px; aspect-ratio: 1/1; object-fit: cover;" alt="">
                                 </div>
                                 <td class="align-middle ">{{producto.codigo}} | {{producto.nombre}}</td>
                                 <td class="align-middle ">{{producto.categoria}}</td>
                                 <td class="align-middle ">${{producto.precio}}</td>
-                                <td class="align-middle ">{{producto.proveedor}}</td>
+                                <td class="align-middle ">{{producto.proveedor}}<label *ngIf="proveedorDesactivado(producto.proveedorId)" >(desactivado)</label></td>
                                 <td class="align-middle ">
                                     <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-product',producto.id,1]"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
                                     <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-product',producto.id,0]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
