@@ -19,7 +19,7 @@ export class AgregarOrdenComponent implements OnInit{
   constructor(public ordenService: OrdenService, private router: Router,private route: ActivatedRoute, public proveedorService: ProveedorService, public productoService: ServiceProductoService) { }
 
   fechaFormateada: string = '';
-  fechaActual = new Date()
+  fechaActual = new Date();
   fechaManana = new Date(this.fechaActual.setDate(this.fechaActual.getDate() + 1));
   fechaMinima = this.fechaManana.toISOString().split('T')[0];
   agregarODetalles:string = 'Agregar';
@@ -61,8 +61,6 @@ export class AgregarOrdenComponent implements OnInit{
         this.ordenService.obtenerOrden(this.id).subscribe((data: Orden)=>{
           this.orden = data;
           if(this.id!=-1){
-            console.log(this.orden.fechaEntrega);
-            
           this.fechaFormateada = this.orden.fechaEntrega.toString().split('T')[0];
           }
         }); 

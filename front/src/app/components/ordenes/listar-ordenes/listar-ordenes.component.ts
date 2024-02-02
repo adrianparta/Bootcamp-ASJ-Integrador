@@ -9,7 +9,7 @@ import { ProveedorService } from '../../../services/service-proveedor.service';
   styleUrl: './listar-ordenes.component.css'
 })
 export class ListarOrdenesComponent {
-
+  offset = new Date().getTimezoneOffset() / 60;
   ordenes: Orden[] = [];
   filtro: string = '';
 
@@ -17,14 +17,27 @@ export class ListarOrdenesComponent {
   }  
 
   ngOnInit() {
+    
     this.obtenerOrdenes();
     this.filtro = '';
   }
-
+  
   obtenerOrdenes(){
     this.ordenService.obtenerOrdenes().subscribe((data: Orden[]) => {
       this.ordenes = data;
+      for (let orden of this.ordenes) {
+        let fecha = new Date(orden.fechaEntrega);
+        orden.fechaEntrega = new Date(fecha.setHours(fecha.getHours() + this.offset));
+      }
+      
     });
+  }
+
+  formatearFecha(fecha: Date): string {
+    const year = fecha.getFullYear();
+    const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const day = (fecha.getDate() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   modificarEstadoOrden(id: number){

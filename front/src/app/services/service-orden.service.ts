@@ -13,8 +13,10 @@ export class ServiceOrdenService {
 
   url = 'http://localhost:8080/ordenes/';
 
-  public agregarOrden(order: Orden): Observable<Orden>{
-    return this.http.post<Orden>(this.url, order);
+  public agregarOrden(orden: Orden): Observable<Orden>{
+    console.log(orden);
+    
+    return this.http.post<Orden>(this.url, orden);
   }
 
   public obtenerOrdenes(): Observable<Orden[]>{
