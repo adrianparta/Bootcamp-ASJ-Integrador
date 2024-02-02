@@ -32,7 +32,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEmision" class="col-sm-2 col-form-label">Fecha de emisión*</label>
                     <div class="col-sm-10">
-                        <input *ngIf="id==-1" disabled type="text" class="form-control" id="inputFechaEmision" [(ngModel)]="fechaEmision" name="fechaEmision">                        
+                        <input disabled type="text" class="form-control" id="inputFechaEmision" [(ngModel)]="fechaEmision" name="fechaEmision">                        
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
@@ -88,10 +88,10 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label class="col-sm-2 col-form-label">Subtotal</label>
                     <div class="col-sm-3 d-flex flex-column">
-                        <div *ngFor="let detalle of orden.detalles"  class="d-flex flex-row justify-content-between">
-                            <p class="align-items-center m-0">{{detalle.producto}}({{detalle.cantidad}})</p>
-                            <p class="h5 text-center m-0">${{detalle.precioUnitario! * detalle.cantidad}}</p>
-                            <button *ngIf="detalles!=1" class="btn btn-sm my-1 btn-danger " (click)="deleteProduct(detalle.productoId)">Borrar</button>
+                        <div *ngFor="let detalle of orden.detalles"  class="d-flex flex-row justify-content-between my-1">
+                            <p class="align-items-center my-1">{{detalle.producto}}({{detalle.cantidad}})</p>
+                            <p class="h5 text-center my-1">${{detalle.precio_unitario! * detalle.cantidad}}</p>
+                            <button *ngIf="detalles!=1" class="btn btn-sm m-0 btn-danger " (click)="deleteProduct(detalle.productoId)">Borrar</button>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="col d-flex flex-row ">
                         <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.fechaEntrega< orden.fechaEntrega}" type="submit" class="btn btn-primary me-3" id="agregar">Agregar</button>
-                        <button *ngIf="detalles != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>            
+                        <button *ngIf="detalles != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="limpiarDetalles(formulario)">Limpiar</button>            
                         <button class="btn btn-warning " routerLink="/listar-ordenes">Volver atrás</button>
                     </div>
                     

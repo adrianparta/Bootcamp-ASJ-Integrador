@@ -56,15 +56,17 @@ export class AgregarOrdenComponent implements OnInit{
     this.mostrarErrores = false;
     if(this.detalles!=0){
       this.agregarODetalles = 'Detalles de la';
-      this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
-        this.proveedores = data;
         this.ordenService.obtenerOrden(this.id).subscribe((data: Orden)=>{
           this.orden = data;
+          console.log(this.orden);
+          
+          this.proveedorService.obtenerProveedor(this.orden.proveedorId).subscribe((data: Proveedor)=>{
+            this.proveedores.push(data);
+          });
           if(this.id!=-1){
           this.fechaFormateada = this.orden.fechaEntrega.toString().split('T')[0];
           }
         }); 
-      });
     }
 
     this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
@@ -112,7 +114,7 @@ export class AgregarOrdenComponent implements OnInit{
     } else {
       this.orden.detalles.push({  
                                   cantidad: this.cantidad,
-                                  precioUnitario: productoSeleccionado?.precio,
+                                  precio_unitario: productoSeleccionado?.precio,
                                   productoId: productoSeleccionado?.id ?? 0,
                                   producto: productoSeleccionado?.nombre
                                 });        
@@ -125,12 +127,21 @@ export class AgregarOrdenComponent implements OnInit{
   calcularTotal(){
     this.orden.total = 0;
     this.orden.detalles.forEach((detalle: Detalle) => {
-      this.orden.total! += (detalle?.precioUnitario ?? 0) * detalle.cantidad;
+      this.orden.total! += (detalle?.precio_unitario ?? 0) * detalle.cantidad;
     });  
   }
 
   deleteProduct(id: any){
     this.orden.detalles = this.orden.detalles.filter(objeto => objeto.productoId !== id);
+    this.calcularTotal();
+  }
+
+  limpiarDetalles(formulario: any){
+    this.orden.fechaEntrega = new Date();
+    this.orden.info = '';
+    this.orden.proveedorId = 0;
+    
+    this.orden.detalles = [];
     this.calcularTotal();
   }
 }
