@@ -5,13 +5,12 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 
 export class filterPipePipe implements PipeTransform{
-    transform(value: any[], args?: any):any{
-        if(args === '' || args === undefined){
+    transform(value: any[], filtro: string):any{
+        if(filtro === '' || filtro === undefined){
             return value;
         }
-        return value.filter((item) =>
-            JSON.stringify(item).toLowerCase().includes(args.toLowerCase()));
+        return value.filter((item) => {
+            return item.nombre.toLowerCase().includes(filtro.toLowerCase()) || item.descripcion.toLowerCase().includes(filtro.toLowerCase());
+        });
     }
-
-    
 }

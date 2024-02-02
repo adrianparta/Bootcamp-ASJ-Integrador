@@ -31,6 +31,16 @@ public class ProductoController {
 	@Autowired
 	ProductoService productoService;
 	
+	@GetMapping("estado/{estado}")
+	public ResponseEntity<Object> getProductosByEstado(@PathVariable Boolean estado) {
+		try {
+	        List<ProductoDTO> productosDTO = productoService.obtenerProductosPorEstado(estado);
+	        return new ResponseEntity<>(productosDTO, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }		
+	}
+	
 	@GetMapping
 	public ResponseEntity<Object> getProductos() {
 		try {
@@ -51,10 +61,20 @@ public class ProductoController {
 		}	
 	}
 	
-	@GetMapping("proveedor/{id}")
-	public ResponseEntity<Object> getProductosByProveedor(@PathVariable Integer id){
+	@GetMapping("proveedor/{id}/{estado}")
+	public ResponseEntity<Object> getProductosByProveedor(@PathVariable Integer id, @PathVariable Boolean estado){
 		try {
-			List<ProductoDTO> productosDTO = productoService.obtenerProductosPorProveedor(id);
+			List<ProductoDTO> productosDTO = productoService.obtenerProductosPorProveedorYEstado(id, estado);
+			return new ResponseEntity<>(productosDTO, HttpStatus.OK);
+		} catch (RuntimeException e){
+			return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+	}
+	
+	@GetMapping("categoria/{id}/{estado}")
+	public ResponseEntity<Object> getProductosByCategoria(@PathVariable Integer id, @PathVariable Boolean estado){
+		try {
+			List<ProductoDTO> productosDTO = productoService.obtenerProductosPorCategoriaYEstado(id, estado);
 			return new ResponseEntity<>(productosDTO, HttpStatus.OK);
 		} catch (RuntimeException e){
 			return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -17,9 +17,14 @@
                 </div>
             </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
-
+                <div class="row">
+                    <label class="col text-danger mt-2 mb-4">*Obligatorio</label>
+                    <div class="text-end mb-4 col">
+                        <button *ngIf="!producto.estado && detalles == 0 && id != -1" type="button" class="btn btn-success " (click)="activarProducto()">Activar Producto</button>
+                    </div>
+                </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código/SKU*</label>
+                    <label for="inputCodigo" class="col-sm-2 col-form-label">SKU<label class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input (keyup)="comprobarRepetido(codigo)" (input)="toUpperCase($event)" [disabled]="detalles == 1" required type="text" class="form-control" id="inputCodigo" minlength="4" maxlength="8" [(ngModel)]="producto.codigo" name="codigo" #codigo="ngModel">
                         <div class="form-text text-danger" *ngIf="codigoRepetido && codigo.value.length > 0">
@@ -31,28 +36,23 @@
                     </div>
                 </div>    
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría*</label>
-                    <div class="col-sm-10 row">
-                        <div class="col-4">
+                    <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría<label class="text-danger ">*</label></label>
+                    <div class="col-sm-10 row pe-0">
+                        <div class="col pe-0">
                             <select [disabled]="detalles == 1" required class="form-select " name="categoria" id="selectCategoria" [(ngModel)]="producto.categoriaId">
                                 <option disabled value="">Seleccione una categoría:</option>
-                                <option *ngFor="let item of categorias" value={{item.id}}>{{item.categoria}}</option>
+                                <option *ngIf="buscarCategoria()" value="{{producto.categoriaId}}">{{producto.categoria}}(deshabilitado)</option>
+                                <option *ngFor="let item of categoriasActivas" value={{item.id}}>{{item.categoria}}</option>
                             </select>
                         </div>
-                        <div class="col-sm-8 row">
-                            <div class="col-10 row me-2">
-                                <label class="col-5 col-form-label">O Agregue una nueva:</label>
-                                <input class="col form-control" type="text" placeholder="Nueva categoría" name="newCategory" [(ngModel)]="nuevaCategoria">
-                            </div>
-                            <button type="button" class="col-2 btn btn-secondary btn-sm" (click)="agregarCategoria()">Agregar</button>
-                        </div> 
+                        <button *ngIf="detalles == 0" type="button" class="col-3 btn btn-secondary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="obtenerCategorias()">Opciones para categorías</button>
                         <div class="form-text text-danger" *ngIf="formulario.controls['categoria']?.hasError('required') && mostrarErrores">
                             Este campo es obligatorio.
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto*</label>
+                    <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto<label class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input minlength="4" maxlength="50" [disabled]="detalles == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="producto.nombre" name="nombre">
                         <div class="form-text text-danger " *ngIf="formulario.controls['nombre']?.hasError('minlength') || (mostrarErrores && formulario.controls['nombre']?.hasError('required'))">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción*</label>
+                    <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción<label class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <textarea required class="form-control" [disabled]="detalles == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="producto.descripcion" minlength="10" maxlength="250"></textarea>
                         <div class="form-text text-danger " *ngIf="formulario.controls['descripcion']?.hasError('minlength') || (mostrarErrores && formulario.controls['descripcion']?.hasError('required'))">
@@ -70,16 +70,19 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputPrecio" class="col-sm-2 col-form-label">Precio*</label>
+                    <label for="inputPrecio" class="col-sm-2 col-form-label">Precio<label class="text-danger ">*</label></label>
                     <div class="col-sm-10">
-                        <input [disabled]="detalles == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="producto.precio" name="precio">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">$</span>
+                            <input [disabled]="detalles == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="producto.precio" name="precio">
+                        </div>
                         <div class="form-text text-danger " *ngIf="producto.precio == null && mostrarErrores || formulario.controls['precio']?.hasError('min') || formulario.controls['precio']?.hasError('max')">
                             El precio debe ser mayor o igual a 1 y menor a 10 millones.
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor*</label>
+                    <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor<label class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <select [disabled]="detalles == 1" required class="form-select " name="proveedor" id="selectProveedor" [(ngModel)]="producto.proveedorId">
                             <option disabled selected value="">Seleccione un proveedor:</option>
@@ -91,12 +94,12 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="url" class="col-sm-2 col-form-label">imagen</label>
-                    <div class="col-sm-7">
+                    <label for="url" class="col-sm-2 col-form-label">imagen<label class="text-danger ">*</label></label>
+                    <div class="col-sm-8">
                         <input [disabled]="detalles == 1" type="text" class="form-control" id="url" [(ngModel)]="producto.imagen_url" name="url">
                     </div>
-                    <div class="col-sm-3">
-                        <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" alt="{{producto.nombre}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
+                    <div class="col-sm-2">
+                        <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" alt="{{producto.nombre}}" style="width: 40%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
                 <div class="row">
@@ -107,6 +110,39 @@
                         </div>
                 </div>
             </form>
+            <!--HTML para el modal -->
+            <div class="modal fade" id="exampleModal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Categorías</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="obtenerCategoriasActivas()"></button>
+                    </div>
+                    <div class="modal-body mx-2">
+                        <label class="col col-form-label">Nueva Categoría:</label>
+                        <div class="row me-1">
+                            <input class="col form-control" type="text" placeholder="Nueva categoría" name="newCategory" [(ngModel)]="nuevaCategoria">
+                            <button type="button" class="col-2 btn btn-secondary btn-sm ms-2 me-0" (click)="agregarCategoria()">Agregar</button>
+                        </div>
+                        <div class="row">
+                            <ul class="list-group mt-3">
+                                <li  *ngFor="let categoria of categorias" class="list-group-item align-items-center d-flex flex-row ">
+                                    <input type="text" class="fs-6 form-control" value="{{categoria.categoria}}" [ngClass]="{'text-decoration-line-through': !categoria.estado}" (keyup.enter)="modificarCategoria(categoria)">
+                                    <button class="btn btn-outline-danger btn-sm ms-2" (click)="modificarEstadoCategoria(categoria)">
+                                        <img *ngIf="categoria.estado" width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/trash--v1.png" alt="trash--v1"/>
+                                        <img *ngIf="!categoria.estado" width="20" height="20" src="https://img.icons8.com/metro/26/checkmark.png" alt="trash--v1"/>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="obtenerCategoriasActivas()">Cerrar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
         </div>
     </main>
     

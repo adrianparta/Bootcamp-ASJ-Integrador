@@ -40,8 +40,9 @@ export class AgregarProductoComponent implements OnInit{
   }
 
   proveedores!: Proveedor[];
-  categorias!: any;
-
+  categoriasActivas!: Categoria[];
+  categorias!: Categoria[];
+  
   ngOnInit(): void {
     this.id = parseInt(this.route.snapshot.params['id']);
     this.detalles = parseInt(this.route.snapshot.params['details']);
@@ -49,9 +50,7 @@ export class AgregarProductoComponent implements OnInit{
     this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
       this.proveedores = data;
     })
-    this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{
-      this.categorias = data;
-    })
+    this.obtenerCategoriasActivas();
 
     if(this.id!=-1){
       this.titulo = 'Editar';
@@ -71,6 +70,16 @@ export class AgregarProductoComponent implements OnInit{
     if(this.detalles==1){
       this.titulo = 'Detalles del';
     }
+  }
+
+  obtenerCategoriasActivas(){
+    this.productoService.obtenerCategoriasActivas().subscribe((data: Categoria[])=>{        
+      this.categoriasActivas = data;
+      this.categoriasActivas.sort((a, b) => {
+        return a.categoria.localeCompare(b.categoria);
+      });
+    });
+    this.nuevaCategoria = '';
   }
 
   agregar(formulario: any){
@@ -131,10 +140,7 @@ export class AgregarProductoComponent implements OnInit{
 
   agregarCategoria(){   
     this.productoService.agregarCategoria(this.nuevaCategoria).subscribe(() =>{
-      this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{        
-        this.categorias = data;
-        this.producto.categoriaId = this.categorias[this.categorias.length - 1].id;
-      });
+      this.obtenerCategoriasActivas();
       this.nuevaCategoria = '';
     })
   }
@@ -147,5 +153,58 @@ export class AgregarProductoComponent implements OnInit{
   toUpperCase(event: any) {
     const newValue = event.target.value.toUpperCase();
     event.target.value = newValue;
+  }
+
+  obtenerCategorias(){
+    this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{
+      this.categorias = data;
+
+      this.categorias.sort((a, b) => {
+        return a.categoria.localeCompare(b.categoria);
+      });
+    });
+  }
+
+  modificarCategoria(categoria: Categoria){
+    this.productoService.modificarCategoria(categoria).subscribe(()=>{
+      this.obtenerCategorias();
+    });
+  }
+
+  modificarEstadoCategoria(categoria: Categoria){
+    categoria.estado = !categoria.estado;
+    this.modificarCategoria(categoria);
+  }
+
+  buscarCategoria(){
+    if(this.id!=-1){
+      return !this.categoriasActivas.some(objeto => objeto.id == this.producto.categoriaId)
+    }
+    return false;
+  }
+
+  activarProducto(){
+    Swal.fire({
+      title: "¿Esta seguro que desea habilitar el producto?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, habilitar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Producto habilitado!",
+          icon: "success",
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        }).then(()=>{
+          this.productoService.modificarEstadoProducto(this.producto.id).subscribe((data: Producto)=>{
+            this.producto = data;
+          });
+          
+        });
+      }
+    });
   }
 }

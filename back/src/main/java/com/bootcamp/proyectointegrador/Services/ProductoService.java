@@ -32,7 +32,7 @@ public class ProductoService {
 	
 	public List<ProductoDTO> obtenerProductos(){
 		try {
-			List<Producto> productos =  productoRepository.findByEstadoTrue();
+			List<Producto> productos =  productoRepository.findAll();
 	        List<ProductoDTO> productosDTO = new ArrayList<ProductoDTO>();
 	        for (Producto producto : productos) {
 				ProductoDTO productoDTO = new ProductoDTO(producto);
@@ -44,10 +44,39 @@ public class ProductoService {
 	    }	
 	}
 	
-	public List<ProductoDTO> obtenerProductosPorProveedor(Integer id){
+	public List<ProductoDTO> obtenerProductosPorEstado(Boolean estado){
+		try {
+			List<Producto> productos =  productoRepository.findByEstado(estado);
+	        List<ProductoDTO> productosDTO = new ArrayList<ProductoDTO>();
+	        for (Producto producto : productos) {
+				ProductoDTO productoDTO = new ProductoDTO(producto);
+				productosDTO.add(productoDTO);
+			}
+	        return productosDTO;
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de productos.", e);
+	    }	
+	}
+	
+	public List<ProductoDTO> obtenerProductosPorProveedorYEstado(Integer id, Boolean estado){
 		try {
 			Proveedor proveedor = proveedorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El proveedor con el ID " + id + " no fue encontrado."));
-			List<Producto> productos =  productoRepository.findByProveedor(proveedor);
+			List<Producto> productos =  productoRepository.findByProveedorAndEstado(proveedor, estado);
+	        List<ProductoDTO> productosDTO = new ArrayList<ProductoDTO>();
+	        for (Producto producto : productos) {
+				ProductoDTO productoDTO = new ProductoDTO(producto);
+				productosDTO.add(productoDTO);
+			}
+	        return productosDTO;
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de productos.", e);
+	    }	
+	}
+	
+	public List<ProductoDTO> obtenerProductosPorCategoriaYEstado(Integer id, Boolean estado){
+		try {
+			Categoria categoria = categoriaService.obtenerCategoria(id);
+			List<Producto> productos =  productoRepository.findByCategoriaAndEstado(categoria, estado);
 	        List<ProductoDTO> productosDTO = new ArrayList<ProductoDTO>();
 	        for (Producto producto : productos) {
 				ProductoDTO productoDTO = new ProductoDTO(producto);

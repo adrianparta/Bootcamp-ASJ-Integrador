@@ -3,6 +3,7 @@ import { ServiceProductoService as ProductoService } from '../../../services/ser
 import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
+import { Categoria } from '../../../models/categoria';
 
 @Component({
   selector: 'app-listar-productos',
@@ -13,40 +14,51 @@ export class ListarProductosComponent {
 
   productos: Producto[] = [];
   filtro: string = '';
+  categorias: Categoria[] = [];
+  filtroCategoria: number = 0;
+  estado: boolean = true;
+  ascdesc: string = 'desc';
 
   constructor(public productoService: ProductoService, public proveedorService: ProveedorService){
   }
 
   ngOnInit() {
+    this.estado = true;
+    this.filtroCategoria = 0;
     this.obtenerProductos();
     this.filtro = '';
+    this.productoService.obtenerCategoriasActivas().subscribe((data: Categoria[])=>{
+      this.categorias = data;
+    });
+
   }
 
   obtenerProductos(){
-    this.productoService.obtenerProductos().subscribe((data: Producto[]) => {
+    this.productoService.obtenerProductosPorEstado(this.estado).subscribe((data: Producto[]) => {
       this.productos = data;
       this.ordenar();
     });
   }
 
-  modificarEstadoProducto(id: number | undefined){
+  modificarEstadoProducto(producto: Producto){
+    let estado = (producto.estado) ? "deshabilitar" : "habilitar";
     Swal.fire({
-      title: "¿Esta seguro que desea eliminar el producto?",
+      title: "¿Esta seguro que desea " + estado + " el producto?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar",
+      confirmButtonText: "Si, " + estado,
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Producto deshabilitado!",
-          text: "Puede volver a habilitar el producto en la sección de productos deshabilitados.",
+          title: "Listo!",
+          text: "Si hubo una confusion, siempre puedes modificar el estado del producto",
           icon: "success",
           allowEscapeKey: false,
           allowOutsideClick: false,
         }).then(()=>{
-          this.productoService.modificarEstadoProducto(id).subscribe(()=>{
+          this.productoService.modificarEstadoProducto(producto.id).subscribe(()=>{
             this.obtenerProductos();
             this.ordenar();
           });
@@ -64,6 +76,40 @@ export class ListarProductosComponent {
     this.productos.sort(function(a, b) {
       return a.nombre.localeCompare(b.nombre);
     });
+
+    if(this.ascdesc == 'asc'){
+      this.productos.sort(function (a, b) {
+        return a.precio - b.precio;
+      });
+    }
+    if(this.ascdesc == 'desc'){
+      this.productos.sort(function (a, b) {
+        return b.precio - a.precio;
+      });
+    }
+  }
+
+  modificarAscdesc(texto: string){
+    this.ascdesc = texto;
+    this.ordenar();
+
+  }
+
+  onSelectfiltroCategoria(){
+    if(this.filtroCategoria == 0){
+      this.obtenerProductos();
+    }
+    this.productoService.obtenerProductosPorCategoria(this.filtroCategoria, this.estado).subscribe((data: Producto[])=>{
+      this.productos = data;
+      this.ordenar();
+    });
+  }
+
+  activosOEliminados(estado: boolean){
+    this.estado = estado;
+    this.filtro = '';
+    this.filtroCategoria = 0;
+    this.obtenerProductos();
   }
 
 }

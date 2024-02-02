@@ -40,6 +40,16 @@ public class CategoriaController {
 	    }		
 	}
 	
+	@GetMapping("activas")
+	public ResponseEntity<Object> getCategoriasActivas(){
+		try {
+	        List<Categoria> categorias = categoriaService.obtenerCategoriasActivas();
+	        return new ResponseEntity<>(categorias, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de categorías: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }		
+	}
+	
 	@PostMapping
 	public ResponseEntity<Object> postCategoria(@Valid @RequestBody Categoria categoria, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {

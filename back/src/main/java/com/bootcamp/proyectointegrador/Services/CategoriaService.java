@@ -20,6 +20,14 @@ public class CategoriaService {
 	
 	public List<Categoria> obtenerCategorias(){
 		try {
+	        return categoriaRepository.findAll();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de categorías.", e);
+	    }		
+	}
+	
+	public List<Categoria> obtenerCategoriasActivas(){
+		try {
 	        return categoriaRepository.findByEstadoTrue();
 	    } catch (Exception e) {
 	        throw new RuntimeException("Error al intentar obtener la lista de categorías.", e);
