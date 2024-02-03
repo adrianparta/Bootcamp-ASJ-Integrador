@@ -37,7 +37,8 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            <tr *ngFor="let orden of ordenes | filterPipe:filtro">
+                            --todo cambiar filtro por el de ordenes--
+                            <tr *ngFor="let orden of ordenes | filtroProductosPipe:filtro">
                                 <td>{{orden.id}}</td>
                                 <td>{{orden.fechaEmision | date:"dd MMM, yyyy 'a las ' hh:mm a"}}</td>
                                 <td>{{orden.fechaEntrega | date:'dd MMM, yyyy'}}</td>

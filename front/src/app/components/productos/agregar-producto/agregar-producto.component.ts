@@ -27,7 +27,7 @@ export class AgregarProductoComponent implements OnInit{
   codigoRepetido = false;
   nuevaCategoria = '';
   codigoRegex: RegExp = /^[A-Z]{2}[0-9]{3}$/;
-
+  filtroCategorias: string = '';
 
   producto: Producto = {
     codigo: '',
@@ -44,6 +44,7 @@ export class AgregarProductoComponent implements OnInit{
   categorias!: Categoria[];
   
   ngOnInit(): void {
+    this.filtroCategorias = '';
     this.id = parseInt(this.route.snapshot.params['id']);
     this.detalles = parseInt(this.route.snapshot.params['details']);
     
@@ -80,6 +81,7 @@ export class AgregarProductoComponent implements OnInit{
       });
     });
     this.nuevaCategoria = '';
+    this.filtroCategorias = '';
   }
 
   agregar(formulario: any){
@@ -139,10 +141,27 @@ export class AgregarProductoComponent implements OnInit{
   }
 
   agregarCategoria(){   
-    this.productoService.agregarCategoria(this.nuevaCategoria).subscribe(() =>{
-      this.obtenerCategoriasActivas();
-      this.nuevaCategoria = '';
-    })
+    if(this.nuevaCategoria.length>0){
+      this.productoService.agregarCategoria(this.nuevaCategoria).subscribe(() =>{
+        this.obtenerCategoriasActivas();
+        this.obtenerCategorias();
+        Swal.fire({
+          title: 'Categoría agregada con éxito',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          allowEscapeKey: true,
+          allowOutsideClick: true,
+        });
+      })
+    }
+    else{
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El campo no puede estar vacío"
+      });
+    }
+    this.nuevaCategoria = '';
   }
 
   validarCodigo(){
@@ -168,6 +187,13 @@ export class AgregarProductoComponent implements OnInit{
   modificarCategoria(categoria: Categoria){
     this.productoService.modificarCategoria(categoria).subscribe(()=>{
       this.obtenerCategorias();
+      Swal.fire({
+        title: 'Categoria modificada con éxito',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowEscapeKey: true,
+        allowOutsideClick: true
+      });
     });
   }
 
@@ -182,6 +208,13 @@ export class AgregarProductoComponent implements OnInit{
     }
     return false;
   }
+
+  buscarProveedor(){
+    if(this.id!=-1){
+      return !this.proveedores.some(objeto => objeto.id == this.producto.proveedorId)
+    }
+    return false;
+  }  
 
   activarProducto(){
     Swal.fire({

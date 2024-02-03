@@ -14,7 +14,8 @@ import { ListarOrdenesComponent } from './components/ordenes/listar-ordenes/list
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './components/home/home.component';
-import { filterPipePipe } from './pipes/filter.pipe';
+import { filtroProductosPipe } from './pipes/filtroProductos.pipe';
+import { filtroCategoriasPipe } from './pipes/filtroCategorias.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { filterPipePipe } from './pipes/filter.pipe';
     ListarOrdenesComponent,
     SidebarComponent,
     HomeComponent,
-    filterPipePipe
+    filtroProductosPipe,
+    filtroCategoriasPipe
   ],
   imports: [
     BrowserModule,

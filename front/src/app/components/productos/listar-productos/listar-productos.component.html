@@ -60,7 +60,7 @@
                             </tr>
                         </thead>
                         <tbody id="contenido-tabla">
-                            <tr [ngClass]="{'bg-danger-subtle': proveedorDesactivado(producto.proveedorId)}" *ngFor="let producto of productos | filterPipe:filtro">
+                            <tr [ngClass]="{'bg-secondary-subtle': proveedorDesactivado(producto.proveedorId)}" *ngFor="let producto of productos | filtroProductosPipe:filtro">
                                 <div >
                                     <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 80px; aspect-ratio: 1/1; object-fit: cover;" alt="">
                                 </div>
