@@ -49,8 +49,16 @@ export class ProveedorService{
     return this.http.put<Proveedor>(this.url + proveedor.id, proveedor);
   }
 
-  public obtenerRubros(): Observable<any>{
-    return this.http.get<any>('http://localhost:8080/rubros/');
+  public obtenerRubros(): Observable<Rubro[]>{
+    return this.http.get<Rubro[]>('http://localhost:8080/rubros/');
+  }
+
+  public obtenerRubrosActivos(): Observable<any>{
+    return this.http.get<any>('http://localhost:8080/rubros/activos');
+  }
+
+  public obtenerRubro(id: number): Observable<Rubro>{
+    return this.http.get<Rubro>('http://localhost:8080/rubros/' + id);
   }
 
   public agregarRubro(nombre: string): Observable<Rubro>{
@@ -60,6 +68,12 @@ export class ProveedorService{
     console.log(rubro);
     
     return this.http.post<Rubro>('http://localhost:8080/rubros/', rubro);
+  }
+
+  public modificarRubro(rubro: Rubro): Observable<Rubro>{
+    console.log(rubro);
+    
+    return this.http.put<Rubro>('http://localhost:8080/rubros/' + rubro.id, rubro);
   }
 
   public obtenerIvas(): Observable<Iva[]>{

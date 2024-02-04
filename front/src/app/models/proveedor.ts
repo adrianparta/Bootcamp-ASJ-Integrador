@@ -20,6 +20,6 @@ export interface Proveedor{
     provinciaId: number;
     provincia?: String;
     pais?: String;
-    rubroId: Number;
-    ivaId: Number;
+    rubroId: number;
+    ivaId: number;
 }

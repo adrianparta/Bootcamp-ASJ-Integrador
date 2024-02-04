@@ -16,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './components/home/home.component';
 import { filtroProductosPipe } from './pipes/filtroProductos.pipe';
 import { filtroCategoriasPipe } from './pipes/filtroCategorias.pipe';
+import { filtroRubrosPipe } from './pipes/filtroRubros.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { filtroCategoriasPipe } from './pipes/filtroCategorias.pipe';
     SidebarComponent,
     HomeComponent,
     filtroProductosPipe,
-    filtroCategoriasPipe
+    filtroCategoriasPipe,
+    filtroRubrosPipe
   ],
   imports: [
     BrowserModule,

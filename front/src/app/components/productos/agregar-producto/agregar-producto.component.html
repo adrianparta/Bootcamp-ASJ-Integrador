@@ -20,7 +20,7 @@
                 <div class="row">
                     <label class="col text-danger mt-2 mb-4">*Obligatorio</label>
                     <div class="text-end mb-4 col">
-                        <button *ngIf="!producto.estado && detalles == 0 && id != -1" type="button" class="btn btn-success " (click)="activarProducto()">Activar Producto</button>
+                        <button *ngIf="!producto.estado && detalles == 0 && id != -1" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
@@ -134,7 +134,7 @@
                         <div class="row">
                             <ul class="list-group mt-3">
                                 <li  *ngFor="let categoria of categorias | filtroCategoriasPipe:filtroCategorias" class="align-items-center d-flex flex-row mb-2">
-                                    <input type="text" class="fs-6 form-control" value="{{categoria.categoria}}" [ngClass]="{'text-decoration-line-through': !categoria.estado}" (keyup.enter)="modificarCategoria(categoria)">
+                                    <input type="text" class="fs-6 form-control" [(ngModel)]="categoria.categoria" [ngClass]="{'text-decoration-line-through': !categoria.estado}" (keyup.enter)="modificarCategoria(categoria)">
                                     <button class="btn btn-outline-danger btn-sm ms-2" (click)="modificarEstadoCategoria(categoria)">
                                         <img *ngIf="categoria.estado" width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/trash--v1.png" alt="trash--v1"/>
                                         <img *ngIf="!categoria.estado" width="20" height="20" src="https://img.icons8.com/metro/26/checkmark.png" alt="trash--v1"/>

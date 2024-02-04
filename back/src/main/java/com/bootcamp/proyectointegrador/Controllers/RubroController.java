@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.Models.Categoria;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Services.RubroService;
 
@@ -38,6 +39,16 @@ public class RubroController {
 	    } catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al obtener la lista de rubros: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }	
+	}
+	
+	@GetMapping("activos")
+	public ResponseEntity<Object> getRubrosActivos(){
+		try {
+	        List<Rubro> rubros = rubroService.obtenerRubrosActivos();
+	        return new ResponseEntity<>(rubros, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de rubros: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }		
 	}
 	
 	@PostMapping()
@@ -65,7 +76,7 @@ public class RubroController {
 			return new ResponseEntity<>(rubroModificado, HttpStatus.OK);
 		} catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al modificar rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	    }			
+	    }	
 	}
 	
 	

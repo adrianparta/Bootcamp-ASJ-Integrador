@@ -37,12 +37,20 @@ export class AgregarProveedorComponent implements OnInit{
   provincias!: Provincia[];
   localidades: any;
   inputDesactivado = false;
-  rubros: any;
+  rubrosActivos: Rubro[] = [];
+  rubros!: Rubro[];
   proveedores!: Proveedor[];
   mostrarAlerta: boolean = false;
   nuevoRubro: string = '';
   paisID: number = 0;
   ivas!: Iva[];
+  rubroAux: Rubro = {
+    rubro: ''
+  }
+  rubro: Rubro = {
+    rubro: ''
+  }
+  filtroRubros: string = '';
 
   proveedor: Proveedor = {
     codigo: '',
@@ -67,7 +75,7 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
+    this.filtroRubros = '';
     this.id = parseInt(this.route.snapshot.params['id']);
     this.detalles = parseInt(this.route.snapshot.params['details']);
 
@@ -76,9 +84,7 @@ export class AgregarProveedorComponent implements OnInit{
       this.paises = data;
     });
 
-    this.proveedorService.obtenerRubros().subscribe((data: Rubro[])=>{
-      this.rubros = data;
-    });
+    this.obtenerRubrosActivos();
 
     this.proveedorService.obtenerIvas().subscribe((data: Iva[])=>{
       this.ivas = data;
@@ -188,11 +194,6 @@ export class AgregarProveedorComponent implements OnInit{
         this.formularioValido = (valido) ? false : true;
         this.codigoRepetido = valido;        
         break;
-      case 'razonSocial':
-        valido = this.proveedores.some((proveedor: Proveedor) => proveedor.razonSocial == value);
-        this.formularioValido = (valido) ? false : true;
-        this.razonSocialRepetida = valido;
-        break;
     }
   }
 
@@ -201,17 +202,93 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   agregarRubro(){    
-    this.proveedorService.agregarRubro(this.nuevoRubro).subscribe(() =>{
-      this.proveedorService.obtenerRubros().subscribe((data: Rubro[])=>{ 
-        this.rubros = data;
-        this.proveedor.rubroId = this.rubros[this.rubros.length - 1].id;
+    if(this.nuevoRubro.length>0){
+      this.proveedorService.agregarRubro(this.nuevoRubro).subscribe(() =>{
+        this.obtenerRubros();
+        Swal.fire({
+          title: 'Rubro agregado con éxito',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          allowEscapeKey: true,
+          allowOutsideClick: true,
+        });
+      }, error => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: JSON.stringify(error.error),
+        });
       });
-      this.nuevoRubro = '';
-    })
+    }
+    else{
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El campo no puede estar vacío"
+      });
+    }
+    this.nuevoRubro = '';
   }
 
   toUpperCase(event: any) {
     const newValue = event.target.value.toUpperCase();
     event.target.value = newValue;
+  }
+
+  activarProveedor(){
+  }
+
+  buscarRubro(){
+    if(this.id!=-1){
+      let encontrado = !this.rubrosActivos.some(objeto => objeto.id == this.proveedor.rubroId);
+      if(!encontrado){
+        this.proveedorService.obtenerRubro(this.proveedor.rubroId).subscribe((data: Rubro) => {
+          this.rubro = data;
+        });
+      }
+      return encontrado;
+    }
+    return false;
+  }
+
+  obtenerRubros(){
+    this.proveedorService.obtenerRubros().subscribe((data: Rubro[])=>{
+      this.rubros = data;
+
+      this.rubros.sort((a, b) => {
+        return a.rubro.localeCompare(b.rubro);
+      });
+    });
+  }
+
+  obtenerRubrosActivos(){
+    this.proveedorService.obtenerRubrosActivos().subscribe((data: Rubro[])=>{
+      this.rubrosActivos = data;
+    });
+  }
+
+  modificarRubro(rubro: Rubro){
+    this.proveedorService.modificarRubro(rubro).subscribe(()=>{
+      this.obtenerRubros();
+      Swal.fire({
+        title: 'Rubro modificado con éxito',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowEscapeKey: true,
+        allowOutsideClick: true
+      });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+      });
+    });
+    this.obtenerRubros();
+  }
+
+  modificarEstadoRubro(rubro: Rubro){
+    rubro.estado = !rubro.estado;
+    this.modificarRubro(rubro);
   }
 } 

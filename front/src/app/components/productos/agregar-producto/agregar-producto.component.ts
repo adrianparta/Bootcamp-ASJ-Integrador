@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Categoria } from '../../../models/categoria';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Rubro } from '../../../models/rubro';
 
 
 @Component({
@@ -28,6 +29,10 @@ export class AgregarProductoComponent implements OnInit{
   nuevaCategoria = '';
   codigoRegex: RegExp = /^[A-Z]{2}[0-9]{3}$/;
   filtroCategorias: string = '';
+  categoria: Categoria = {
+    categoria: '',
+  }
+  
 
   producto: Producto = {
     codigo: '',
@@ -152,6 +157,12 @@ export class AgregarProductoComponent implements OnInit{
           allowEscapeKey: true,
           allowOutsideClick: true,
         });
+      }, error => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: JSON.stringify(error.error),
+        });
       })
     }
     else{
@@ -194,7 +205,14 @@ export class AgregarProductoComponent implements OnInit{
         allowEscapeKey: true,
         allowOutsideClick: true
       });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+      });
     });
+    this.obtenerCategorias();
   }
 
   modificarEstadoCategoria(categoria: Categoria){

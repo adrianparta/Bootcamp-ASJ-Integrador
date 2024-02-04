@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
+import com.bootcamp.proyectointegrador.Models.Categoria;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Repositories.RubroRepository;
 
@@ -19,6 +20,14 @@ public class RubroService {
 	RubroRepository rubroRepository;
 	
 	public List<Rubro> obtenerRubros(){
+		try {
+	        return rubroRepository.findAll();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de rubros.", e);
+	    }	
+	}
+	
+	public List<Rubro> obtenerRubrosActivos(){
 		try {
 	        return rubroRepository.findByEstadoTrue();
 	    } catch (Exception e) {
@@ -60,8 +69,8 @@ public class RubroService {
 	public Rubro modificarRubro(Integer id, Rubro rubro) {
 		try {
 			Rubro rubroModificado = this.obtenerRubro(id);
-			if(rubroRepository.existsByRubro(rubro.getRubro()) && !rubroModificado.getRubro().equals(rubro.getRubro())) {
-				throw new RuntimeException("El nombre de rubro ya está en uso ya está en uso");
+			if(rubroRepository.existsByRubro(rubro.getRubro()) && !(rubroModificado.getRubro().equals(rubro.getRubro()))) {
+				throw new RuntimeException("El nombre de rubro ya está en uso");
 			}
 			rubroModificado.setRubro(rubro.getRubro());
 			rubroModificado.setEstado(rubro.getEstado());
@@ -70,4 +79,5 @@ public class RubroService {
 	        throw new RuntimeException(e.getMessage());
 	    }
 	}
+	
 }
