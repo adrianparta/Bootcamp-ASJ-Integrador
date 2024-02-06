@@ -16,4 +16,13 @@ export class SidebarComponent implements OnInit {
   comprobarURL(texto: string){
     return this.route.routerState.snapshot.url.substring(1).includes(texto);
   }
+
+  cerrarSesion(){
+    localStorage.removeItem('acceso');
+    window.location.reload();
+  }
+
+  mostrarCerrarSesion(){    
+    return localStorage.getItem('acceso') !== null;
+  }
 }

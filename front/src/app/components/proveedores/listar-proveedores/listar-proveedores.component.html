@@ -1,4 +1,4 @@
-<div *ngIf="proveedorService.login" style="position: relative;">
+<div  style="position: relative;">
     <div class="triangle"></div>
 </div>
 <div id="layoutSidenav_content">
@@ -13,28 +13,28 @@
                             <li class="breadcrumb-item active" aria-current="page">Listar proveedores</li>
                         </ol>
                     </nav>
-                    <div class="col-4">
-                        <input class="form-control" type="text" placeholder="Buscar por razon social y/o código..." [(ngModel)]="filtro">
-                        <div class="btn-group text-end" role="group" aria-label="orden de precio">
-                            <input type="radio" class="btn-check" name="orden" id="codigo" autocomplete="off" checked (click)="modificarOrden('')">
-                            <label class="btn btn-sm btn-outline-secondary " for="codigo">Código</label>
-                            <input type="radio" class="btn-check" name="orden" id="razonSocial" autocomplete="off" (click)="modificarOrden('razonSocial')">
-                            <label class="btn btn-sm btn-outline-secondary " for="razonSocial">Razón social</label>
-                            <input type="radio" class="btn-check" name="orden" id="asc" autocomplete="off" (click)="modificarOrden('asc')">
-                            <label class="btn btn-sm  btn-outline-secondary " for="asc">Pais ASC</label>
-                            <input type="radio" class="btn-check" name="orden" id="desc" autocomplete="off" (click)="modificarOrden('desc')">
-                            <label class="btn btn-sm  btn-outline-secondary " for="desc">Pais DESC</label>
-                        </div>    
-                    </div>
                     <a class=" col-1 btn btn-success my-4" routerLink="/proveedores/0">Agregar</a>
                 </div>
             </div>
-            <div class="container text-end my-3">
-                <div class="btn-group text-end" role="group" aria-label="Basic radio toggle button group">
+            <div class="col row mb-2">
+                <div class="col-7">
+                    <label>Buscar:</label>
+                    <input class="form-control" type="text" placeholder="Buscar por razon social y/o código..." [(ngModel)]="filtro">
+                </div>
+                <div class="col-3">
+                    <label>Ordenar por:</label>
+                    <select class="form-select " [(ngModel)]="orden" (change)="ordenar()">
+                        <option selected value="">Código</option>
+                        <option value="razonSocial">Razón social</option>
+                        <option value="asc">País ascendente</option>
+                        <option value="desc">País descendente</option>
+                    </select>
+                </div>    
+                <div class="col-2 btn-group text-end mt-4" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
-                    <label class="btn btn-sm btn-outline-secondary " for="btnradio1">Activos</label>
+                    <label class="btn btn-sm btn-outline-secondary pt-2" for="btnradio1">Activos</label>
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" (click)="activosOEliminados(false)">
-                    <label class="btn btn-sm  btn-outline-secondary " for="btnradio3">Deshabilitados</label>
+                    <label class="btn btn-sm  btn-outline-secondary pt-2" for="btnradio3">Deshabilitados</label>
                 </div>
             </div>
             <div class="card mb-4">

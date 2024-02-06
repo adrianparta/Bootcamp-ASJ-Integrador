@@ -3,21 +3,21 @@
 </div>
 <div>
     <div class="container text-center mt-2">
-            <a href="/proveedores" class="blue text-decoration-none rounded-4 bg-primary-subtle border border-4 border-primary  card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
+            <a [routerLink]="['/proveedores']" routerLinkActive="router-link-active"  class="blue text-decoration-none rounded-4 bg-primary-subtle border border-4 border-primary  card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h1">Proveedores</h5>
                     <p class="text-start h1 pt-4">{{proveedores.length}}</p>
                 </div>
                 <svg class="align-self-end me-4 mt-5 mb-4" style="width: 120; fill:blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>        
             </a>
-            <a href="/productos" class="green text-decoration-none  rounded-4 border border-4 border-success bg-success-subtle card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
+            <a [routerLink]="['/productos']" routerLinkActive="router-link-active"  class="green text-decoration-none  rounded-4 border border-4 border-success bg-success-subtle card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h1">Productos</h5>
                     <p class="text-start h1 pt-4">{{productos.length}}</p>
                 </div>
                 <svg class="align-self-end me-4 mb-4" style="width: 110; fill:green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M50.7 58.5L0 160H208V32H93.7C75.5 32 58.9 42.3 50.7 58.5zM240 160H448L397.3 58.5C389.1 42.3 372.5 32 354.3 32H240V160zm208 32H0V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192z"/></svg>            
             </a>
-            <a href="/proveedores" class="orange text-decoration-none  rounded-4 border border-4 border-warning bg-warning-subtle card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
+            <a [routerLink]="['/ordenes']" routerLinkActive="router-link-active"  class="orange text-decoration-none  rounded-4 border border-4 border-warning bg-warning-subtle card offset-3 col-6 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h1">Ordenes de compra</h5>
                     <p class="text-start h1 pt-4">{{ordenes.length}}</p>

@@ -104,11 +104,6 @@ export class ListarProveedoresComponent implements OnInit{
     }
   }
 
-  modificarOrden(orden: string){
-    this.orden = orden;
-    this.ordenar();
-  }
-
   ordenar(){
     this.proveedores.sort(function(a, b) {
       return a.codigo.localeCompare(b.codigo);

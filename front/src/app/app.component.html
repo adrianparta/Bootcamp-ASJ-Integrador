@@ -1,44 +1,48 @@
 <div class="row d-flex ">
     <app-sidebar class="m-0 col-2"></app-sidebar>
-    <div *ngIf="!acceso" class="m-0 col-10">
-      <router-outlet></router-outlet>
+    <div *ngIf="acceso" class="m-0 col-10">
+        <router-outlet></router-outlet>
     </div>
 
-    <div class="m-0 col-10" *ngIf="acceso">
-      <div class="container mt-5">
-          <div class="row justify-content-center">
-              <div class="col-md-6">
-                  <div class="card">
-                      <div class="card-header">
-                          <h3 class="text-center">Login</h3>
-                      </div>
-                      <div class="card-body">
-                          <form (ngSubmit)="solicitarAcceso(formulario)" #formulario="ngForm">
-                              <div class="form-group">
-                                  <label for="usuario">Usuario:</label>
-                                  <input type="text" minlength="4" maxlength="50" class="form-control" name="usuario" placeholder="Ingrese su usuario" required [(ngModel)]="usuario.usuario">
-                                  <div class="form-text text-danger" *ngIf="formulario.controls['usuario']?.hasError('required') && mostrarErrores">
-                                      Este campo es obligatorio.
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label for="contrasena">Contraseña:</label>
-                                  <input type="password" minlength="4" maxlength="20" class="form-control" name="contrasena" placeholder="Ingrese su contraseña" required [(ngModel)]="usuario.contrasenia">
-                                  <div class="form-text text-danger" *ngIf="formulario.controls['contrasena']?.hasError('required') && mostrarErrores">
-                                      Este campo es obligatorio.
-                                  </div>
-                              </div>
-                              <button type="submit" class="btn btn-primary btn-block">Acceder</button>
-                              <div *ngIf="denegado" class="form-text text-danger">
-                                  Usuario o contraseña incorrectos.
-                              </div>
-  
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  
+    <div class="m-0 col-10" *ngIf="!acceso">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <form (ngSubmit)="solicitarAcceso(formulario)" #formulario="ngForm">
+                                <div class="form-group">
+                                    <label for="usuario">Usuario:</label>
+                                    <input type="text" minlength="4" maxlength="50" class="form-control" name="usuario" placeholder="Ingrese su usuario" required [(ngModel)]="usuario.usuario">
+                                    <div class="form-text text-danger" *ngIf="formulario.controls['usuario']?.hasError('required') && mostrarErrores">
+                                        Este campo es obligatorio.
+                                    </div>
+                                    <div class="form-text text-danger" *ngIf="formulario.controls['usuario']?.hasError('minlength') && mostrarErrores && usuario.usuario.length > 0">
+                                        El usuario debe tener entre 4-50 caracteres.
+                                    </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label for="contrasena">Contraseña:</label>
+                                    <input type="password" minlength="4" maxlength="20" class="form-control" name="contrasena" placeholder="Ingrese su contraseña" required [(ngModel)]="usuario.contrasenia">
+                                    <div class="form-text text-danger" *ngIf="formulario.controls['contrasena']?.hasError('required') && mostrarErrores">
+                                        Este campo es obligatorio.
+                                    </div>
+                                    <div class="form-text text-danger" *ngIf="formulario.controls['contrasena']?.hasError('minlength') && mostrarErrores && usuario.contrasenia.length > 0">
+                                        La contraseña debe tener entre 4-20 caracteres.
+                                    </div>
+                                </div>
+                                <button type="submit" class="mt-3 btn btn-primary btn-block">Acceder</button>
+                                <div *ngIf="denegado" class="form-text text-danger">
+                                    Usuario o contraseña incorrectos.
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
