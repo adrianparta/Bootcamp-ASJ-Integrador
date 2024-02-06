@@ -1,30 +1,32 @@
-<div *ngIf="serv.login">
 <div id="layoutSidenav_nav">
     <nav class="min-vh-100 sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="h2 p-4 text-decoration-none" routerLink="">Sistema de compras</a>
-                <div class="sb-sidenav-menu-heading">Proveedores</div>
-                <a class="nav-link" routerLink="listar-proveedores">
+                <a class="h2 p-4 text-decoration-none" routerLink=""  [ngClass]="{'text-primary ': comprobarURL('home')}">Sistema de compras</a>
+                <div class="sb-sidenav-menu-heading" [ngClass]="{'text-primary': comprobarURL('proveedores')}">Proveedores</div>
+                <a class="nav-link" routerLink="proveedores" [ngClass]="{'text-primary ': comprobarURL('proveedores') && !comprobarURL('proveedores/')}">
                     <div class="sb-nav-link-icon"></div>
                     Listar
-                </a><a class="nav-link" routerLink="add-edit-supplier/-1/0">
+                </a>
+                <a class="nav-link" routerLink="proveedores/0" [ngClass]="{'text-primary ': comprobarURL('proveedores/')}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Agregar
                 </a>
-                <div class="sb-sidenav-menu-heading">Productos/Servicios</div>
-                <a class="nav-link" routerLink="/listar-productos">
+                <div class="sb-sidenav-menu-heading" [ngClass]="{'text-primary ': comprobarURL('productos')}">Productos/Servicios</div>
+                <a class="nav-link" routerLink="/productos" [ngClass]="{'text-primary ': comprobarURL('productos') && !comprobarURL('productos/')}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Listar
-                </a><a class="nav-link" routerLink="add-edit-product/-1/0">
+                </a>
+                <a class="nav-link" routerLink="productos/0" [ngClass]="{'text-primary ': comprobarURL('productos/')}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Agregar
                 </a>
-                <div class="sb-sidenav-menu-heading">Orden de compra</div>
-                <a class="nav-link" routerLink="listar-ordenes">
+                <div class="sb-sidenav-menu-heading" [ngClass]="{'text-primary ': comprobarURL('ordenes')}">Orden de compra</div>
+                <a class="nav-link" routerLink="ordenes" [ngClass]="{'text-primary ': comprobarURL('ordenes') && !comprobarURL('ordenes/')}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Listar
-                </a><a class="nav-link" routerLink="agregar-orden/-1/0">
+                </a>
+                <a class="nav-link" routerLink="ordenes/0" [ngClass]="{'text-primary ': comprobarURL('ordenes/')}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Agregar
                 </a>
@@ -32,6 +34,4 @@
         </div>
         
     </nav>
-</div>
-
 </div>

@@ -10,7 +10,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
-                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/listar-productos">Listar productos</a></li>
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/productos">Listar productos</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{titulo}} producto/servicio</li>
                         </ol>
                     </nav>
@@ -18,13 +18,14 @@
             </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row">
-                    <label class="col text-danger mt-2 mb-4">*Obligatorio</label>
-                    <div class="text-end mb-4 col">
-                        <button *ngIf="!producto.estado && detalles == 0 && id != -1" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
+                    <label *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</label>
+                    <div *ngIf="!producto.estado && id != -1" class="text-end mb-4 col">
+                        <label class="me-2 fs-5 align-text-top text-danger ">El producto se encuentra deshabilitado: </label>
+                        <button *ngIf="detalles==0" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputCodigo" class="col-sm-2 col-form-label">SKU<label class="text-danger ">*</label></label>
+                    <label for="inputCodigo" class="col-sm-2 col-form-label">SKU<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input placeholder="ej. AB123" (keyup)="comprobarRepetido(codigo)" (input)="toUpperCase($event)" [disabled]="detalles == 1" required type="text" class="form-control" id="inputCodigo" minlength="4" maxlength="8" [(ngModel)]="producto.codigo" name="codigo" #codigo="ngModel">
                         <div class="form-text text-danger" *ngIf="codigoRepetido && codigo.value.length > 0">
@@ -36,10 +37,10 @@
                     </div>
                 </div>    
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría<label class="text-danger ">*</label></label>
+                    <label for="selectCategoria" class="col-sm-2 col-form-label">Categoría<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10 row pe-0">
                         <div class="col pe-0">
-                            <select [disabled]="detalles == 1" required class="form-select " name="categoria" id="selectCategoria" [(ngModel)]="producto.categoriaId">
+                            <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="categoria" id="selectCategoria" [(ngModel)]="producto.categoriaId">
                                 <option disabled value="0">Seleccione una categoría:</option>
                                 <option *ngIf="buscarCategoria()" value="{{producto.categoriaId}}">{{producto.categoria}}(deshabilitado)</option>
                                 <option *ngFor="let item of categoriasActivas" value={{item.id}}>{{item.categoria}}</option>
@@ -52,7 +53,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto<label class="text-danger ">*</label></label>
+                    <label for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input placeholder="ej. Camisa" minlength="4" maxlength="50" [disabled]="detalles == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="producto.nombre" name="nombre">
                         <div class="form-text text-danger " *ngIf="formulario.controls['nombre']?.hasError('minlength') || (mostrarErrores && formulario.controls['nombre']?.hasError('required'))">
@@ -61,7 +62,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción<label class="text-danger ">*</label></label>
+                    <label for="inputDescripcion" class="col-sm-2 col-form-label">Descripción<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <textarea placeholder="ej. La camisa mas blanca" required class="form-control" [disabled]="detalles == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="producto.descripcion" minlength="10" maxlength="250"></textarea>
                         <div class="form-text text-danger " *ngIf="formulario.controls['descripcion']?.hasError('minlength') || (mostrarErrores && formulario.controls['descripcion']?.hasError('required'))">
@@ -70,7 +71,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputPrecio" class="col-sm-2 col-form-label">Precio<label class="text-danger ">*</label></label>
+                    <label for="inputPrecio" class="col-sm-2 col-form-label">Precio<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">$</span>
@@ -82,9 +83,9 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor<label class="text-danger ">*</label></label>
+                    <label for="selectProveedor" class="col-sm-2 col-form-label">Proveedor<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
-                        <select [disabled]="detalles == 1" required class="form-select " name="proveedor" id="selectProveedor" [(ngModel)]="producto.proveedorId">
+                        <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="proveedor" id="selectProveedor" [(ngModel)]="producto.proveedorId">
                             <option disabled selected value="0">Seleccione un proveedor:</option>
                             <option *ngIf="buscarProveedor()" value="{{producto.proveedorId}}">{{producto.proveedor}}(deshabilitado)</option>
                             <option *ngFor="let proveedor of proveedores" value={{proveedor.id}}>{{proveedor.razonSocial}}</option>
@@ -95,7 +96,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="url" class="col-sm-2 col-form-label">Imagen<label class="text-danger ">*</label></label>
+                    <label for="url" class="col-sm-2 col-form-label">Imagen<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-8">
                         <input placeholder="URL de la imagen" [disabled]="detalles == 1" type="text" class="form-control" id="url" [(ngModel)]="producto.imagen_url" name="url">
                     </div>
@@ -106,8 +107,8 @@
                 <div class="row">
                         <div class="col d-flex flex-row">
                             <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary me-3" id="agregar">{{agregarOEditar}}</button>
-                            <button *ngIf="detalles != 1 && id == -1" type="button" class="btn btn-danger me-3" (click)="formulario.reset()">Limpiar</button>            
-                            <button class="btn btn-warning  " routerLink="/listar-productos">Volver atrás</button>
+                            <button *ngIf="detalles != 1 && id == -1" type="button" class="btn btn-danger me-3" (click)="limpiarFormulario()">Limpiar</button>            
+                            <button class="btn btn-warning  " routerLink="/productos">Volver atrás</button>
                         </div>
                 </div>
             </form>

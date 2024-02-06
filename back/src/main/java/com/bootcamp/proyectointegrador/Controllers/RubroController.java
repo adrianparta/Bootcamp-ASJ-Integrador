@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.proyectointegrador.ErrorHandler;
+import com.bootcamp.proyectointegrador.Exceptions.RubroNotFoundException;
 import com.bootcamp.proyectointegrador.Models.Categoria;
 import com.bootcamp.proyectointegrador.Models.Rubro;
 import com.bootcamp.proyectointegrador.Services.RubroService;
@@ -38,6 +39,16 @@ public class RubroController {
 	        return new ResponseEntity<>(rubros, HttpStatus.OK);
 	    } catch (RuntimeException e) {
 	        return new ResponseEntity<>("Error al obtener la lista de rubros: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }	
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<Object> getRubro(@PathVariable Integer id) throws RubroNotFoundException{
+		try {
+	        Rubro rubro = rubroService.obtenerRubro(id);
+	        return new ResponseEntity<>(rubro, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener rubro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }	
 	}
 	

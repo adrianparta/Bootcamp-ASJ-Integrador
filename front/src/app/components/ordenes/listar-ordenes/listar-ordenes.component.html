@@ -13,21 +13,27 @@
                             <li class="breadcrumb-item active" aria-current="page">Listar ordenes</li>
                         </ol>
                     </nav>
-                    <div class="col-4">
-                        <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">
-                    </div>
-                    <a class=" col-1 btn btn-success my-4 " routerLink="/agregar-orden/-1/0">Agregar</a>
+                    <a class=" col-1 btn btn-success my-4 " routerLink="/proveedores/0">Agregar</a>
+                </div>
+            </div>
+            <div class="container text-end my-3">
+                <div class="btn-group text-end" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
+                    <label class="btn btn-sm btn-outline-secondary " for="btnradio1">Activas</label>
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" (click)="activosOEliminados(false)">
+                    <label class="btn btn-sm  btn-outline-secondary " for="btnradio3">Canceladas</label>
                 </div>
             </div>
             <div class="row d-flex justify-content-end mx-1">
                 <div class="card-body" *ngIf="ordenes.length==0">
-                    <h2 class="h1">No hay ordenes para listar, agregue una desde el boton de arriba a la derecha</h2>
+                    <h2 *ngIf="estado" class="h1">No hay ordenes para listar, agregue una desde el boton de arriba a la derecha</h2>
+                    <h2 *ngIf="!estado" class="h1">No hay ordenes canceladas para listar</h2>
                 </div>
                 <div *ngIf="ordenes.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>N° de Orden</th>
                                 <th>Fecha de emisión</th>
                                 <th>Fecha de entrega esperada</th>
                                 <th>Proveedor</th>
@@ -37,7 +43,6 @@
                         </thead>
                         
                         <tbody id="contenido-tabla">
-                            --todo cambiar filtro por el de ordenes--
                             <tr *ngFor="let orden of ordenes | filtroProductosPipe:filtro">
                                 <td>{{orden.id}}</td>
                                 <td>{{orden.fechaEmision | date:"dd MMM, yyyy 'a las ' hh:mm a"}}</td>
@@ -45,8 +50,9 @@
                                 <td>{{orden.proveedor}}</td>
                                 <td>{{orden.total}}</td>
                                 <td>
-                                    <button [routerLink]="['/agregar-orden',orden.id,1]" class="btn btn-outline-info btn-sm me-2">Detalles</button>
-                                    <button *ngIf="orden.estado" (click)="modificarEstadoOrden(orden.id)" class="btn btn-outline-danger btn-sm ">Cancelar</button>
+                                    <button [routerLink]="['/proveedores',orden.id,'detalles']" class="btn btn-outline-info btn-sm me-2"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
+                                    <button *ngIf="orden.estado" (click)="modificarEstadoOrden(orden)" class="btn btn-outline-danger btn-sm "><img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FA5252/multiply.png" alt="multiply"/></button>
+                                    <button *ngIf="!orden.estado" (click)="modificarEstadoOrden(orden)" class="btn btn-outline-danger btn-sm "><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
                                 </td>
                             </tr>
                         </tbody>

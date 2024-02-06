@@ -37,8 +37,7 @@ public class RubroService {
 	
 	public Rubro obtenerRubro(Integer id) throws RubroNotFoundException {
 	    try {
-	        return rubroRepository.findById(id)
-	                .orElseThrow(() -> new EntityNotFoundException("El rubro con el ID " + id + " no fue encontrado."));
+	        return rubroRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El rubro con el ID " + id + " no fue encontrado."));
 	    } catch (EntityNotFoundException e) {
 	        throw new RubroNotFoundException("El rubro con el ID " + id + " no fue encontrado.", e);
 	    } catch (Exception e) {

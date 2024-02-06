@@ -11,12 +11,27 @@ import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {path:'home', component: HomeComponent},
-  {path:'add-edit-supplier/:id/:details', component: AgregarProveedorComponent},
-  {path:'listar-proveedores', component: ListarProveedoresComponent},
-  {path:'add-edit-product/:id/:details', component: AgregarProductoComponent},
-  {path:'listar-productos', component: ListarProductosComponent},
-  {path:'agregar-orden/:id/:details', component: AgregarOrdenComponent},
-  {path:'listar-ordenes', component: ListarOrdenesComponent},
+  {path:'proveedores', children:[
+    {path:'', component: ListarProveedoresComponent},
+    {path:':id', children:[
+      {path:'', component: AgregarProveedorComponent},
+      {path:'detalles', component: AgregarProveedorComponent}
+    ]},
+  ]},
+  {path:'productos', children:[
+    {path:'', component: ListarProductosComponent},
+    {path:':id', children:[
+      {path:'', component: AgregarProductoComponent},
+      {path:'detalles', component: AgregarProductoComponent}
+    ]},
+  ]},
+  {path:'ordenes', children:[
+    {path:'', component: ListarOrdenesComponent},
+    {path:':id', children:[
+      {path:'', component: AgregarOrdenComponent},
+      {path:'detalles', component: AgregarOrdenComponent}
+    ]}
+  ]},
   {path:'', pathMatch:'full', redirectTo:'home'}  
 ];
 

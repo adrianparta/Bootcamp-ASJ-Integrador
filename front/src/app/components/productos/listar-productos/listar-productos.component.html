@@ -17,7 +17,7 @@
                         <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">
                         <select class="form-select" (change)="onSelectfiltroCategoria()" [(ngModel)]="filtroCategoria">
                             <option value="0">Todos</option>
-                            <option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.categoria}}</option>
+                            <option *ngFor="let categoria of categorias" [value]="categoria.id" [ngClass]="{'text-secondary': !categoria.estado}">{{categoria.categoria}}</option>
                         </select>
                         <div class="btn-group text-end" role="group" aria-label="orden de precio">
                             <input type="radio" class="btn-check" name="ascdesc" id="nombre" autocomplete="off" checked (click)="modificarAscdesc('')">
@@ -28,7 +28,7 @@
                             <label class="btn btn-sm  btn-outline-secondary " for="desc">Mayor precio</label>
                         </div>
                     </div>
-                    <a class=" col-1 btn btn-success my-4 " routerLink="/add-edit-product/-1/0">Agregar</a>
+                    <a class=" col-1 btn btn-success my-4 " routerLink="/productos/0">Agregar</a>
                 </div>
             </div>
             <div class="row d-flex justify-content-end mx-1">
@@ -38,14 +38,14 @@
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
                     <label class="btn btn-sm btn-outline-secondary " for="btnradio1">Activos</label>
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" (click)="activosOEliminados(false)">
-                    <label class="btn btn-sm  btn-outline-secondary " for="btnradio3">Eliminados</label>
+                    <label class="btn btn-sm  btn-outline-secondary " for="btnradio3">Deshabilitados</label>
                 </div>
             </div>
             
             <div class="card mb-4">
                 <div class="card-body" *ngIf="productos.length==0 ">
                     <h2 *ngIf="estado" class="h1">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
-                    <h2 *ngIf="!estado" class="h1">No hay productos eliminados para listar</h2>
+                    <h2 *ngIf="!estado" class="h1">No hay productos deshabilitados para listar</h2>
                 </div>
                 <div *ngIf="productos.length>0" class="card-body">
                     <table id="datatablesSimple" class="table">
@@ -65,12 +65,12 @@
                                     <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 80px; aspect-ratio: 1/1; object-fit: cover;" alt="">
                                 </div>
                                 <td class="align-middle ">{{producto.codigo}} | {{producto.nombre}}</td>
-                                <td class="align-middle ">{{producto.categoria}}</td>
+                                <td class="align-middle " [ngClass]="{'text-secondary': buscarCategoria(producto)}">{{producto.categoria}}<label *ngIf="buscarCategoria(producto)">(deshabilitada)</label></td>
                                 <td class="align-middle ">${{producto.precio}}</td>
                                 <td class="align-middle ">{{producto.proveedor}}<label *ngIf="proveedorDesactivado(producto.proveedorId)" >(desactivado)</label></td>
                                 <td class="align-middle ">
-                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/add-edit-product',producto.id,1]"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
-                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/add-edit-product',producto.id,0]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
+                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/productos',producto.id,'detalles']"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
+                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/productos',producto.id]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
                                     <button *ngIf="estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/FA5252/filled-trash.png" alt="filled-trash"/></button>
                                     <button *ngIf="!estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
                                 </td>

@@ -138,6 +138,7 @@ public class ProveedorService {
 		try {
 			Proveedor proveedorModificado = this.obtenerProveedor(id);
 			Timestamp time = new Timestamp(System.currentTimeMillis());
+			proveedorModificado.setCodigo(proveedor.getCodigo());
 			proveedorModificado.setUpdated_at(time);
 			proveedorModificado.setRazonSocial(proveedor.getRazonSocial());
 			proveedorModificado.setWeb(proveedor.getWeb());

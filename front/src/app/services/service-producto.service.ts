@@ -7,7 +7,7 @@ import { Categoria } from '../models/categoria';
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceProductoService {
+export class ProductoService {
   
   constructor(private http: HttpClient) {}
   url = 'http://localhost:8080/productos/';

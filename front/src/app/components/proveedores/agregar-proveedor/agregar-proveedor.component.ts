@@ -7,7 +7,7 @@ import { Pais } from '../../../models/pais';
 import { Provincia } from '../../../models/provincia';
 import { Rubro } from '../../../models/rubro';
 import { Iva } from '../../../models/iva';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-agregar-proveedor',
@@ -19,14 +19,14 @@ export class AgregarProveedorComponent implements OnInit{
 
   constructor(public proveedorService: ProveedorService, private route: ActivatedRoute, private router: Router) { }
   
-  formularioValido = false;
+  formularioValido!: boolean;
   mostrarErrores!: boolean;
   urlRegex: RegExp = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
   emailRegex: RegExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
   cuitRegex: RegExp = /^(20|23|24|25|26|27|30|33|34)-?\d{8}-?\d$/;
   codigoRegex: RegExp = /^[A-Z]{2}[0-9]{3}$/;
-  titulo = 'Agregar Proveedor';
-  agregarOEditar = 'Agregar';
+  titulo!: string;
+  agregarOEditar!: string;
   cuitRepetido!: boolean;
   codigoRepetido!: boolean;
   razonSocialRepetida!: boolean;
@@ -75,10 +75,12 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.formularioValido = false;
+    this.titulo = 'Agregar Proveedor';
+    this.agregarOEditar = 'Agregar';
     this.filtroRubros = '';
     this.id = parseInt(this.route.snapshot.params['id']);
-    this.detalles = parseInt(this.route.snapshot.params['details']);
-
+    this.detalles = (this.router.routerState.snapshot.url.substring(1).includes('detalles')) ? 1 : 0;
     this.mostrarErrores = false;
     this.proveedorService.obtenerPaises().subscribe((data: Pais[])=>{
       this.paises = data;
@@ -90,7 +92,7 @@ export class AgregarProveedorComponent implements OnInit{
       this.ivas = data;
     })
 
-    if(this.id != -1){
+    if(this.id != 0){
       this.inputDesactivado = true;
       this.titulo = 'Editar Proveedor';
       this.agregarOEditar = 'Editar';
@@ -98,12 +100,17 @@ export class AgregarProveedorComponent implements OnInit{
         this.proveedor = data;
         this.pais = this.paises.find((pais: Pais) => pais.pais == this.proveedor.pais)?.id || 0;
         this.onSelectPais();
+        if(this.buscarRubro()){
+          this.proveedorService.obtenerRubro(this.proveedor.rubroId).subscribe((data: Rubro) => {
+            this.rubro = data;
+          });
+      }
       });
     }
 
     this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[])=>{
       this.proveedores = data;
-      if(this.id != -1){
+      if(this.id != 0){
         this.proveedores = this.proveedores?.filter((proveedor: Proveedor) => proveedor.id != this.id);
       }
     });
@@ -111,6 +118,7 @@ export class AgregarProveedorComponent implements OnInit{
     if(this.detalles == 1){
       this.titulo = 'Detalles del Proveedor';
     }
+
   }
 
   redirigir(texto: string){
@@ -120,14 +128,17 @@ export class AgregarProveedorComponent implements OnInit{
       confirmButtonText: 'OK',
       allowEscapeKey: false,
       allowOutsideClick: false,
+      timer: 2000,
+      timerProgressBar: true,
+      position: "top-end",
     }).then(()=>{
-      this.router.navigate(['/listar-proveedores']);
+      this.router.navigate(['/proveedores']);
     });
   }
 
   agregar(formulario: any){
     if(this.formularioValido && formulario.valid){
-      if(this.id == -1){
+      if(this.id == 0){
         this.proveedorService.agregarProveedor(this.proveedor).subscribe(() => {
           this.redirigir('agregado');
         }, 
@@ -136,6 +147,9 @@ export class AgregarProveedorComponent implements OnInit{
             icon: "error",
             title: "Error",
             text: JSON.stringify(error.error),
+            timer: 2500,
+            timerProgressBar: true,
+            position: "top-end",
           });
         });
       }
@@ -211,12 +225,18 @@ export class AgregarProveedorComponent implements OnInit{
           confirmButtonText: 'OK',
           allowEscapeKey: true,
           allowOutsideClick: true,
+          timer: 2000,
+          timerProgressBar: true,
+          position: "top-end",
         });
       }, error => {
         Swal.fire({
           icon: "error",
           title: "Error",
           text: JSON.stringify(error.error),
+          timer: 2500,
+          timerProgressBar: true,
+          position: "top-end",
         });
       });
     }
@@ -224,7 +244,10 @@ export class AgregarProveedorComponent implements OnInit{
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "El campo no puede estar vacío"
+        text: "El campo no puede estar vacío",
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
       });
     }
     this.nuevoRubro = '';
@@ -236,16 +259,36 @@ export class AgregarProveedorComponent implements OnInit{
   }
 
   activarProveedor(){
+    Swal.fire({
+      title: "¿Esta seguro que desea habilitar el proveedor?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, habilitar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Proveedor habilitado!",
+          icon: "success",
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          timer: 2000,
+          timerProgressBar: true,
+          position: "top-end",
+        }).then(()=>{
+          this.proveedorService.modificarEstadoProveedor(this.proveedor.id).subscribe((data: Proveedor)=>{
+            this.proveedor = data;
+          });
+          
+        });
+      }
+    });
   }
 
   buscarRubro(){
-    if(this.id!=-1){
+    if(this.id != 0){
       let encontrado = !this.rubrosActivos.some(objeto => objeto.id == this.proveedor.rubroId);
-      if(!encontrado){
-        this.proveedorService.obtenerRubro(this.proveedor.rubroId).subscribe((data: Rubro) => {
-          this.rubro = data;
-        });
-      }
       return encontrado;
     }
     return false;
@@ -264,6 +307,9 @@ export class AgregarProveedorComponent implements OnInit{
   obtenerRubrosActivos(){
     this.proveedorService.obtenerRubrosActivos().subscribe((data: Rubro[])=>{
       this.rubrosActivos = data;
+      this.rubrosActivos.sort((a, b) => {
+        return a.rubro.localeCompare(b.rubro);
+      });
     });
   }
 
@@ -275,13 +321,19 @@ export class AgregarProveedorComponent implements OnInit{
         icon: 'success',
         confirmButtonText: 'OK',
         allowEscapeKey: true,
-        allowOutsideClick: true
+        allowOutsideClick: true,
+        timer: 2000,
+        timerProgressBar: true,
+        position: "top-end",
       });
     }, error => {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
       });
     });
     this.obtenerRubros();
@@ -290,5 +342,29 @@ export class AgregarProveedorComponent implements OnInit{
   modificarEstadoRubro(rubro: Rubro){
     rubro.estado = !rubro.estado;
     this.modificarRubro(rubro);
+  }
+
+  limpiarFormulario(){
+    this.proveedor = {
+      codigo: '',
+      razonSocial: '',
+      web: '',
+      email: '',
+      telefono: '',
+      calle: '',
+      altura: '',
+      codigoPostal: '',
+      cuit: '',
+      contactoNombre: '',
+      contactoApellido: '',
+      contactoTelefono: '',
+      contactoEmail: '',
+      contactoRol: '',
+      localidad: '',
+      urlImagen: '',
+      provinciaId: 0,
+      rubroId: 0,
+      ivaId: 0
+    }
   }
 } 

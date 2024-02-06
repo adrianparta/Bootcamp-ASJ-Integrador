@@ -33,9 +33,9 @@ public class OrdenService {
 	@Autowired
 	ProductoService productoService;
 	
-	public List<OrdenDTO> obtenerOrdenes(){
+	public List<OrdenDTO> obtenerOrdenesPorEstado(Boolean estado){
 		try {
-			List<Orden> ordenes =  ordenRepository.findByEstadoTrue();
+			List<Orden> ordenes =  ordenRepository.findByEstado(estado);
 	        List<OrdenDTO> ordenesDTO = new ArrayList<OrdenDTO>();
 	        for (Orden orden : ordenes) {
 				OrdenDTO ordenDTO = new OrdenDTO(orden);

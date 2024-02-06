@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceProductoService as ProductoService } from '../../../services/service-producto.service';
+import { ProductoService as ProductoService } from '../../../services/service-producto.service';
 import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import { Proveedor } from '../../../models/proveedor';
@@ -32,8 +32,6 @@ export class AgregarProductoComponent implements OnInit{
   categoria: Categoria = {
     categoria: '',
   }
-  
-
   producto: Producto = {
     codigo: '',
     nombre: '',
@@ -101,6 +99,9 @@ export class AgregarProductoComponent implements OnInit{
             icon: "error",
             title: "Error",
             text: JSON.stringify(error.error),
+            timer: 2500,
+            timerProgressBar: true,
+            position: "top-end",
           });
         });
       }else{
@@ -112,6 +113,9 @@ export class AgregarProductoComponent implements OnInit{
             icon: "error",
             title: "Error",
             text: JSON.stringify(error.error),
+            timer: 2500,
+            timerProgressBar: true,
+            position: "top-end",
           });
         });
       }
@@ -130,8 +134,11 @@ export class AgregarProductoComponent implements OnInit{
         confirmButtonText: 'OK',
         allowEscapeKey: false,
         allowOutsideClick: false,
+        timer: 2000,
+        timerProgressBar: true,
+        position: "top-end",
       }).then(()=>{
-        this.router.navigate(['/listar-productos']);
+        this.router.navigate(['/productos']);
       });
   }
 
@@ -156,12 +163,18 @@ export class AgregarProductoComponent implements OnInit{
           confirmButtonText: 'OK',
           allowEscapeKey: true,
           allowOutsideClick: true,
+          timer: 2000,
+          timerProgressBar: true,
+          position: "top-end",
         });
       }, error => {
         Swal.fire({
           icon: "error",
           title: "Error",
           text: JSON.stringify(error.error),
+          timer: 2500,
+          timerProgressBar: true,
+          position: "top-end",
         });
       })
     }
@@ -169,7 +182,10 @@ export class AgregarProductoComponent implements OnInit{
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "El campo no puede estar vacío"
+        text: "El campo no puede estar vacío",
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
       });
     }
     this.nuevaCategoria = '';
@@ -203,13 +219,19 @@ export class AgregarProductoComponent implements OnInit{
         icon: 'success',
         confirmButtonText: 'OK',
         allowEscapeKey: true,
-        allowOutsideClick: true
+        allowOutsideClick: true,
+        timer: 2000,
+        timerProgressBar: true,
+        position: "top-end",
       });
     }, error => {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
       });
     });
     this.obtenerCategorias();
@@ -249,6 +271,9 @@ export class AgregarProductoComponent implements OnInit{
           icon: "success",
           allowEscapeKey: false,
           allowOutsideClick: false,
+          timer: 2000,
+          timerProgressBar: true,
+          position: "top-end",
         }).then(()=>{
           this.productoService.modificarEstadoProducto(this.producto.id).subscribe((data: Producto)=>{
             this.producto = data;
@@ -257,5 +282,17 @@ export class AgregarProductoComponent implements OnInit{
         });
       }
     });
+  }
+
+  limpiarFormulario(){
+    this.producto = {
+      codigo: '',
+      nombre: '',
+      descripcion: '',
+      precio: 1,
+      imagen_url: '',
+      categoriaId: 0,
+      proveedorId: 0
+    }
   }
 }

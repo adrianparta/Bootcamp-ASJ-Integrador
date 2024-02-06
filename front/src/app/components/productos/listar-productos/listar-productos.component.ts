@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServiceProductoService as ProductoService } from '../../../services/service-producto.service';
+import { ProductoService as ProductoService } from '../../../services/service-producto.service';
 import { Producto } from '../../../models/producto';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
@@ -18,20 +18,32 @@ export class ListarProductosComponent {
   categorias: Categoria[] = [];
   filtroCategoria: number = 0;
   estado: boolean = true;
-  ascdesc: string = 'desc';
+  ascdesc: string = '';
   proveedores: Proveedor[] = [];
 
   constructor(public productoService: ProductoService, public proveedorService: ProveedorService){
   }
 
   ngOnInit() {
+    this.ascdesc = '';
     this.estado = true;
     this.filtroCategoria = 0;
     this.obtenerProveedores();
     this.obtenerProductos();
     this.filtro = '';
-    this.productoService.obtenerCategoriasActivas().subscribe((data: Categoria[])=>{
+    this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{
       this.categorias = data;
+      this.categorias.sort((a, b) => {
+        if (a.estado && !b.estado) {
+            return -1;
+        }
+        else if (!a.estado && b.estado) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    });
     });
 
   }
@@ -66,6 +78,9 @@ export class ListarProductosComponent {
           icon: "success",
           allowEscapeKey: false,
           allowOutsideClick: false,
+          timer: 2000,
+          timerProgressBar: true,
+          position: "top-end",
         }).then(()=>{
           this.productoService.modificarEstadoProducto(producto.id).subscribe(()=>{
             this.obtenerProductos();
@@ -101,17 +116,18 @@ export class ListarProductosComponent {
   modificarAscdesc(texto: string){
     this.ascdesc = texto;
     this.ordenar();
-
   }
 
   onSelectfiltroCategoria(){
     if(this.filtroCategoria == 0){
       this.obtenerProductos();
     }
-    this.productoService.obtenerProductosPorCategoria(this.filtroCategoria, this.estado).subscribe((data: Producto[])=>{
-      this.productos = data;
-      this.ordenar();
-    });
+    else{
+      this.productoService.obtenerProductosPorCategoria(this.filtroCategoria, this.estado).subscribe((data: Producto[])=>{
+        this.productos = data;
+        this.ordenar();
+      });
+    }
   }
 
   activosOEliminados(estado: boolean){
@@ -125,6 +141,10 @@ export class ListarProductosComponent {
     let proveedor = this.proveedores.find((proveedor) => proveedor.id == id);    
     return !proveedor?.estado;
 
+  }
+
+  buscarCategoria(producto: Producto){
+    return this.categorias.some(objeto => objeto.id === producto.categoriaId && !objeto.estado)
   }
 
 }

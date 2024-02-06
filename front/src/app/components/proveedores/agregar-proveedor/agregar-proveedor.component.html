@@ -10,7 +10,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
-                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/listar-proveedores">Listar proveedores</a></li>
+                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/proveedores">Listar proveedores</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{titulo}}</li>
                         </ol>
                     </nav>
@@ -18,13 +18,14 @@
             </div>
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row">
-                    <label class="col text-danger mt-2 mb-4">*Obligatorio</label>
-                    <div class="text-end mb-4 col">
-                        <button *ngIf="!proveedor.estado && detalles == 0 && id != -1" type="button" class="btn btn-success " (click)="activarProveedor()">Activar proveedor</button>
+                    <label *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</label>
+                    <div *ngIf="!proveedor.estado && id != 0" class="text-end mb-4 col">
+                        <label class="me-2 fs-5 align-text-top text-danger ">El proveedor se encuentra deshabilitado </label>
+                        <button *ngIf="detalles==0"  type="button" class="btn btn-success " (click)="activarProveedor()">Activar proveedor</button>
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom border-2 pb-3">
-                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código<label class="text-danger ">*</label></label>
+                    <label for="inputCodigo" class="col-sm-2 col-form-label">Código<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input placeholder="ej. AB123" [disabled]="detalles==1" (input)="toUpperCase($event)" (keyup)="comprobarRepetido(codigo.value, 'codigo')" type="text" class="form-control" id="inputCodigo" [(ngModel)]="proveedor.codigo" minlength="4" maxlength="6" name="codigo" #codigo="ngModel" required>
                         <div class="form-text text-danger " *ngIf="codigoRepetido && codigo.value.length > 0">
@@ -39,7 +40,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social<label class="text-danger ">*</label></label>
+                    <label for="inputRazonSocial" class="col-sm-2 col-form-label">Razón social<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
                         <input [disabled]="detalles==1" placeholder="ej. ASJ Servicios" required type="text" class="form-control" id="inputRazonSocial" [(ngModel)]="proveedor.razonSocial" name="razonSocial" minlength="4" maxlength="50" #razonSocial="ngModel">
                         <div class="form-text text-danger " *ngIf="razonSocialRepetida && razonSocial.value.length > 0">
@@ -51,10 +52,10 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom  border-2 pb-3">
-                    <label for="inputRubro" class="col-sm-2 col-form-label">Rubro<label class="text-danger ">*</label></label>
+                    <label for="inputRubro" class="col-sm-2 col-form-label">Rubro<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10 row pe-0">
                         <div class="col pe-0">
-                            <select [disabled]="detalles==1" required name="rubro" class="form-select" [(ngModel)]="proveedor.rubroId">
+                            <select [disabled]="detalles==1" required name="rubro" [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" [(ngModel)]="proveedor.rubroId">
                                 <option disabled value="0">Seleccione un rubro:</option>
                                 <option *ngIf="buscarRubro()" value="{{proveedor.rubroId}}">{{rubro.rubro}}(deshabilitado)</option>
                                 <option *ngFor="let rubro of rubrosActivos" value="{{rubro.id}}">{{rubro.rubro}}</option>
@@ -66,10 +67,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3 gy-3 border-bottom border-2">
-                    <label class="col-md-2 col-form-label">Sitio web<label class="text-danger ">*</label>, email<label class="text-danger ">*</label>, teléfono<label class="text-danger ">*</label></label>
-                    <div class="col-md-4">
-                        <input [disabled]="detalles==1" required type="text" class="form-control" id="inputSitioWeb" placeholder="Sitio web" [(ngModel)]="proveedor.web" name="web" #web="ngModel">
+                <div class="row mb-3 gy-3 border-bottom border-2 pb-3">
+                    <label class="col-md-2 col-form-label">Sitio web<label *ngIf="detalles==0" class="text-danger ">*</label></label>
+                    <div class="col-sm-10">
+                        <input [disabled]="detalles==1" required type="text" class="form-control" id="inputSitioWeb" placeholder="ej. www.miempresa.com" [(ngModel)]="proveedor.web" name="web" #web="ngModel">
                         <div class="form-text text-danger " *ngIf="!validarURL() && web.value?.length > 0">
                             URL incorrecta.
                         </div>
@@ -77,8 +78,9 @@
                             Este campo es obligatorio.
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <input [disabled]="detalles==1" required type="email" class="form-control" id="inputEmail" placeholder="email" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
+                    <label class="col-md-2 col-form-label">Email<label *ngIf="detalles==0" class="text-danger ">*</label></label>
+                    <div class="col-sm-10">
+                        <input [disabled]="detalles==1" required type="email" class="form-control" id="inputEmail" placeholder="ej. contacto@miempresa.com" [(ngModel)]="proveedor.email" name="email" #email="ngModel">
                         <div class="form-text text-danger " *ngIf="!validarEmail(email.value) && email.value?.length > 0">
                             email incorrecto.
                         </div>  
@@ -86,15 +88,16 @@
                             Este campo es obligatorio.
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <input [disabled]="detalles==1" required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" class="form-control" id="inputTelefono" placeholder="teléfono" [(ngModel)]="proveedor.telefono" name="telefono">
+                    <label class="col-md-2 col-form-label">Teléfono<label *ngIf="detalles==0" class="text-danger ">*</label></label>
+                    <div class="col-sm-10">
+                        <input [disabled]="detalles==1" required type="text" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')" minlength="6" maxlength="20" class="form-control" id="inputTelefono" placeholder="ej. 1122334455" [(ngModel)]="proveedor.telefono" name="telefono">
                         <div class="form-text text-danger " *ngIf="formulario.controls['telefono']?.hasError('required') && mostrarErrores">
                             Este campo debe tener entre 6-20 caracteres
                         </div>       
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom border-2">
-                    <label class="col-md-2 col-form-label">Dirección<label class="text-danger ">*</label></label>
+                    <label class="col-md-2 col-form-label">Dirección<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
@@ -145,7 +148,7 @@
                     </div>
                 </div>
                 <div class="row pb-3 mb-3 border-bottom border-2">
-                    <label class="col-md-2 col-form-label">Datos fiscales<label class="text-danger ">*</label></label>
+                    <label class="col-md-2 col-form-label">Datos fiscales<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-md-5">    
                         <input [disabled]="detalles==1" (keyup)="comprobarRepetido(cuit.value, 'cuit')" required oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" [disabled]="inputDesactivado" class="form-control" id="inputCUIT" placeholder="CUIT" [(ngModel)]="proveedor.cuit" name="cuit" #cuit="ngModel">
                         <div class="form-text text-danger " *ngIf="cuitRepetido && cuit.value.length > 0">
@@ -160,7 +163,7 @@
                     </div>
                     <div class="col-md-5">
                         <select [disabled]="detalles==1" required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.ivaId" name="iva">
-                            <option disabled selected value="0">Seleccione una condición:</option>
+                            <option disabled selected value="0">Seleccione una condición de IVA:</option>
                             <option *ngFor="let item of ivas" value="{{item.id}}">{{item.iva}}</option>
                         </select> 
                         <div class="form-text text-danger" *ngIf="proveedor.ivaId == 0 && mostrarErrores">
@@ -169,7 +172,7 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom border-2">
-                    <label class="col-md-2 col-form-label">Datos de contacto<label class="text-danger ">*</label></label>
+                    <label class="col-md-2 col-form-label">Datos de contacto<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
@@ -193,7 +196,7 @@
                         </div>
                         <div class="row mb-3 ">
                             <div class="col-8">
-                                <input [disabled]="detalles==1" required type="email" class="form-control" placeholder="email" [(ngModel)]="proveedor.contactoEmail" name="emailPersonal" #emailPersonal="ngModel">
+                                <input [disabled]="detalles==1" required type="email" class="form-control" placeholder="Email" [(ngModel)]="proveedor.contactoEmail" name="emailPersonal" #emailPersonal="ngModel">
                                     <div class="form-text text-danger " *ngIf="!validarEmail(emailPersonal.value) && emailPersonal.value?.length > 0">
                                         email incorrecto.
                                     </div>  
@@ -211,22 +214,22 @@
                     </div>
                 </div>
                 <div class="row mb-3 border-bottom border-2 pb-3">
-                    <label for="inputURL" class="col-sm-2 col-form-label">Imagen<label class="text-danger ">*</label></label>
+                    <label for="inputURL" class="col-sm-2 col-form-label">Imagen<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-7">
-                        <input required [disabled]="detalles==1" type="text" class="form-control" [(ngModel)]="proveedor.urlImagen" name="urlImagen">
+                        <input placeholder="URL de la imagen" required [disabled]="detalles==1" type="text" class="form-control" [(ngModel)]="proveedor.urlImagen" name="urlImagen">
                         <div class="form-text text-danger " *ngIf="formulario.controls['urlImagen']?.hasError('required') && mostrarErrores">
                             Este campo es obligatorio.
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <img (error)="imageNotFound($event)" src="{{proveedor.urlImagen}}" alt="logo {{proveedor.razonSocial}}" style="width: 15%; aspect-ratio: 1/1; object-fit: contain;">
+                        <img (error)="imageNotFound($event)" src="{{proveedor.urlImagen}}" alt="logo {{proveedor.razonSocial}}" style="width: 25%; aspect-ratio: 1/1; object-fit: contain;">
                     </div>
                 </div>
                 <div class="row">
                         <div class=" d-flex flex-row">
-                            <button *ngIf="detalles!=1" class="btn btn-primary me-4" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
-                            <button *ngIf="detalles!=1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="formulario.reset()">Limpiar</button>        
-                            <button class="btn btn-warning" routerLink="/listar-proveedores">Volver atrás</button>
+                            <button *ngIf="detalles!=1" class="btn btn-primary me-3" type="submit" [disabled]="cuitRepetido || codigoRepetido || razonSocialRepetida" [ngClass]="{'opacity-50': !formularioValido || !formulario.valid}">{{agregarOEditar}}</button>
+                            <button *ngIf="id==0" type="button" class="btn btn-danger me-3" [disabled]="id!=0" (click)="limpiarFormulario()">Limpiar</button>        
+                            <button class="btn btn-warning" routerLink="/proveedores">Volver atrás</button>
                         </div>
                 </div>
             </form>    

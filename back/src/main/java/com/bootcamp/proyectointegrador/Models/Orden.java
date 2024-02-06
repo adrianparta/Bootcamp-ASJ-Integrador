@@ -44,6 +44,8 @@ public class Orden {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Proveedor proveedor;
+	
+	
 	public Orden(Integer id, @NotNull(message = "La fecha de emision no puede estar vacía") Timestamp fechaEmision,
 			@NotBlank(message = "La fecha de entrega no puede estar vacía") Timestamp fechaEntrega,
 			@NotBlank(message = "La informacion de recepción no puede estar vacía") String info,

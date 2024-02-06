@@ -17,4 +17,16 @@
     to {
         border-width: 12px 0 12px 20px;
     }
-  }
+}
+
+.orange:hover{
+    color: orange;
+}
+
+.green:hover{
+    color: green;
+}
+
+.blue:hover{
+    color: blue;
+}
