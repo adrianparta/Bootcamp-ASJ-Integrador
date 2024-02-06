@@ -64,7 +64,7 @@ export class ListarProductosComponent {
   modificarEstadoProducto(producto: Producto){
     let estado = (producto.estado) ? "deshabilitar" : "habilitar";
     Swal.fire({
-      title: "¿Esta seguro que desea " + estado + " el producto?",
+      title: "¿Esta seguro que desea " + estado + " el producto " + producto.nombre +"?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
