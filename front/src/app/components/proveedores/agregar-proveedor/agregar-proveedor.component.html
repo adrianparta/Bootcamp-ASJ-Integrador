@@ -101,7 +101,7 @@
                     <div class="col-md-10">
                         <div class="row mb-3 ">
                             <div class="col-4">
-                                <select [disabled]="detalles==1" required class="form-select" (change)="onSelectPais()" name="pais" [(ngModel)]="pais">
+                                <select [disabled]="detalles==1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" (change)="onSelectPais()" name="pais" [(ngModel)]="pais">
                                     <option disabled selected value="0">Seleccione un país:</option>
                                     <option *ngFor="let item of paises" value={{item.id}}>{{item.pais}}</option>
                                 </select>
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <select [disabled]="detalles==1" required class="form-select " name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.provinciaId" name="provincia">
+                                <select [disabled]="detalles==1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="inputProvincia" id="inputProvincia" [(ngModel)]="proveedor.provinciaId" name="provincia">
                                     <option disabled selected value="0">Seleccione una provincia:</option>
                                     <option *ngFor="let item of provincias" value={{item.id}}>{{item.provincia}}</option>
                                 </select>     
@@ -162,7 +162,7 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <select [disabled]="detalles==1" required class="form-select " name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.ivaId" name="iva">
+                        <select [disabled]="detalles==1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="inputIVA" id="inputIVA" [(ngModel)]="proveedor.ivaId" name="iva">
                             <option disabled selected value="0">Seleccione una condición de IVA:</option>
                             <option *ngFor="let item of ivas" value="{{item.id}}">{{item.iva}}</option>
                         </select> 

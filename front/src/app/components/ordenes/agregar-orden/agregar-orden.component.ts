@@ -22,40 +22,42 @@ export class AgregarOrdenComponent implements OnInit{
   fechaActual = new Date();
   fechaManana = new Date(this.fechaActual.setDate(this.fechaActual.getDate() + 1));
   fechaMinima = this.fechaManana.toISOString().split('T')[0];
-  agregarODetalles:string = 'Agregar';
+  agregarODetalles!:string;
   proveedores: Proveedor[] = [];
   productos!: Producto[];
-  productoId: number = 0; 
+  productoId!: number; 
   mostrarErrores!: boolean;
-  cantidad: number = 1;
-  detalles?:number;
-  id:number = -1;
-  url: string = '';
+  cantidad!: number;
+  detalles!:number;
+  id!:number;
+  url!: string;
   fechaEmision: string = new Date().toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
-  orden: Orden = {
-    fechaEmision: new Date(),
-    fechaEntrega: new Date(),
-    info: '',
-    proveedorId: 0,
-    detalles: []
-  }
+  orden!: Orden;
   
   comprobarFecha(){
-
     let fechanueva = new Date(this.orden.fechaEntrega);
     let fecha = new Date();
-    
     return fechanueva.getTime() < fecha.getTime();
   }
 
   ngOnInit(): void {
+    this.orden = {
+      fechaEmision: new Date(),
+      fechaEntrega: new Date(),
+      info: '',
+      proveedorId: 0,
+      detalles: []
+    };
+    this.agregarODetalles = 'Agregar';
+    this.productoId = 0;
+    this.cantidad = 1;
     this.url = '';
     this.orden.total = 0;
-    this.detalles = parseInt(this.route.snapshot.params['details']);
+    this.detalles = (this.router.routerState.snapshot.url.substring(1).includes('detalles')) ? 1 : 0;
     this.id = parseInt(this.route.snapshot.params['id']);
-
+    this.url = '';
     this.mostrarErrores = false;
-    if(this.detalles!=0){
+    if(this.detalles != 0){
       this.agregarODetalles = 'Detalles de la';
         this.ordenService.obtenerOrden(this.id).subscribe((data: Orden)=>{
           this.orden = data;
@@ -65,7 +67,7 @@ export class AgregarOrdenComponent implements OnInit{
             this.proveedores.push(data);
             this.url = data.urlImagen;
           });
-          if(this.id!=-1){
+          if(this.id != 0){
           this.fechaFormateada = this.orden.fechaEntrega.toString().split('T')[0];
           }
         }); 

@@ -24,12 +24,12 @@
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row">
                     <label *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</label>
-                    <div *ngIf="!orden.estado && id != -1" class="text-end mb-4 col">
+                    <div *ngIf="!orden.estado && id != 0" class="text-end mb-4 col">
                         <label class="me-2 fs-5 align-text-top text-danger">La orden se encuentra cancelada: </label>
                         <button type="button" class="btn btn-success " (click)="activarOrden()">Activar orden</button>
                     </div>
                 </div>
-                <div *ngIf="id!=-1" class="row mb-3 border-bottom  border-2 pb-3">
+                <div *ngIf="id!=0" class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputNumeroOrden" class="col-sm-2 col-form-label">Número de orden</label>
                     <div class="col-sm-10">
                         <input [disabled]="detalles!=0" type="text" class="form-control" id="inputNumeroOrden" [(ngModel)]="id" name="numeroOrden">    
@@ -44,8 +44,8 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Fecha de entrega esperada<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                     <div class="col-sm-10">
-                        <input *ngIf="id==-1" required [disabled]="detalles!=0" [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega" >
-                        <input *ngIf="id!=-1" required disabled [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="fechaFormateada" name="fechaEntrega" >
+                        <input *ngIf="id==0" required [disabled]="detalles!=0" [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="orden.fechaEntrega" name="fechaEntrega" >
+                        <input *ngIf="id!=0" required disabled [min]="fechaMinima" type="date" class="form-control" id="inputFechaEntrega" [(ngModel)]="fechaFormateada" name="fechaEntrega" >
                         <div class="form-text text-danger" *ngIf="comprobarFecha() && mostrarErrores">
                             La fecha de entrega estimada debe ser mayor o igual a la fecha de emisión.
                         </div>   
@@ -54,7 +54,7 @@
                 <div class="row mb-3 border-bottom  border-2 pb-3">
                     <label for="inputFechaEntrega" class="col-sm-2 col-form-label">Detalles de entrega<label *ngIf="detalles==0" class="text-danger ">*</label></label>
                         <div class="col-sm-10">
-                            <textarea minlength="10" placeholder="ej: Dejar en la puerta" maxlength="250" required [disabled]="detalles!=0" class="form-control " name="info" id="" cols="30" rows="3" [(ngModel)]="orden.info"></textarea>
+                            <textarea minlength="10" placeholder="ej: Dejar en la puerta" maxlength="250" required [disabled]="detalles!=0" class="form-control " name="info" cols="30" rows="3" [(ngModel)]="orden.info"></textarea>
                             <div class="form-text text-danger " *ngIf="formulario.controls['info']?.hasError('minlength') || (mostrarErrores && formulario.controls['info']?.hasError('required'))">
                                 Este campo debe tener entre 10-250 caracteres.
                             </div>
@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col d-flex flex-row ">
                         <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || orden.total==0 || orden.fechaEntrega< orden.fechaEntrega}" type="submit" class="btn btn-primary me-3" id="agregar">Agregar</button>
-                        <button *ngIf="detalles != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=-1" (click)="limpiarDetalles()">Limpiar</button>            
+                        <button *ngIf="detalles != 1" type="button" class="btn btn-danger me-3" [disabled]="id!=0" (click)="limpiarDetalles()">Limpiar</button>            
                         <button class="btn btn-warning " routerLink="/ordenes">Volver atrás</button>
                     </div>
                 </div>

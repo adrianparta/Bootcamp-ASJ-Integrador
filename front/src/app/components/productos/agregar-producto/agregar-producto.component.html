@@ -19,7 +19,7 @@
             <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
                 <div class="row">
                     <label *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</label>
-                    <div *ngIf="!producto.estado && id != -1" class="text-end mb-4 col">
+                    <div *ngIf="!producto.estado && id != 0" class="text-end mb-4 col">
                         <label class="me-2 fs-5 align-text-top text-danger ">El producto se encuentra deshabilitado: </label>
                         <button *ngIf="detalles==0" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
                     </div>
@@ -107,7 +107,7 @@
                 <div class="row">
                         <div class="col d-flex flex-row">
                             <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary me-3" id="agregar">{{agregarOEditar}}</button>
-                            <button *ngIf="detalles != 1 && id == -1" type="button" class="btn btn-danger me-3" (click)="limpiarFormulario()">Limpiar</button>            
+                            <button *ngIf="detalles != 1 && id == 0" type="button" class="btn btn-danger me-3" (click)="limpiarFormulario()">Limpiar</button>            
                             <button class="btn btn-warning  " routerLink="/productos">Volver atrás</button>
                         </div>
                 </div>

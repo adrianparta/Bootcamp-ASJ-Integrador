@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Categoria } from '../../../models/categoria';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Rubro } from '../../../models/rubro';
 
 
 @Component({
@@ -21,42 +20,48 @@ export class AgregarProductoComponent implements OnInit{
 
   id?: number;
   detalles?: number;
-  titulo = 'Agregar';
+  titulo!: string;
   productos!: Producto[];
-  agregarOEditar = 'Agregar';
+  agregarOEditar!: string;
   mostrarErrores!: boolean;
-  codigoRepetido = false;
-  nuevaCategoria = '';
+  codigoRepetido!: boolean;
+  nuevaCategoria!: string;
   codigoRegex: RegExp = /^[A-Z]{2}[0-9]{3}$/;
-  filtroCategorias: string = '';
-  categoria: Categoria = {
-    categoria: '',
-  }
-  producto: Producto = {
-    codigo: '',
-    nombre: '',
-    descripcion: '',
-    precio: 1,
-    imagen_url: '',
-    categoriaId: 0,
-    proveedorId: 0
-  }
+  filtroCategorias!: string;
+  categoria!: Categoria
+  producto!: Producto;
 
   proveedores!: Proveedor[];
   categoriasActivas!: Categoria[];
   categorias!: Categoria[];
   
   ngOnInit(): void {
+    this.titulo = 'Agregar';
+    this.agregarOEditar = 'Agregar';
+    this.codigoRepetido = false;
+    this.nuevaCategoria = '';
     this.filtroCategorias = '';
+    this.categoria = {
+      categoria: '',
+    };
+    this.producto = {
+      codigo: '',
+      nombre: '',
+      descripcion: '',
+      precio: 1,
+      imagen_url: '',
+      categoriaId: 0,
+      proveedorId: 0
+    }
     this.id = parseInt(this.route.snapshot.params['id']);
-    this.detalles = parseInt(this.route.snapshot.params['details']);
+    this.detalles = (this.router.routerState.snapshot.url.substring(1).includes('detalles')) ? 1 : 0;
     
     this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
       this.proveedores = data;
     })
     this.obtenerCategoriasActivas();
 
-    if(this.id!=-1){
+    if(this.id!=0){
       this.titulo = 'Editar';
       this.agregarOEditar = 'Editar';
       this.productoService.obtenerProducto(this.id).subscribe((data: Producto)=>{
@@ -66,7 +71,7 @@ export class AgregarProductoComponent implements OnInit{
 
     this.productoService.obtenerProductos().subscribe((data: Producto[])=>{
       this.productos = data;
-      if(this.id!=-1){
+      if(this.id!=0){
         this.productos = this.productos?.filter((product: Producto)=>product.id!=this.id);
       }
     });
@@ -90,7 +95,7 @@ export class AgregarProductoComponent implements OnInit{
   agregar(formulario: any){
     
     if(formulario.valid && !this.codigoRepetido && this.validarCodigo()){
-      if(this.id==-1){
+      if(this.id==0){
         this.productoService.agregarProducto(this.producto).subscribe(()=>{
           this.redirigir('Producto agregado con éxito', formulario);
         },  
@@ -243,14 +248,14 @@ export class AgregarProductoComponent implements OnInit{
   }
 
   buscarCategoria(){
-    if(this.id!=-1){
+    if(this.id!=0){
       return !this.categoriasActivas.some(objeto => objeto.id == this.producto.categoriaId)
     }
     return false;
   }
 
   buscarProveedor(){
-    if(this.id!=-1){
+    if(this.id!=0){
       return !this.proveedores.some(objeto => objeto.id == this.producto.proveedorId)
     }
     return false;
