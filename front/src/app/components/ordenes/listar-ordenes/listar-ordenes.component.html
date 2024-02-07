@@ -39,7 +39,7 @@
                             <td>{{orden.fechaEmision | date:"dd MMM, yyyy 'a las ' hh:mm a"}}</td>
                             <td>{{orden.fechaEntrega | date:'dd MMM, yyyy'}}</td>
                             <td>{{orden.proveedor}}</td>
-                            <td>{{orden.total}}</td>
+                            <td><strong>${{orden.total}}</strong></td>
                             <td>
                                 <button [routerLink]="['/ordenes',orden.id,'detalles']" class="btn btn-outline-info btn-sm me-2"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
                                 <button *ngIf="orden.estado" (click)="modificarEstadoOrden(orden)" class="btn btn-outline-danger btn-sm "><img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FA5252/multiply.png" alt="multiply"/></button>
