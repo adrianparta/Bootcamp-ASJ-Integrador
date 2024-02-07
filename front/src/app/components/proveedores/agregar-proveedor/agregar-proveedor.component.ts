@@ -367,4 +367,15 @@ export class AgregarProveedorComponent implements OnInit{
       ivaId: 0
     }
   }
+
+  formatearCuit(event: KeyboardEvent){
+    if(!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(event.key) && event.key != 'Backspace'){
+      event.preventDefault();
+    }
+    if(event.key != 'Backspace'){
+      if(this.proveedor.cuit.length == 2 || this.proveedor.cuit.length == 11){
+        this.proveedor.cuit += '-';
+      }
+    }
+  }
 } 

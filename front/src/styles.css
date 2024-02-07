@@ -105,6 +105,21 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+body::-webkit-scrollbar{
+  width: 8px;
+}
+body::-webkit-scrollbar-thumb{
+  background-color: var(--bs-indigo);
+  border-radius: 8px;
+}
+body::-webkit-scrollbar-thumb:hover{
+  background-color: var(--bs-purple);
+}
+
+.text-indigo {
+  color: var(--bs-indigo) !important;
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;

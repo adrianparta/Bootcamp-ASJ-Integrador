@@ -15,10 +15,12 @@ export class AppComponent implements OnInit{
   usuario!: Usuario;
   acceso!: boolean;
   denegado!: boolean;
+  mostrarContrasenia!: boolean;
 
   constructor(public usuarioService: UsuarioService, public router: Router){}
 
   ngOnInit(): void {
+    this.mostrarContrasenia = false;
     this.usuario = {
       usuario: '',
       contrasenia: ''
@@ -30,7 +32,6 @@ export class AppComponent implements OnInit{
     this.denegado = false;
     if(localStorage.getItem('acceso')){
       this.acceso = true;
-      this.router.navigate(['/home']);
     }
   }
 
@@ -50,6 +51,5 @@ export class AppComponent implements OnInit{
     else{
       this.mostrarErrores = true;
     }
-    
   }
 }

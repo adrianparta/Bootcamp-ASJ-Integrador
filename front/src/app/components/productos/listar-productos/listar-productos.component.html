@@ -1,90 +1,76 @@
-<div style="position: relative;">
-    <div class="triangle"></div>
-</div>
-<div id="layoutSidenav_content">
-    <main>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Productos/Servicios</h1>
-            <div class="row">
-                <div class="col align-items-center  d-flex flex-row justify-content-between mx-1">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-decoration-none " routerLink="/home">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Listar productos</li>
-                        </ol>
-                    </nav>
-                    <div class="row">
-                        
-                    </div>
-                    <a class=" col-1 btn btn-success my-4 " routerLink="/productos/0">Agregar</a>
-                </div>
-            </div>
-            <div class="container mb-4 row mx-0 px-0">
-                <div class="col-4 ps-0">
-                    <label>Buscar:</label>
-                    <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">        
-                </div>
-                <div class="col-3">
-                    <label>Filtrar por categoría:</label>
-                    <select class="form-select col-2" (change)="onSelectfiltroCategoria()" [(ngModel)]="filtroCategoria">
-                        <option value="0">Todas</option>
-                        <option *ngFor="let categoria of categorias" [value]="categoria.id" [ngClass]="{'text-secondary': !categoria.estado}">{{categoria.categoria}}</option>
-                    </select>
-                </div>
-                <div class="col-3" role="group">
-                    <label>Ordenar por:</label>
-                    <select class="form-select" (change)="ordenar()" [(ngModel)]="ascdesc">
-                        <option value="">Nombre</option>
-                        <option value="asc">Menor precio</option>
-                        <option value="desc">Mayor precio</option>
-                    </select>
-                </div>
-                <div class="btn-group col-2 text-end mt-4 pe-0" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
-                    <label class="btn btn-sm btn-outline-secondary pt-2" for="btnradio1">Activos</label>
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" (click)="activosOEliminados(false)">
-                    <label class="btn btn-sm  btn-outline-secondary pt-2" for="btnradio3">Deshabilitados</label>
-                </div>
-            </div>
-            
-            <div class="card mb-4">
-                <div class="card-body" *ngIf="productos.length==0 ">
-                    <h2 *ngIf="estado" class="h1">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
-                    <h2 *ngIf="!estado" class="h1">No hay productos deshabilitados para listar</h2>
-                </div>
-                <div *ngIf="productos.length>0" class="card-body">
-                    <table id="datatablesSimple" class="table">
-                        <thead>
-                            <tr>
-                                <th>Imagen</th>
-                                <th>SKU | Producto</th>
-                                <th>Categoría</th>
-                                <th>Precio</th>
-                                <th>Proveedor</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="contenido-tabla">
-                            <tr [ngClass]="{'bg-secondary-subtle': proveedorDesactivado(producto.proveedorId)}" *ngFor="let producto of productos | filtroProductosPipe:filtro">
-                                <div >
-                                    <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 80px; aspect-ratio: 1/1; object-fit: cover;" alt="">
-                                </div>
-                                <td class="align-middle ">{{producto.codigo}} | {{producto.nombre}}</td>
-                                <td class="align-middle " [ngClass]="{'text-secondary': buscarCategoria(producto)}">{{producto.categoria}}<label *ngIf="buscarCategoria(producto)">(deshabilitada)</label></td>
-                                <td class="align-middle ">${{producto.precio}}</td>
-                                <td class="align-middle " [ngClass]="{'text-secondary': proveedorDesactivado(producto.proveedorId)}">{{producto.proveedor}}<label *ngIf="proveedorDesactivado(producto.proveedorId)" >(desactivado)</label></td>
-                                <td class="align-middle ">
-                                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/productos',producto.id,'detalles']"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
-                                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/productos',producto.id]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
-                                    <button *ngIf="estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/FA5252/filled-trash.png" alt="filled-trash"/></button>
-                                    <button *ngIf="!estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
+<main id="layoutSidenav_content" class="container-fluid px-4">
+    <h1 class="mt-4">Productos/Servicios</h1>
+    <nav class="row ms-1">
+        <nav class="row">
+            <ol class="breadcrumb col-11 align-items-center">
+                <li class="breadcrumb-item"><a class="text-decoration-none text-indigo" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Listar productos</li>
+            </ol>
+            <a class=" col-1 btn btn-success my-4 " routerLink="/productos/0">Agregar</a>
+        </nav>
+    </nav>
+    <section class="container mb-4 row mx-0 px-0">
+        <div class="col-4 ps-0">
+            <span>Buscar:</span>
+            <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">        
         </div>
-    </main>
+        <div class="col-3">
+            <span>Filtrar por categoría:</span>
+            <select class="form-select col-2" (change)="onSelectfiltroCategoria()" [(ngModel)]="filtroCategoria">
+                <option value="0">Todas</option>
+                <option *ngFor="let categoria of categorias" [value]="categoria.id" [ngClass]="{'text-secondary': !categoria.estado}">{{categoria.categoria}}</option>
+            </select>
+        </div>
+        <div class="col-3" role="group">
+            <span>Ordenar por:</span>
+            <select class="form-select" (change)="ordenar()" [(ngModel)]="ascdesc">
+                <option value="">Nombre</option>
+                <option value="asc">Menor precio</option>
+                <option value="desc">Mayor precio</option>
+            </select>
+        </div>
+        <div class="btn-group col-2 text-end mt-4 pe-0" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
+            <label class="btn btn-sm btn-outline-secondary pt-2" for="btnradio1">Activos</label>
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" (click)="activosOEliminados(false)">
+            <label class="btn btn-sm  btn-outline-secondary pt-2" for="btnradio3">Deshabilitados</label>
+        </div>
+    </section>
     
-</div>
+    <section class="card mb-4">
+        <h2 *ngIf="estado && productos.length == 0" class="h1 ps-2 py-2">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
+        <h2 *ngIf="!estado && productos.length == 0" class="h1 ps-2 py-2">No hay productos deshabilitados para listar</h2>
+        <div *ngIf="productos.length>0" class="card-body">
+            <table id="datatablesSimple" class="table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>SKU | Producto</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="contenido-tabla">
+                    <tr [ngClass]="{'bg-secondary-subtle': proveedorDesactivado(producto.proveedorId)}" *ngFor="let producto of productos | filtroProductosPipe:filtro">
+                        <div >
+                            <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" style="width: 80px; aspect-ratio: 1/1; object-fit: cover;" alt="">
+                        </div>
+                        <td class="align-middle ">{{producto.codigo}} | {{producto.nombre}}</td>
+                        <td class="align-middle " [ngClass]="{'text-secondary': buscarCategoria(producto)}">{{producto.categoria}}<label *ngIf="buscarCategoria(producto)">(deshabilitada)</label></td>
+                        <td class="align-middle ">${{producto.precio}}</td>
+                        <td class="align-middle " [ngClass]="{'text-secondary': proveedorDesactivado(producto.proveedorId)}">{{producto.proveedor}}<label *ngIf="proveedorDesactivado(producto.proveedorId)" >(desactivado)</label></td>
+                        <td class="align-middle ">
+                            <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/productos',producto.id,'detalles']"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
+                            <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/productos',producto.id]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
+                            <button *ngIf="estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/FA5252/filled-trash.png" alt="filled-trash"/></button>
+                            <button *ngIf="!estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
