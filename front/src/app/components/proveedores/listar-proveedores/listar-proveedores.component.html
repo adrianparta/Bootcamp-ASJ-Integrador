@@ -1,4 +1,4 @@
-<main id="layoutSidenav_content" class="container-fluid px-4">
+<main id="layoutSidenav_content" class="container-fluid px-4 ">
     <h1 class="mt-4">Proveedores</h1>
     <nav class="row ms-1">
         <nav class="row">
@@ -30,13 +30,63 @@
             <label class="btn btn-sm  btn-outline-secondary pt-2" for="btnradio3">Deshabilitados</label>
         </div>
     </section>
-    <section class="card mb-4">
-        <h2 *ngIf="estado && proveedores.length == 0" class="h1 ps-2 py-2">No hay proveedores para listar, agregue uno desde el boton de arriba a la derecha</h2>
-        <h2 *ngIf="!estado && proveedores.length == 0" class="h1 ps-2 py-2">No hay proveedores deshabilitados para listar</h2>
-        <div *ngIf="proveedores && proveedores.length>0" class="card-body">
-            <table id="datatablesSimple" class="table">
-                <thead>
-                    <tr>
+    <section class="mb-4">
+        <h2 *ngIf="estado && proveedores?.length == 0" class="h1 ps-2 py-2">No hay proveedores para listar, agregue uno desde el boton de arriba a la derecha</h2>
+        <h2 *ngIf="!estado && proveedores?.length == 0" class="h1 ps-2 py-2">No hay proveedores deshabilitados para listar</h2>
+        <div class="bg-secondary-subtle text-secondary fw-semibold rounded-3 py-2 px-4 d-flex flex-row justify-content-between ">
+            <label>Logo</label>
+            <label>Código</label>
+            <label>Razón Social</label>
+            <label>Ubicación</label>
+            <label>Nombre y apellido</label>
+            <label>web/email/telefono</label>
+            <label>Acciones</label>
+        </div> 
+
+        <ul class="mt-2 p-0">
+            <li class="bg-white py-2 px-4 mb-2 d-flex flex-row justify-content-between" *ngFor="let proveedor of proveedores | filtroProveedoresPipe:filtro">
+                <img (error)="imageNotFound($event)" src="{{proveedor.urlImagen}}" style="width: 100px; aspect-ratio: 1/1; object-fit: contain;" alt="">
+                <label>{{proveedor.codigo}}</label>
+                <label>{{proveedor.razonSocial}}</label>
+                <label>{{proveedor.pais}}, {{proveedor.provincia}}</label>
+                <label>{{proveedor.contactoNombre}} {{proveedor.contactoApellido}}</label>
+                <label>
+                    <div>
+                        <button class="btn btn-sm" placement="top" [ngbTooltip]="tooltipEmail" (click)="copiar(proveedor.email, 'email')">
+                            <img class="mx-2" width="24" height="24" src="https://img.icons8.com/material-rounded/24/new-post.png" alt="new-post"/>
+                        </button>
+                        <button class="btn btn-sm" [ngbTooltip]="tooltipWeb" (click)="copiar(proveedor.web, 'web')">
+                            <img class="mx-2" width="24" height="24" src="https://img.icons8.com/material-outlined/24/domain.png" alt="domain"/>
+                        </button>
+                        <button class="btn btn-sm" [ngbTooltip]="tooltipTelefono" (click)="copiar(proveedor.telefono, 'telefono')">
+                            <img class="mx-2" width="24" height="24" src="https://img.icons8.com/ios-glyphs/30/phone--v1.png" alt="phone--v1"/>                                    
+                        </button>
+                        <ng-template #tooltipEmail>
+                            <p *ngIf="!emailCopiado" class="fw-normal mb-1 text-nowrap text-center">{{proveedor.email}}</p>
+                            <p *ngIf="emailCopiado" class="fw-normal mb-1 text-nowrap text-center">copiado!</p>
+                        </ng-template>
+                        <ng-template #tooltipWeb>
+                            <p *ngIf="!webCopiada" class="fw-normal mb-1 text-nowrap text-center">{{proveedor.web}}</p>
+                            <p *ngIf="webCopiada" class="fw-normal mb-1 text-nowrap text-center">copiado!</p>
+                        </ng-template>
+                        <ng-template #tooltipTelefono>
+                            <p *ngIf="!telefonoCopiado" class="fw-normal mb-1 text-nowrap text-center">{{proveedor.telefono}}</p>
+                            <p *ngIf="telefonoCopiado" class="fw-normal mb-1 text-nowrap text-center">copiado!</p>
+                        </ng-template>
+                    </div>
+                </label>
+                <label>
+                    <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/proveedores',proveedor.id,'detalles']"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
+                    <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/proveedores',proveedor.id]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
+                    <button *ngIf="estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProveedor(proveedor)"><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/FA5252/filled-trash.png" alt="filled-trash"/></button>
+                    <button *ngIf="!estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProveedor(proveedor)"><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
+                </label>
+            </li>
+        </ul>
+
+        <table id="datatablesSimple" class="mt-5">
+                <thead class="bg-white">
+                    <tr class="rounded-2">
                         <th>Logo</th>
                         <th>Código</th>
                         <th>Razón Social</th>
@@ -47,7 +97,7 @@
                     </tr>
                 </thead>
                 
-                <tbody id="contenido-tabla">
+                <tbody class="bg-black ">
                     <tr *ngFor="let proveedor of proveedores | filtroProveedoresPipe:filtro">
                         <td>
                             <div >
@@ -92,6 +142,5 @@
                     </tr>
                 </tbody>
             </table> 
-        </div>
     </section>
 </main>
