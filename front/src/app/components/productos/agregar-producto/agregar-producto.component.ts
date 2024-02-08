@@ -58,7 +58,17 @@ export class AgregarProductoComponent implements OnInit{
     
     this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
       this.proveedores = data;
-    })
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
+    });
     this.obtenerCategoriasActivas();
 
     if(this.id!=0){
@@ -66,7 +76,17 @@ export class AgregarProductoComponent implements OnInit{
       this.agregarOEditar = 'Editar';
       this.productoService.obtenerProducto(this.id).subscribe((data: Producto)=>{
         this.producto = data;
-      })
+      }, error => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: JSON.stringify(error.error),
+          timer: 2500,
+          timerProgressBar: true,
+          position: "top-end",
+        });
+        this.router.navigate(['/home']);
+      });
     }
 
     this.productoService.obtenerProductos().subscribe((data: Producto[])=>{
@@ -74,6 +94,16 @@ export class AgregarProductoComponent implements OnInit{
       if(this.id!=0){
         this.productos = this.productos?.filter((product: Producto)=>product.id!=this.id);
       }
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
 
     if(this.detalles==1){
@@ -87,6 +117,16 @@ export class AgregarProductoComponent implements OnInit{
       this.categoriasActivas.sort((a, b) => {
         return a.categoria.localeCompare(b.categoria);
       });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
     this.nuevaCategoria = '';
     this.filtroCategorias = '';
@@ -213,6 +253,16 @@ export class AgregarProductoComponent implements OnInit{
       this.categorias.sort((a, b) => {
         return a.categoria.localeCompare(b.categoria);
       });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -282,8 +332,17 @@ export class AgregarProductoComponent implements OnInit{
         }).then(()=>{
           this.productoService.modificarEstadoProducto(this.producto.id).subscribe((data: Producto)=>{
             this.producto = data;
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
-          
         });
       }
     });

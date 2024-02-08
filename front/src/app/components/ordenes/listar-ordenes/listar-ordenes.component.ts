@@ -3,6 +3,7 @@ import { ServiceOrdenService as OrdenService } from '../../../services/service-o
 import { Orden } from '../../../models/orden';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listar-ordenes',
@@ -15,7 +16,7 @@ export class ListarOrdenesComponent {
   filtro: string = '';
   estado: boolean = true;
 
-  constructor(public ordenService: OrdenService, public proveedorService: ProveedorService){
+  constructor(public ordenService: OrdenService, public proveedorService: ProveedorService, private router: Router){
   }  
 
   ngOnInit() {
@@ -31,7 +32,16 @@ export class ListarOrdenesComponent {
         let fecha = new Date(orden.fechaEntrega);
         orden.fechaEntrega = new Date(fecha.setHours(fecha.getHours() + this.offset));
       }
-      
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -65,6 +75,16 @@ export class ListarOrdenesComponent {
         }).then(()=>{
           this.ordenService.modificarEstadoOrden(orden.id).subscribe(()=>{
             this.obtenerOrdenes();
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
         });
       }

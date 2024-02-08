@@ -84,12 +84,32 @@ export class AgregarProveedorComponent implements OnInit{
     this.mostrarErrores = false;
     this.proveedorService.obtenerPaises().subscribe((data: Pais[])=>{
       this.paises = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
 
     this.obtenerRubrosActivos();
 
     this.proveedorService.obtenerIvas().subscribe((data: Iva[])=>{
       this.ivas = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     })
 
     if(this.id != 0){
@@ -103,8 +123,28 @@ export class AgregarProveedorComponent implements OnInit{
         if(this.buscarRubro()){
           this.proveedorService.obtenerRubro(this.proveedor.rubroId).subscribe((data: Rubro) => {
             this.rubro = data;
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
       }
+      }, error => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: JSON.stringify(error.error),
+          timer: 2500,
+          timerProgressBar: true,
+          position: "top-end",
+        });
+        this.router.navigate(['/home']);
       });
     }
 
@@ -113,6 +153,16 @@ export class AgregarProveedorComponent implements OnInit{
       if(this.id != 0){
         this.proveedores = this.proveedores?.filter((proveedor: Proveedor) => proveedor.id != this.id);
       }
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
     
     if(this.detalles == 1){
@@ -156,6 +206,16 @@ export class AgregarProveedorComponent implements OnInit{
       else{
         this.proveedorService.modificarProveedor(this.proveedor).subscribe( () => {
           this.redirigir('modificado');
+        }, error => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: JSON.stringify(error.error),
+            timer: 2500,
+            timerProgressBar: true,
+            position: "top-end",
+          });
+          this.router.navigate(['/home']);
         });
       }
     }
@@ -167,6 +227,16 @@ export class AgregarProveedorComponent implements OnInit{
   onSelectPais() {
     this.proveedorService.obtenerProvincias(this.pais).subscribe((data: Provincia[])=>{
       this.provincias = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -279,6 +349,16 @@ export class AgregarProveedorComponent implements OnInit{
         }).then(()=>{
           this.proveedorService.modificarEstadoProveedor(this.proveedor.id).subscribe((data: Proveedor)=>{
             this.proveedor = data;
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
           
         });
@@ -297,10 +377,19 @@ export class AgregarProveedorComponent implements OnInit{
   obtenerRubros(){
     this.proveedorService.obtenerRubros().subscribe((data: Rubro[])=>{
       this.rubros = data;
-
       this.rubros.sort((a, b) => {
         return a.rubro.localeCompare(b.rubro);
       });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -310,6 +399,16 @@ export class AgregarProveedorComponent implements OnInit{
       this.rubrosActivos.sort((a, b) => {
         return a.rubro.localeCompare(b.rubro);
       });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 

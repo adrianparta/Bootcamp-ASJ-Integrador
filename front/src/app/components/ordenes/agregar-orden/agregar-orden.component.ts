@@ -60,9 +60,7 @@ export class AgregarOrdenComponent implements OnInit{
     if(this.detalles != 0){
       this.agregarODetalles = 'Detalles de la';
         this.ordenService.obtenerOrden(this.id).subscribe((data: Orden)=>{
-          this.orden = data;
-          console.log(this.orden);
-          
+          this.orden = data;          
           this.proveedorService.obtenerProveedor(this.orden.proveedorId).subscribe((data: Proveedor)=>{
             this.proveedores.push(data);
             this.url = data.urlImagen;
@@ -70,11 +68,31 @@ export class AgregarOrdenComponent implements OnInit{
           if(this.id != 0){
           this.fechaFormateada = this.orden.fechaEntrega.toString().split('T')[0];
           }
+        }, error => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: JSON.stringify(error.error),
+            timer: 2500,
+            timerProgressBar: true,
+            position: "top-end",
+          });
+          this.router.navigate(['/home']);
         }); 
     }
 
     this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[])=>{
       this.proveedores = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -103,9 +121,29 @@ export class AgregarOrdenComponent implements OnInit{
     let proveedorId = proveedor.target.value
     this.proveedorService.obtenerProveedor(proveedorId).subscribe((data: Proveedor)=>{
       this.url = data.urlImagen;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
     this.productoService.obtenerProductosPorProveedor(proveedorId).subscribe((data: Producto[])=>{
       this.productos = data;      
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });  
   }
 
@@ -161,18 +199,29 @@ export class AgregarOrdenComponent implements OnInit{
 
   activarOrden(){
     this.orden.estado = true;
-    this.ordenService.modificarEstadoOrden(this.orden.id).subscribe();
-    Swal.fire({
-      title: 'Orden activada con éxito',
-      icon: 'success',
-      timer: 2000,
-      timerProgressBar: true,
-      position: 'top-end',
-      confirmButtonText: 'OK',
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-    })
-  }
+    this.ordenService.modificarEstadoOrden(this.orden.id).subscribe(()=>{
+      Swal.fire({
+        title: 'Orden activada con éxito',
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        position: 'top-end',
+        confirmButtonText: 'OK',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
+    });
+    }
 
   imageNotFound(event: Event): void {
     (event.target as HTMLImageElement).src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"

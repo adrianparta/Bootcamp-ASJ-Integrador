@@ -5,6 +5,7 @@ import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
 import { Categoria } from '../../../models/categoria';
 import { Proveedor } from '../../../models/proveedor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listar-productos',
@@ -21,7 +22,7 @@ export class ListarProductosComponent {
   ascdesc: string = '';
   proveedores: Proveedor[] = [];
 
-  constructor(public productoService: ProductoService, public proveedorService: ProveedorService){
+  constructor(public productoService: ProductoService, public proveedorService: ProveedorService, private router: Router){
   }
 
   ngOnInit() {
@@ -43,7 +44,17 @@ export class ListarProductosComponent {
         else {
             return 0;
         }
-    });
+      });
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
 
   }
@@ -52,12 +63,32 @@ export class ListarProductosComponent {
     this.productoService.obtenerProductosPorEstado(this.estado).subscribe((data: Producto[]) => {
       this.productos = data;
       this.ordenar();
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
   obtenerProveedores(){
     this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[])=>{
       this.proveedores = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
 
@@ -85,6 +116,16 @@ export class ListarProductosComponent {
           this.productoService.modificarEstadoProducto(producto.id).subscribe(()=>{
             this.obtenerProductos();
             this.ordenar();
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
           
         });
@@ -126,6 +167,16 @@ export class ListarProductosComponent {
       this.productoService.obtenerProductosPorCategoria(this.filtroCategoria, this.estado).subscribe((data: Producto[])=>{
         this.productos = data;
         this.ordenar();
+      }, error => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: JSON.stringify(error.error),
+          timer: 2500,
+          timerProgressBar: true,
+          position: "top-end",
+        });
+        this.router.navigate(['/home']);
       });
     }
   }

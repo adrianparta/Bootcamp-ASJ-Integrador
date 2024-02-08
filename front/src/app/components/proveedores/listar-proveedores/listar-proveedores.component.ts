@@ -3,6 +3,8 @@ import { ProveedorService } from '../../../services/service-proveedor.service';
 import { Proveedor } from '../../../models/proveedor';
 import 'bootstrap';
 import Swal from 'sweetalert2';
+import { error } from 'jquery';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-proveedores',
@@ -19,13 +21,23 @@ export class ListarProveedoresComponent implements OnInit{
   estado: boolean = true;
   orden: string = '';
 
-  constructor(public proveedorService: ProveedorService){
+  constructor(public proveedorService: ProveedorService, private router: Router){
   }  
 
   obtenerProveedores(){
     this.proveedorService.obtenerProveedoresPorEstado(this.estado).subscribe((data: Proveedor[]) => {
       this.proveedores = data;
       this.ordenar();
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
     });
   }
   
@@ -61,6 +73,16 @@ export class ListarProveedoresComponent implements OnInit{
         }).then(()=>{
           this.proveedorService.modificarEstadoProveedor(proveedor.id).subscribe(()=>{
             this.obtenerProveedores();
+          }, error => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: JSON.stringify(error.error),
+              timer: 2500,
+              timerProgressBar: true,
+              position: "top-end",
+            });
+            this.router.navigate(['/home']);
           });
           
         });
