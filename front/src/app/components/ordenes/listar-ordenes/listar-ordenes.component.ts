@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class ListarOrdenesComponent {
   offset = new Date().getTimezoneOffset() / 60;
   ordenes: Orden[] = [];
-  filtro: string = '';
   estado: boolean = true;
 
   constructor(public ordenService: OrdenService, public proveedorService: ProveedorService, private router: Router){
@@ -22,7 +21,6 @@ export class ListarOrdenesComponent {
   ngOnInit() {
     this.estado = true;
     this.obtenerOrdenes();
-    this.filtro = '';
   }
   
   obtenerOrdenes(){
@@ -93,7 +91,6 @@ export class ListarOrdenesComponent {
 
   activosOEliminados(estado: boolean){
     this.estado = estado;
-    this.filtro = '';
     this.obtenerOrdenes();
   }
 }

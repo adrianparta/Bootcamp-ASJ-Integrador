@@ -33,6 +33,20 @@ public class OrdenService {
 	@Autowired
 	ProductoService productoService;
 	
+	public List<OrdenDTO> obtenerOrdenes(){
+		try {
+			List<Orden> ordenes =  ordenRepository.findAll();
+	        List<OrdenDTO> ordenesDTO = new ArrayList<OrdenDTO>();
+	        for (Orden orden : ordenes) {
+				OrdenDTO ordenDTO = new OrdenDTO(orden);
+				ordenesDTO.add(ordenDTO);
+			}
+	        return ordenesDTO;
+		} catch (Exception e) {
+	        throw new RuntimeException("Error al intentar obtener la lista de ordenes.", e);
+	    }
+	}
+	
 	public List<OrdenDTO> obtenerOrdenesPorEstado(Boolean estado){
 		try {
 			List<Orden> ordenes =  ordenRepository.findByEstado(estado);
@@ -45,7 +59,6 @@ public class OrdenService {
 		} catch (Exception e) {
 	        throw new RuntimeException("Error al intentar obtener la lista de ordenes.", e);
 	    }
-	       
 	}
 	
 	public Orden obtenerOrden(Integer id) throws OrdenNotFoundException{
@@ -123,4 +136,5 @@ public class OrdenService {
 	        throw new RuntimeException(e.getMessage());
 	    }
 	}
+	
 }

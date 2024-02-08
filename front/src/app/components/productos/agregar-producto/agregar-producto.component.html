@@ -1,4 +1,4 @@
-<main id="layoutSidenav_content" class="container-fluid px-4">
+<main id="layoutSidenav_content" class="container-fluid px-4 mb-4">
     <h1 class="my-4">{{titulo}} producto/servicio</h1>  
     <div class="row mt-4">
         <nav class="col align-items-center d-flex flex-row justify-content-between mx-1">
@@ -9,105 +9,107 @@
             </ol>
         </nav>
     </div>
-    <form (ngSubmit)="agregar(formulario)" #formulario="ngForm">
-        <section class="row">
-            <span *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</span>
-            <div *ngIf="!producto.estado && id != 0" class="text-end mb-4 col">
-                <span class="me-2 fs-5 align-text-top text-danger ">El producto se encuentra deshabilitado: </span>
-                <button *ngIf="detalles==0" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
-            </div>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="inputCodigo" class="col-sm-2 col-form-label">SKU<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-10">
-                <input placeholder="ej. AB123" (keyup)="comprobarRepetido(codigo)" (input)="toUpperCase($event)" [disabled]="detalles == 1" required type="text" class="form-control" id="inputCodigo" minlength="4" maxlength="8" [(ngModel)]="producto.codigo" name="codigo" #codigo="ngModel">
-                <small class="form-text text-danger" *ngIf="codigoRepetido && codigo.value.length > 0">
-                    El código ingresado pertenece a otro producto.
-                </small>
-                <small class="form-text text-danger " *ngIf="!validarCodigo() && codigo.value?.length > 0">
-                    Formato requerido: dos letras y tres números.
-                </small>
-                <small class="form-text text-danger " *ngIf="formulario.controls['codigo']?.hasError('required') && mostrarErrores">
-                    Este campo es obligatorio.
-                </small>
-            </div>
-        </section>    
-        <section class="row mb-3 border-bottom  border-2 pb-3 me-0">
-            <span for="selectCategoria" class="col-2 col-form-label">Categoría<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-8 pe-3">
-                <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="categoria" id="selectCategoria" [(ngModel)]="producto.categoriaId">
-                    <option disabled value="0">Seleccione una categoría:</option>
-                    <option *ngIf="buscarCategoria()" value="{{producto.categoriaId}}">{{producto.categoria}}(deshabilitado)</option>
-                    <option *ngFor="let item of categoriasActivas" value={{item.id}}>{{item.categoria}}</option>
-                </select>
-                <small class="form-text text-danger" *ngIf="producto.categoriaId == 0 && mostrarErrores">
-                    Este campo es obligatorio.
-                </small>
-            </div>
-            <button *ngIf="detalles == 0" type="button" class="col-2 btn btn-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="obtenerCategorias()">Opciones para categorías</button>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="inputNombreProducto" class="col-sm-2 col-form-label">Nombre del producto<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-10">
-                <input placeholder="ej. Camisa" minlength="4" maxlength="50" [disabled]="detalles == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="producto.nombre" name="nombre">
-                <small class="form-text text-danger " *ngIf="formulario.controls['nombre']?.hasError('minlength') || (mostrarErrores && formulario.controls['nombre']?.hasError('required'))">
-                    Este campo debe tener entre 4-50 caracteres.
-                </small>
-            </div>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="inputDescripcion" class="col-sm-2 col-form-label">Descripción<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-10">
-                <textarea placeholder="ej. La camisa mas blanca" required class="form-control" [disabled]="detalles == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="producto.descripcion" minlength="10" maxlength="250"></textarea>
-                <small class="form-text text-danger " *ngIf="formulario.controls['descripcion']?.hasError('minlength') || (mostrarErrores && formulario.controls['descripcion']?.hasError('required'))">
-                    Este campo debe tener entre 10-250 caracteres.
-                </small>
-            </div>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="inputPrecio" class="col-sm-2 col-form-label">Precio<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-10">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">$</span>
-                    <input [disabled]="detalles == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="producto.precio" name="precio">
+    <form class="card rounded-4 ps-3 pe-3 shadow-sm border border-2 border-secondary-subtle" (ngSubmit)="agregar(formulario)" #formulario="ngForm">
+        <article class="card-body">
+            <section class="row">
+                <span *ngIf="detalles==0" class="col text-danger mt-2 mb-4">*Obligatorio</span>
+                <div *ngIf="!producto.estado && id != 0" class="text-end mb-4 col">
+                    <span class="me-2 fs-5 align-text-top text-danger ">El producto se encuentra deshabilitado: </span>
+                    <button *ngIf="detalles==0" type="button" class="btn btn-success " (click)="activarProducto()">Activar producto</button>
                 </div>
-                <small class="form-text text-danger " *ngIf="producto.precio == null && mostrarErrores || formulario.controls['precio']?.hasError('min') || formulario.controls['precio']?.hasError('max')">
-                    El precio debe ser mayor o igual a 1 y menor a 10 millones.
-                </small>
-            </div>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="selectProveedor" class="col-sm-2 col-form-label">Proveedor<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-10">
-                <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="proveedor" id="selectProveedor" [(ngModel)]="producto.proveedorId">
-                    <option disabled selected value="0">Seleccione un proveedor:</option>
-                    <option *ngIf="buscarProveedor()" value="{{producto.proveedorId}}">{{producto.proveedor}}(deshabilitado)</option>
-                    <option *ngFor="let proveedor of proveedores" value={{proveedor.id}}>{{proveedor.razonSocial}}</option>
-                </select>
-                <small class="form-text text-danger" *ngIf="producto.proveedorId == 0 && mostrarErrores">
-                    Este campo es obligatorio.
-                </small>                     
-            </div>
-        </section>
-        <section class="row mb-3 border-bottom  border-2 pb-3">
-            <span for="url" class="col-sm-2 col-form-label">Imagen<label *ngIf="detalles==0" class="text-danger ">*</label></span>
-            <div class="col-sm-8">
-                <input placeholder="URL de la imagen" [disabled]="detalles == 1" type="text" class="form-control" id="url" [(ngModel)]="producto.imagen_url" name="url" required>
-                <small class="form-text text-danger " *ngIf="formulario.controls['url']?.hasError('required') && mostrarErrores">
-                    Este campo es obligatorio.
-                </small>
-            </div>
-            <div class="col-2">
-                <img (error)="imageNotFound($event)" src="{{producto.imagen_url}}" alt="{{producto.nombre}}" style="width: 40%; aspect-ratio: 1/1; object-fit: contain;">
-            </div>
-        </section>
-        <section class="row">
-            <figure class="col d-flex flex-row">
-                <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary me-3" id="agregar">{{agregarOEditar}}</button>
-                <button *ngIf="detalles != 1 && id == 0" type="button" class="btn btn-danger me-3" (click)="limpiarFormulario()">Limpiar</button>            
-                <button class="btn btn-warning  " routerLink="/productos">Volver atrás</button>
-            </figure>
-        </section>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="inputCodigo" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">SKU<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-10">
+                    <input placeholder="ej. AB123" (keyup)="comprobarRepetido(codigo)" (input)="toUpperCase($event)" [disabled]="detalles == 1" required type="text" class="form-control" id="inputCodigo" minlength="4" maxlength="8" [(ngModel)]="producto.codigo" name="codigo" #codigo="ngModel">
+                    <small class="form-text text-danger" *ngIf="codigoRepetido && codigo.value.length > 0">
+                        El código ingresado pertenece a otro producto.
+                    </small>
+                    <small class="form-text text-danger " *ngIf="!validarCodigo() && codigo.value?.length > 0">
+                        Formato requerido: dos letras y tres números.
+                    </small>
+                    <small class="form-text text-danger " *ngIf="formulario.controls['codigo']?.hasError('required') && mostrarErrores">
+                        Este campo es obligatorio.
+                    </small>
+                </div>
+            </section>    
+            <section class="row mb-3 border-bottom  border-2 pb-3 me-0">
+                <span for="selectCategoria" class="col-2 col-form-label fw-medium text-secondary-emphasis">Categoría<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-8 pe-3">
+                    <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="categoria" id="selectCategoria" [(ngModel)]="producto.categoriaId">
+                        <option disabled value="0">Seleccione una categoría:</option>
+                        <option *ngIf="buscarCategoria()" value="{{producto.categoriaId}}">{{producto.categoria}}(deshabilitado)</option>
+                        <option *ngFor="let item of categoriasActivas" value={{item.id}}>{{item.categoria}}</option>
+                    </select>
+                    <small class="form-text text-danger" *ngIf="producto.categoriaId == 0 && mostrarErrores">
+                        Este campo es obligatorio.
+                    </small>
+                </div>
+                <button *ngIf="detalles == 0" type="button" class="col-2 btn btn-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="obtenerCategorias()">Opciones para categorías</button>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="inputNombreProducto" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">Nombre del producto<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-10">
+                    <input placeholder="ej. Camisa" minlength="4" maxlength="50" [disabled]="detalles == 1" required type="text" class="form-control" id="inputNombreProducto" [(ngModel)]="producto.nombre" name="nombre">
+                    <small class="form-text text-danger " *ngIf="formulario.controls['nombre']?.hasError('minlength') || (mostrarErrores && formulario.controls['nombre']?.hasError('required'))">
+                        Este campo debe tener entre 4-50 caracteres.
+                    </small>
+                </div>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="inputDescripcion" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">Descripción<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-10">
+                    <textarea placeholder="ej. La camisa mas blanca" required class="form-control" [disabled]="detalles == 1" name="descripcion" id="" cols="30" rows="3" [(ngModel)]="producto.descripcion" minlength="10" maxlength="250"></textarea>
+                    <small class="form-text text-danger " *ngIf="formulario.controls['descripcion']?.hasError('minlength') || (mostrarErrores && formulario.controls['descripcion']?.hasError('required'))">
+                        Este campo debe tener entre 10-250 caracteres.
+                    </small>
+                </div>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="inputPrecio" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">Precio<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-10">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input [disabled]="detalles == 1" required type="number" min="1" max="9999999" class="form-control" id="inputPrecio" [(ngModel)]="producto.precio" name="precio">
+                    </div>
+                    <small class="form-text text-danger " *ngIf="producto.precio == null && mostrarErrores || formulario.controls['precio']?.hasError('min') || formulario.controls['precio']?.hasError('max')">
+                        El precio debe ser mayor o igual a 1 y menor a 10 millones.
+                    </small>
+                </div>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="selectProveedor" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">Proveedor<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-10">
+                    <select [disabled]="detalles == 1" required [ngClass]="{'form-select': detalles==0, 'form-control': detalles!=0}" name="proveedor" id="selectProveedor" [(ngModel)]="producto.proveedorId">
+                        <option disabled selected value="0">Seleccione un proveedor:</option>
+                        <option *ngIf="buscarProveedor()" value="{{producto.proveedorId}}">{{producto.proveedor}}(deshabilitado)</option>
+                        <option *ngFor="let proveedor of proveedores" value={{proveedor.id}}>{{proveedor.razonSocial}}</option>
+                    </select>
+                    <small class="form-text text-danger" *ngIf="producto.proveedorId == 0 && mostrarErrores">
+                        Este campo es obligatorio.
+                    </small>                     
+                </div>
+            </section>
+            <section class="row mb-3 border-bottom  border-2 pb-3">
+                <span for="url" class="col-sm-2 col-form-label fw-medium text-secondary-emphasis">Imagen<label *ngIf="detalles==0" class="text-danger ">*</label></span>
+                <div class="col-sm-8">
+                    <input placeholder="URL de la imagen" [disabled]="detalles == 1" type="text" class="form-control" id="url" [(ngModel)]="producto.imagen_url" name="url" required>
+                    <small class="form-text text-danger " *ngIf="formulario.controls['url']?.hasError('required') && mostrarErrores">
+                        Este campo es obligatorio.
+                    </small>
+                </div>
+                <div class="col-2">
+                    <img class="rounded" (error)="imageNotFound($event)" src="{{producto.imagen_url}}" alt="{{producto.nombre}}" style="width: 40%; aspect-ratio: 1/1; object-fit: contain;">
+                </div>
+            </section>
+            <section class="row">
+                <figure class="col d-flex flex-row mb-0">
+                    <button *ngIf="detalles != 1" [ngClass]="{'opacity-50': formulario.invalid || codigoRepetido}" type="submit" class="btn btn-primary me-3" id="agregar">{{agregarOEditar}}</button>
+                    <button *ngIf="detalles != 1 && id == 0" type="button" class="btn btn-danger me-3" (click)="limpiarFormulario()">Limpiar</button>            
+                    <button class="btn btn-warning  " routerLink="/productos">Volver atrás</button>
+                </figure>
+            </section>
+</article>
     </form>
     <!--HTML para el modal -->
     <article class="modal fade" id="exampleModal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

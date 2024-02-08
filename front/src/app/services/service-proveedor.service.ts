@@ -77,10 +77,6 @@ export class ProveedorService{
   }
 
   public obtenerIvas(): Observable<Iva[]>{
-    let aux = this.http.get<Iva[]>('http://localhost:8080/ivas/');
-    return aux;
-    
+    return this.http.get<Iva[]>('http://localhost:8080/ivas/');    
   }
-
-  public login: boolean = false;
 }

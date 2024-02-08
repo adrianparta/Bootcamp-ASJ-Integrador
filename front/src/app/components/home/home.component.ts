@@ -21,15 +21,15 @@ export class HomeComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.proveedorService.obtenerProveedoresPorEstado(true).subscribe((data: Proveedor[]) => {
+    this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[]) => {
       this.proveedores = data;
     });
 
-    this.productoService.obtenerProductosPorEstado(true).subscribe((data: Producto[]) => {
+    this.productoService.obtenerProductos().subscribe((data: Producto[]) => {
       this.productos = data;
     });
 
-    this.ordenService.obtenerOrdenesPorEstado(true).subscribe((data: Orden[]) => {
+    this.ordenService.obtenerOrdenes().subscribe((data: Orden[]) => {
       this.ordenes = data;
     });
   }

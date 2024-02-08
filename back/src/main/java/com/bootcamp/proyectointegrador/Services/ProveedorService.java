@@ -181,4 +181,11 @@ public class ProveedorService {
 	    }
 	}
 
+	public Object[] obtenerProveedorMasVentas() {
+		Proveedor proveedor = proveedorRepository.proveedorMasVentas();
+		Integer cantidad = proveedorRepository.cantidadMasVentas();
+		Object[] proveedorConCantidad = {proveedor, cantidad};
+		return proveedorConCantidad;
+	}
+
 }

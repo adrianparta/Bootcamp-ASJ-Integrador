@@ -30,6 +30,16 @@ public class OrdenController {
 	@Autowired
 	OrdenService ordenService;
 	
+	@GetMapping
+	public ResponseEntity<Object> getOrdenes() {
+		try {
+	        List<OrdenDTO> ordenes = ordenService.obtenerOrdenes();
+	        return new ResponseEntity<>(ordenes, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        return new ResponseEntity<>("Error al obtener la lista de productos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
 	@GetMapping("estado/{estado}")
 	public ResponseEntity<Object> getOrdenesByEstado(@PathVariable Boolean estado) {
 		try {

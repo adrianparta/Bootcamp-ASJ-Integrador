@@ -19,6 +19,10 @@ export class ServiceOrdenService {
     return this.http.post<Orden>(this.url, orden);
   }
 
+  public obtenerOrdenes(): Observable<Orden[]>{
+    return this.http.get<Orden[]>(this.url);
+  }
+
   public obtenerOrdenesPorEstado(estado: boolean): Observable<Orden[]>{
     return this.http.get<Orden[]>(this.url + 'estado/' + estado);
   }
