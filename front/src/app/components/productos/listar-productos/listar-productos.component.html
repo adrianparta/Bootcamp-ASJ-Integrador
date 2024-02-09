@@ -22,7 +22,7 @@
                 <option *ngFor="let categoria of categorias" [value]="categoria.id" [ngClass]="{'text-secondary': !categoria.estado}">{{categoria.categoria}}</option>
             </select>
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <span>Filtrar por proveedor:</span>
             <select class="form-select col-2" (change)="filtrar()" [(ngModel)]="filtroProveedor">
                 <option value="0">Todos</option>
@@ -37,6 +37,9 @@
                 <option value="desc">Mayor precio</option>
             </select>
         </div>
+        <div class="col-1" role="group">
+            <button class="btn btn-outline-secondary mt-4" (click)="limpiarFiltros()">Limpiar</button>
+        </div>
         <div class="btn-group col-2 text-end mt-4 pe-0" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (click)="activosOEliminados(true)">
             <label class="btn btn-sm btn-outline-secondary pt-2" for="btnradio1">Activos</label>
@@ -46,7 +49,10 @@
     </section>
     
     <section class="mb-4">
-        <h2 *ngIf="estado && productos.length == 0" class="h1 ps-2 py-2">No hay productos para listar, agregue uno desde el boton de arriba a la derecha</h2>
+        <div *ngIf="estado && productos.length == 0">
+            <h2 class="h1 ps-2 py-2">No hay productos para listar</h2>
+            <a class=" col-1 btn btn-lg btn-success my-4 " routerLink="/productos/0">Agregar</a>
+        </div>
         <h2 *ngIf="!estado && productos.length == 0" class="h1 ps-2 py-2">No hay productos deshabilitados para listar</h2>
         
         <div *ngIf="productos.length>0" class="row bg-body-secondary text-body-tertiary shadow-sm fw-semibold rounded-3 py-2 px-4 mx-0 mb-3 bg-opacity-50  ">

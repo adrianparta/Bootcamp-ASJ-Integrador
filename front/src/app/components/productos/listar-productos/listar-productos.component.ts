@@ -245,4 +245,11 @@ export class ListarProductosComponent {
     return this.categorias.some(objeto => objeto.id === producto.categoriaId && !objeto.estado)
   }
 
+  limpiarFiltros(){
+    this.filtroCategoria = 0;
+    this.filtroProveedor = 0;
+    this.filtro = '';
+    this.ascdesc = '';
+    this.filtrar();
+  }
 }

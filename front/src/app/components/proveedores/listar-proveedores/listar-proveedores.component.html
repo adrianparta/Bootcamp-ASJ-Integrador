@@ -31,7 +31,10 @@
         </div>
     </section>
     <section class="mb-4">
-        <h2 *ngIf="estado && proveedores?.length == 0" class="h1 ps-2 py-2">No hay proveedores para listar, agregue uno desde el boton de arriba a la derecha</h2>
+        <div *ngIf="estado && proveedores?.length == 0">
+            <h2 class="h1 ps-2 py-2">No hay proveedores para listar</h2>
+            <a class="col-1 btn btn-lg btn-success my-4" routerLink="/proveedores/0">Agregar</a>
+        </div>
         <h2 *ngIf="!estado && proveedores?.length == 0" class="h1 ps-2 py-2">No hay proveedores deshabilitados para listar</h2>
         <div *ngIf="proveedores?.length != 0" class="row bg-body-secondary text-body-tertiary shadow-sm fw-semibold rounded-3 py-2 px-4 mx-0 mb-3 bg-opacity-50  ">
             <label class="col-1 ps-0 pe-4">Logo</label>
