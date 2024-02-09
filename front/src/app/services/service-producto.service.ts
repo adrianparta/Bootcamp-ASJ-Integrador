@@ -24,8 +24,8 @@ export class ProductoService {
     return this.http.get<Producto[]>(this.url + 'estado/' + estado);
   }
   
-  public obtenerProductosPorProveedor(id: number): Observable<Producto[]>{
-    return this.http.get<Producto[]>(this.url + 'proveedor/' + id + '/' + 'true');
+  public obtenerProductosPorProveedor(id: number, estado: boolean): Observable<Producto[]>{
+    return this.http.get<Producto[]>(this.url + 'proveedor/' + id + '/' + estado);
   }
 
   public obtenerProductosPorCategoria(id: number, estado: boolean): Observable<Producto[]>{

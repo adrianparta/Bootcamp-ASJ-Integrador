@@ -11,18 +11,25 @@
         </nav>
     </nav>
     <section class="container mb-4 row mx-0 px-0">
-        <div class="col-4 ps-0">
+        <div class="col-2 ps-0">
             <span>Buscar:</span>
             <input class="form-control" type="text" placeholder="Buscar..." [(ngModel)]="filtro">        
         </div>
         <div class="col-3">
             <span>Filtrar por categoría:</span>
-            <select class="form-select col-2" (change)="onSelectfiltroCategoria()" [(ngModel)]="filtroCategoria">
+            <select class="form-select col-2" (change)="filtrar()" [(ngModel)]="filtroCategoria">
                 <option value="0">Todas</option>
                 <option *ngFor="let categoria of categorias" [value]="categoria.id" [ngClass]="{'text-secondary': !categoria.estado}">{{categoria.categoria}}</option>
             </select>
         </div>
-        <div class="col-3" role="group">
+        <div class="col-3">
+            <span>Filtrar por proveedor:</span>
+            <select class="form-select col-2" (change)="filtrar()" [(ngModel)]="filtroProveedor">
+                <option value="0">Todos</option>
+                <option *ngFor="let proveedor of proveedores" [value]="proveedor.id" [ngClass]="{'text-secondary': !proveedor.estado}">{{proveedor.razonSocial}}</option>
+            </select>
+        </div>
+        <div class="col-2" role="group">
             <span>Ordenar por:</span>
             <select class="form-select" (change)="ordenar()" [(ngModel)]="ascdesc">
                 <option value="">Nombre</option>

@@ -132,7 +132,7 @@ export class AgregarOrdenComponent implements OnInit{
       });
       this.router.navigate(['/home']);
     });
-    this.productoService.obtenerProductosPorProveedor(proveedorId).subscribe((data: Producto[])=>{
+    this.productoService.obtenerProductosPorProveedor(proveedorId, true).subscribe((data: Producto[])=>{
       this.productos = data;      
     }, error => {
       Swal.fire({

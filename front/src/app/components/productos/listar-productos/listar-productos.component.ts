@@ -18,9 +18,11 @@ export class ListarProductosComponent {
   filtro: string = '';
   categorias: Categoria[] = [];
   filtroCategoria: number = 0;
+  filtroProveedor: number = 0;
   estado: boolean = true;
   ascdesc: string = '';
   proveedores: Proveedor[] = [];
+  todosLosProductos: Producto[] = [];
 
   constructor(public productoService: ProductoService, public proveedorService: ProveedorService, private router: Router){
   }
@@ -29,12 +31,16 @@ export class ListarProductosComponent {
     this.ascdesc = '';
     this.estado = true;
     this.filtroCategoria = 0;
+    this.filtroProveedor = 0;
     this.obtenerProveedores();
-    this.obtenerProductos();
+    this.obtenerProductos();    
     this.filtro = '';
     this.productoService.obtenerCategorias().subscribe((data: Categoria[])=>{
       this.categorias = data;
-      this.categorias.sort((a, b) => {
+      this.categorias.sort(function(a, b) {
+        return a.categoria.localeCompare(b.categoria);
+      });
+      this.categorias.sort((a, b) => {   
         if (a.estado && !b.estado) {
             return -1;
         }
@@ -45,6 +51,12 @@ export class ListarProductosComponent {
             return 0;
         }
       });
+
+      if(localStorage.getItem('filtroProveedor')){
+        this.filtroProveedor = parseInt(localStorage.getItem('filtroProveedor')!);
+        localStorage.removeItem('filtroProveedor');
+        this.filtrar();
+      }
     }, error => {
       Swal.fire({
         icon: "error",
@@ -56,12 +68,13 @@ export class ListarProductosComponent {
       });
       this.router.navigate(['/home']);
     });
-
   }
 
   obtenerProductos(){
     this.productoService.obtenerProductosPorEstado(this.estado).subscribe((data: Producto[]) => {
       this.productos = data;
+      this.todosLosProductos = data;
+      this.filtrar();
       this.ordenar();
     }, error => {
       Swal.fire({
@@ -79,6 +92,20 @@ export class ListarProductosComponent {
   obtenerProveedores(){
     this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[])=>{
       this.proveedores = data;
+      this.proveedores.sort(function(a, b) {
+        return a.razonSocial.localeCompare(b.razonSocial);
+      });
+      this.proveedores.sort((a, b) => {   
+        if (a.estado && !b.estado) {
+            return -1;
+        }
+        else if (!a.estado && b.estado) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+      });
     }, error => {
       Swal.fire({
         icon: "error",
@@ -159,33 +186,53 @@ export class ListarProductosComponent {
     this.ordenar();
   }
 
-  onSelectfiltroCategoria(){
+  filtrar(){    
+    let productosCategoria : Producto[] = [];
+    let productosProveedor : Producto[] = [];
     if(this.filtroCategoria == 0){
-      this.obtenerProductos();
+      productosCategoria = this.todosLosProductos;
+      if(this.filtroProveedor == 0){
+        productosProveedor = this.todosLosProductos;
+        this.productos = productosCategoria.filter(objeto1 =>
+          productosProveedor.find(objeto2 => objeto2.id === objeto1.id));
+        this.ordenar();
+      }
+      else{
+      this.productoService.obtenerProductosPorProveedor(this.filtroProveedor, this.estado).subscribe((data: Producto[])=>{
+        productosProveedor = data;                
+        this.productos = productosCategoria.filter(objeto1 =>
+          productosProveedor.find(objeto2 => objeto2.id === objeto1.id));
+        this.ordenar();
+        });
+      }
     }
     else{
       this.productoService.obtenerProductosPorCategoria(this.filtroCategoria, this.estado).subscribe((data: Producto[])=>{
-        this.productos = data;
-        this.ordenar();
-      }, error => {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: JSON.stringify(error.error),
-          timer: 2500,
-          timerProgressBar: true,
-          position: "top-end",
+        productosCategoria = data;
+        if(this.filtroProveedor ==0){
+          productosProveedor = this.todosLosProductos;
+          this.productos = productosCategoria.filter(objeto1 =>
+            productosProveedor.find(objeto2 => objeto2.id === objeto1.id));
+          this.ordenar();
+            
+        }
+        else{
+        this.productoService.obtenerProductosPorProveedor(this.filtroProveedor, this.estado).subscribe((data: Producto[])=>{
+          productosProveedor = data;
+          this.productos = productosCategoria.filter(objeto1 =>
+            productosProveedor.find(objeto2 => objeto2.id === objeto1.id));
+          });
+          this.ordenar();
+
+        }
         });
-        this.router.navigate(['/home']);
-      });
-    }
+    }    
   }
 
   activosOEliminados(estado: boolean){
     this.estado = estado;
     this.filtro = '';
-    this.filtroCategoria = 0;
-    this.obtenerProductos();
+    this.obtenerProductos();  
   }
 
   proveedorDesactivado(id: number){
