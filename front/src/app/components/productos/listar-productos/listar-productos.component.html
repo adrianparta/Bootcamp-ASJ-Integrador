@@ -65,12 +65,12 @@
                 <label class="col-3 ps-0" [ngClass]="{'text-secondary': buscarCategoria(producto)}">{{producto.categoria}}<label *ngIf="buscarCategoria(producto)">(deshabilitada)</label></label>
                 <label class="col-1 ps-0">${{producto.precio}}</label>
                 <label class="col-2 ps-0" [ngClass]="{'text-secondary': proveedorDesactivado(producto.proveedorId)}">{{producto.proveedor}}<label *ngIf="proveedorDesactivado(producto.proveedorId)" >(desactivado)</label></label>
-                <label class="col-2 ps-0 text-center">
+                <div class="col-2 ps-0 text-center">
                     <button class="btn btn-sm mx-1  btn-outline-info " [routerLink]="['/productos',producto.id,'detalles']"><img width="20" height="20" src="https://img.icons8.com/fluency-systems-filled/48/22C3E6/visible.png" alt="visible"/></button>
                     <button class="btn btn-sm mx-1  btn-outline-warning " [routerLink]="['/productos',producto.id]"><img width="20" height="20" src="https://img.icons8.com/material-outlined/24/FAB005/edit--v1.png" alt="edit--v1"/></button>
                     <button *ngIf="estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/material-rounded/24/FA5252/filled-trash.png" alt="filled-trash"/></button>
                     <button *ngIf="!estado" class="btn btn-sm mx-1  btn-outline-danger" (click)="modificarEstadoProducto(producto)"><img width="20" height="20" src="https://img.icons8.com/sf-black/64/FA5252/return.png" alt="return"/></button>
-                </label>
+                </div>
             </li>
         </ul>
     </section>

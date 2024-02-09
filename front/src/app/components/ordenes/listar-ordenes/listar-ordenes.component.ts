@@ -4,6 +4,7 @@ import { Orden } from '../../../models/orden';
 import { ProveedorService } from '../../../services/service-proveedor.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Proveedor } from '../../../models/proveedor';
 
 @Component({
   selector: 'app-listar-ordenes',
@@ -14,13 +15,34 @@ export class ListarOrdenesComponent {
   offset = new Date().getTimezoneOffset() / 60;
   ordenes: Orden[] = [];
   estado: boolean = true;
+  proveedores!: Proveedor[];
+  filtroProveedor: string = '';
+  orden!: string;
 
   constructor(public ordenService: OrdenService, public proveedorService: ProveedorService, private router: Router){
   }  
 
   ngOnInit() {
+    if(localStorage.getItem('filtroProveedorVentas')){
+      this.filtroProveedor = (localStorage.getItem('filtroProveedorVentas')!);
+      localStorage.removeItem('filtroProveedorVentas');
+    }
     this.estado = true;
+    this.orden = '';
     this.obtenerOrdenes();
+    this.proveedorService.obtenerProveedores().subscribe((data: Proveedor[]) => {
+      this.proveedores = data;
+    }, error => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(error.error),
+        timer: 2500,
+        timerProgressBar: true,
+        position: "top-end",
+      });
+      this.router.navigate(['/home']);
+    });
   }
   
   obtenerOrdenes(){
@@ -92,5 +114,24 @@ export class ListarOrdenesComponent {
   activosOEliminados(estado: boolean){
     this.estado = estado;
     this.obtenerOrdenes();
+  }
+
+  ordenar(){
+    if(this.orden == ''){
+      this.ordenes.sort(function (a, b) {
+        return a.id! - b.id!;
+      });
+    }
+
+    if(this.orden == 'asc'){
+      this.ordenes.sort(function (a, b) {
+        return a.total! - b.total!;
+      });
+    }
+    if(this.orden == 'desc'){
+      this.ordenes.sort(function (a, b) {
+        return b.total! - a.total!;
+      });
+    }
   }
 }

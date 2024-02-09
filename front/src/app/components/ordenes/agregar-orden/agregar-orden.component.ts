@@ -195,6 +195,7 @@ export class AgregarOrdenComponent implements OnInit{
     
     this.orden.detalles = [];
     this.calcularTotal();
+    this.url = '';
   }
 
   activarOrden(){

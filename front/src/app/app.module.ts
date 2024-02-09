@@ -18,6 +18,7 @@ import { filtroProductosPipe } from './pipes/filtroProductos.pipe';
 import { filtroCategoriasPipe } from './pipes/filtroCategorias.pipe';
 import { filtroRubrosPipe } from './pipes/filtroRubros.pipe';
 import { filtroProveedoresPipe } from './pipes/filtroProveedores.pipe';
+import { filtroOrdenPipe } from './pipes/filtroOrden.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { filtroProveedoresPipe } from './pipes/filtroProveedores.pipe';
     filtroProductosPipe,
     filtroCategoriasPipe,
     filtroRubrosPipe,
-    filtroProveedoresPipe
+    filtroProveedoresPipe,
+    filtroOrdenPipe
   ],
   imports: [
     BrowserModule,

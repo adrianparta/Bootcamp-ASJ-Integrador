@@ -21,9 +21,9 @@ export class HomeComponent implements OnInit{
   cantProveedores: number = 0;
   cantProductos: number = 0;
   cantOrdenes: number = 0;
-  proveedorMasProductos!: {nombre: string, cantidad: number, id: number};
-  proveedorMasVentas!: {nombre: string, cantidad: number, id: number};
-
+  proveedorMasProductos: {nombre: string, cantidad: number, id: number} = {nombre: '', cantidad: 0, id: 0};
+  proveedorMasVentas: {nombre: string, cantidad: number, id: number} = {nombre: '', cantidad: 0, id: 0};
+  ordenMasAlta: {id: number, monto: number} = {id: 0, monto: 0};
 
 
   constructor(private proveedorService: ProveedorService, private productoService: ProductoService, private ordenService: OrdenService, private router: Router){}
@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit{
           this.ordenes = data;
           this.obtenerProveedorMasProductos();
           this.obtenerProveedorMasVentas();
+          this.obtenerOrdenMasAlta();
         }, error => {
           Swal.fire({
             icon: "error",
@@ -161,6 +162,17 @@ export class HomeComponent implements OnInit{
   }
 
   localStorageProveedorMasVentas(){
-    localStorage.setItem('filtroProveedorVentas', this.proveedorMasProductos.id.toString());
+    localStorage.setItem('filtroProveedorVentas', this.proveedorMasVentas.nombre);
+  }
+
+  obtenerOrdenMasAlta(){ 
+    let ordenMasAlta = {id: 0, monto: 0};
+    this.ordenes.forEach((orden: Orden) => {
+      if(orden.total! > ordenMasAlta.monto){
+        ordenMasAlta.monto = orden.total!;
+        ordenMasAlta.id = orden.id!;
+      }
+    });
+    this.ordenMasAlta = ordenMasAlta;
   }
 }
