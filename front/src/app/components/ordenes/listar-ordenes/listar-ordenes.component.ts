@@ -133,5 +133,7 @@ export class ListarOrdenesComponent {
         return b.total! - a.total!;
       });
     }
+    console.log(this.ordenes);
   }
+  
 }

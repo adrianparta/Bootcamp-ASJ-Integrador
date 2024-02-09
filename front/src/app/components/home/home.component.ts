@@ -168,7 +168,7 @@ export class HomeComponent implements OnInit{
   obtenerOrdenMasAlta(){ 
     let ordenMasAlta = {id: 0, monto: 0};
     this.ordenes.forEach((orden: Orden) => {
-      if(orden.total! > ordenMasAlta.monto){
+      if(orden.total! > ordenMasAlta.monto && orden.estado){
         ordenMasAlta.monto = orden.total!;
         ordenMasAlta.id = orden.id!;
       }

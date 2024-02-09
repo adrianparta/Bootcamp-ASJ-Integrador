@@ -48,7 +48,7 @@
             </div>
 
             <ul class="mt-2 p-0">
-                <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-2 px-4 mb-2 mx-0 rounded-3" *ngFor="let orden of ordenes | filtroOrdenPipe: filtroProveedor">
+                <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-2 px-4 mb-2 mx-0 rounded-3" *ngFor="let orden of ordenes | filtroOrdenPipe: filtroProveedor:orden">
                     <label class="col-1 ps-0">{{orden.id}}</label>
                     <label class="col-3 ps-0">{{orden.fechaEmision | date:"dd MMM, yyyy 'a las ' hh:mm a"}}</label>
                     <label class="col-3 ps-0">{{orden.fechaEntrega | date:'dd MMM, yyyy'}}</label>

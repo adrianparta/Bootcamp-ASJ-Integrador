@@ -47,7 +47,7 @@
         </div> 
 
         <ul class="mt-2 p-0">
-            <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-3 px-4 mb-2 mx-0 rounded-3" *ngFor="let proveedor of proveedores | filtroProveedoresPipe:filtro">
+            <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-3 px-4 mb-2 mx-0 rounded-3" *ngFor="let proveedor of proveedores | filtroProveedoresPipe:filtro:orden">
                 <img class="col-1 ps-0 pe-4" (error)="imageNotFound($event)" src="{{proveedor.urlImagen}}">
                 <label class="col-1 ps-3">{{proveedor.codigo}}</label>
                 <label class="col-2 ps-0">{{proveedor.razonSocial}}</label>

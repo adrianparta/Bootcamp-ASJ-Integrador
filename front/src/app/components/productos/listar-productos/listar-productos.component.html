@@ -65,7 +65,7 @@
         </div>
         
         <ul class="mt-2 p-0">
-            <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-3 px-4 mb-2 mx-0 rounded-3" *ngFor="let producto of productos | filtroProductosPipe:filtro">
+            <li class="row align-items-center fw-medium text-secondary-emphasis shadow border-1 border-secondary-subtle border bg-white py-3 px-4 mb-2 mx-0 rounded-3" *ngFor="let producto of productos | filtroProductosPipe:filtro: ascdesc">
                 <img class="col-1 ps-0 pe-4" (error)="imageNotFound($event)" src="{{producto.imagen_url}}">
                 <label class="col-3 ps-3">{{producto.codigo}} | {{producto.nombre}}</label>
                 <label class="col-3 ps-0" [ngClass]="{'text-secondary': buscarCategoria(producto)}">{{producto.categoria}}<label *ngIf="buscarCategoria(producto)">(deshabilitada)</label></label>
