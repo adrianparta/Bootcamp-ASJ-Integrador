@@ -4,14 +4,14 @@
             <a [routerLink]="['/proveedores']" routerLinkActive="router-link-active"  class=" mx-2 blue text-decoration-none rounded-4 border border-3 border-primary  card col-5 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h2">Proveedores</h5>
-                    <p class="text-start h1 pt-4">{{cantProveedores}}</p>
+                    <p class="text-start h1 pt-3 pe-5">{{cantProveedores}}</p>
                 </div>
                 <svg class="align-self-end me-4 mb-4" style="width: 120; fill:blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>        
             </a>
             <a [routerLink]="['/productos']" routerLinkActive="router-link-active"  class=" mx-2 green text-decoration-none  rounded-4 border border-3 border-success card col-5 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h2">Productos</h5>
-                    <p class="text-start h1 pt-4">{{cantProductos}}</p>
+                    <p class="text-start h1 pt-3 pe-5">{{cantProductos}}</p>
                 </div>
                 <svg class="align-self-end me-4 mb-4" style="width: 110; fill:green" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M50.7 58.5L0 160H208V32H93.7C75.5 32 58.9 42.3 50.7 58.5zM240 160H448L397.3 58.5C389.1 42.3 372.5 32 354.3 32H240V160zm208 32H0V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192z"/></svg>            
             </a>
@@ -20,7 +20,7 @@
             <a [routerLink]="['/ordenes']" routerLinkActive="router-link-active"  class=" mx-2 orange text-decoration-none  rounded-4 border border-3 border-warning card col-5 mb-3 d-flex flex-row justify-content-between pt-4">
                 <div class="ms-4">
                     <h5 class="h2">Ordenes de compra</h5>
-                    <p class="text-start h1 pt-4">{{cantOrdenes}}</p>
+                    <p class="text-start h1 pt-3 me-5">{{cantOrdenes}}</p>
                 </div>
                 <svg class="align-self-end me-4 mb-4" style="width: 100; fill:orange" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M14 2.2C22.5-1.7 32.5-.3 39.6 5.8L80 40.4 120.4 5.8c9-7.7 22.3-7.7 31.2 0L192 40.4 232.4 5.8c9-7.7 22.3-7.7 31.2 0L304 40.4 344.4 5.8c7.1-6.1 17.1-7.5 25.6-3.6s14 12.4 14 21.8V488c0 9.4-5.5 17.9-14 21.8s-18.5 2.5-25.6-3.6L304 471.6l-40.4 34.6c-9 7.7-22.3 7.7-31.2 0L192 471.6l-40.4 34.6c-9 7.7-22.3 7.7-31.2 0L80 471.6 39.6 506.2c-7.1 6.1-17.1 7.5-25.6 3.6S0 497.4 0 488V24C0 14.6 5.5 6.1 14 2.2zM96 144c-8.8 0-16 7.2-16 16s7.2 16 16 16H288c8.8 0 16-7.2 16-16s-7.2-16-16-16H96zM80 352c0 8.8 7.2 16 16 16H288c8.8 0 16-7.2 16-16s-7.2-16-16-16H96c-8.8 0-16 7.2-16 16zM96 240c-8.8 0-16 7.2-16 16s7.2 16 16 16H288c8.8 0 16-7.2 16-16s-7.2-16-16-16H96z"/></svg>
             </a>
@@ -47,6 +47,11 @@
                 </div>
                 <svg class="align-self-end me-4 mb-4" style="width: 100; fill:rgb(226, 196, 0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 96V320c0 35.3 28.7 64 64 64H576c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64H160V256zM224 96c0 35.3-28.7 64-64 64V96h64zM576 256v64H512c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1 -160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120V360c0 66.3 53.7 120 120 120H520c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z"/></svg>
             </a>
+        </div>
+        <div class="col-10 offset-1 row mt-3 mb-4">
+            <button [routerLink]="['/proveedores/0']" routerLinkActive="router-link-active"  class="mb-4 btn btn-primary  btn sm">Agregar Proveedor</button>
+            <button [routerLink]="['/productos/0']" routerLinkActive="router-link-active"  class="mb-4 btn btn-success btn sm">Agregar Producto</button>
+            <button [routerLink]="['/ordenes/0']" routerLinkActive="router-link-active"  class="btn btn-warning  btn sm">Agregar Orden</button>
         </div>
     </nav>
 </div>
