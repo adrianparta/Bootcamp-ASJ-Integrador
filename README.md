@@ -21,7 +21,12 @@ Pasos necesarios para correr el proyecto localmente
 
 - Insertar **Paises**
 
-insert into paises (pais) values('Argentina'), ('Brasil'), ('Chile'), ('Uruguay'), ('Paraguay');
+insert into paises (pais) values
+('Argentina'), 
+('Brasil'), 
+('Chile'), 
+('Uruguay'), 
+('Paraguay');
 
 - Insertar **Provincias**
 
